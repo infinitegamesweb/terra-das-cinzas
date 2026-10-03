@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" shape-rendering="crispEdges">
+  <!-- Outer border -->
+  <rect x="0" y="0" width="48" height="48" fill="#140e1d" />
+  <rect x="1" y="1" width="46" height="46" fill="#2a1f3b" />
+  <rect x="2" y="2" width="44" height="44" fill="#181324" />
+  <!-- Corner Gold Filigree -->
+  <path fill="#ffd700" d="M2 2h6v2H4v4H2zm38 0h6v6h-2V4h-4zm6 38v6h-6v-2h4v-4zM2 40h2v4h4v2H2z" />
+  <!-- Inner Bevel -->
+  <rect x="3" y="3" width="42" height="1" fill="#4a3765" />
+  <rect x="3" y="3" width="1" height="42" fill="#4a3765" />
+  <rect x="44" y="3" width="1" height="42" fill="#0d0915" />
+  <rect x="3" y="44" width="42" height="1" fill="#0d0915" />
+  <!-- Inner velvet background -->
+  <rect x="4" y="4" width="40" height="40" fill="#151020" />
+  <!-- Subtle Rune watermark in center -->
+  <circle cx="24" cy="24" r="10" stroke="#251a38" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M24 16v16M16 24h16" stroke="#251a38" stroke-width="1" opacity="0.6"/>
+</svg>

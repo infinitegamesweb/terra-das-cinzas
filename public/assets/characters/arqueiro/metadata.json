@@ -1,0 +1,36 @@
+{
+  "group_id": "22e168d9-8609-4a61-8d9d-3f8d78669bef",
+  "states": [
+    {
+      "character": {
+        "id": "81ffc62e-8693-441b-aac6-4ec5e66e06f0",
+        "name": "Idle",
+        "prompt": "A highly detailed, full-body pixel art character sprite of the 'Arqueiro' (Ranger/Archer) class, inspired by the bottom-center figure in the selection roster. The character stands in a poised, front-facing ready stance against a solid, neutral grey background. The sprite follows a classic 16-bit to 32-bit retro JRPG aesthetic with crisp dark outlines and precise pixel shading. The ranger is clad in forest-green leather and light plate armor, featuring layered shoulder pauldrons, studded vambraces, and sturdy laced leather boots. He wears a stylized conical green ranger helm adorned with an upright white feather plume on top, framing a calm and focused face. Across his back, a leather quiver packed with fletched arrows is strapped diagonally. In his left hand, he holds a slender recurve hunting bow resting beside his frame, with a nocked arrow held lightly in the other hand. The sprite maintains the proportional aesthetic of the party roster, utilizing fine dithering and natural earthy greens, browns, and bronze accents to convey a stealthy forest tracker.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-10-02T00:03:34.633505+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-02T00:08:56.647580"
+}

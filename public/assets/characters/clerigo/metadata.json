@@ -1,0 +1,36 @@
+{
+  "group_id": "05432255-2834-42ca-8b77-2020b071c738",
+  "states": [
+    {
+      "character": {
+        "id": "117db752-d23c-4f68-afb9-a8ec3f5b91ce",
+        "name": "Idle",
+        "prompt": "A highly detailed, full-body pixel art character sprite of the 'Cl\u00e9rigo' (Cleric/Paladin) class, inspired by the bottom-left character in the selection roster. The character stands in a sturdy, resolute, front-facing combat stance against a solid, neutral grey background. The sprite follows a classic 16-bit to 32-bit retro JRPG aesthetic with clean outlines and fine pixel shading. The cleric is equipped in heavy blackened steel armor and chainmail, featuring a closed, rounded nasal helm that shadows the upper eyes, leaving the determined mouth and jaw visible. Over the armor, he wears a worn, dark grey tunic adorned with a bold, silver-white holy cross emblem on the chest. He wears thick leather gauntlets and heavy plated greaves with reinforced boots. In his right hand, resting angled towards the ground, he grips a heavy iron-spiked mace (flanged mace) with a detailed wooden haft. In his left hand, tucked firmly under his arm or against his hip, he carries a thick, leather-bound holy prayer book with brass clasps. The sprite proportions strictly match the fantasy RPG party roster, utilizing deliberate dithering on the metallic surfaces to convey rugged steel texture and battle-worn piety.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-10-01T23:59:48.063190+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-02T00:08:53.693249"
+}

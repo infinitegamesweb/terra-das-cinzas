@@ -1,0 +1,354 @@
+function createHeroSprites(classId = 'guerreiro') {
+  const characterClass = window.GameClasses.get(classId);
+  const directions = ['south', 'south-west', 'west', 'north-west', 'north', 'north-east', 'east', 'south-east'];
+  const sprites = { idle: {}, walk: {}, attack: {}, pickup: {} };
+
+  directions.forEach((d) => {
+    const idle = new Image();
+    idle.src = characterClass.idleRoot
+      ? characterClass.idleRoot + '/rotations/' + d + '.png'
+      : characterClass.walkRoot + '/animations/walk/' + d + '/frame_000.png';
+    sprites.idle[d] = idle;
+
+    sprites.pickup[d] = characterClass.actionRoot ? Array.from({ length: 5 }, (_, i) => {
+      const frame = new Image();
+      frame.src = characterClass.actionRoot + '/Picking_Up/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
+      return frame;
+    }) : [];
+
+    sprites.attack[d] = characterClass.actionRoot ? Array.from({ length: 7 }, (_, i) => {
+      const frame = new Image();
+      frame.src = characterClass.actionRoot + '/Throw_Object/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
+      return frame;
+    }) : [];
+
+    sprites.walk[d] = Array.from({ length: 6 }, (_, i) => {
+      const frame = new Image();
+      frame.src = characterClass.walkRoot + '/animations/walk/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
+      return frame;
+    });
+  });
+
+  return sprites;
+}
+
+function faceDirection(p, dx, dy) {
+  const ax = Math.abs(dx), ay = Math.abs(dy);
+  if (ax > ay * 2) {
+    p.dir = dx > 0 ? 'east' : 'west';
+  } else if (ay > ax * 2) {
+    p.dir = dy > 0 ? 'south' : 'north';
+  } else {
+    p.dir = dy > 0 ? (dx > 0 ? 'south-east' : 'south-west') : (dx > 0 ? 'north-east' : 'north-west');
+  }
+  if (dx) p.face = Math.sign(dx);
+}
+
+// Preloaded 4-directional luminous crescent moon slash VFX (Mana Seed)
+const slashVFXSprites = {
+  south: [new Image(), new Image(), new Image()],
+  north: [new Image(), new Image(), new Image()],
+  east: [new Image(), new Image(), new Image()],
+  west: [new Image(), new Image(), new Image()]
+};
+['south', 'north', 'east', 'west'].forEach((d) => {
+  for (let i = 0; i < 3; i++) {
+    slashVFXSprites[d][i].src = `assets/effects/slash/slash_${d}_${i}.png`;
+  }
+});
+
+function drawHero(g, p, last, heroSprites, box) {
+  const isUltimate = p.ultimateBuffUntil && last < p.ultimateBuffUntil;
+  const isBerserk = p.berserkUntil && last < p.berserkUntil;
+  const classFx = {
+    arqueiro: { color: '#8ee5a5', glow: 'rgba(90, 220, 145, 0.28)' },
+    assasino: { color: '#c084fc', glow: 'rgba(168, 85, 247, 0.28)' },
+    barbaro: { color: '#fb704d', glow: 'rgba(239, 68, 68, 0.26)' },
+    clerigo: { color: '#ffe17a', glow: 'rgba(250, 204, 21, 0.25)' },
+    mago: { color: '#75d9ff', glow: 'rgba(56, 189, 248, 0.28)' }
+  }[p.classId];
+  const drawScale = (isUltimate ? 1.65 : p.classId === 'guerreiro' ? 1.32 : 1.36);
+  g.save();
+  const dir = p.dir || 'south';
+  const attackAge = last - (p.attackAt || -Infinity);
+  const isAttacking = attackAge >= 0 && attackAge < 630;
+  const attackFrames = heroSprites.attack[dir];
+  const attackFrame = isAttacking && attackFrames ? attackFrames[Math.min(attackFrames.length - 1, Math.floor(attackAge / 90))] : null;
+
+  const pickupAge = last - (p.pickupAt || -Infinity);
+  const isPickingUp = pickupAge >= 0 && pickupAge < 500;
+  const pickupFrames = heroSprites.pickup[dir];
+  const pickupFrame = isPickingUp && pickupFrames ? pickupFrames[Math.min(pickupFrames.length - 1, Math.floor(pickupAge / 100))] : null;
+
+  const walkFrames = heroSprites.walk[dir];
+  const walkFrame = p.moving && walkFrames?.length ? walkFrames[Math.floor((p.walk % (Math.PI * 2)) / (Math.PI * 2) * walkFrames.length)] : null;
+
+  const im = (attackFrame && attackFrame.complete && attackFrame.naturalWidth) ? attackFrame
+    : (pickupFrame && pickupFrame.complete && pickupFrame.naturalWidth) ? pickupFrame
+    : (walkFrame && walkFrame.complete && walkFrame.naturalWidth) ? walkFrame
+    : heroSprites.idle[dir];
+
+  const sprW = 48;
+  const sprH = 48;
+  const attackProgress = isAttacking ? Math.max(0, 1 - attackAge / 260) : 0;
+  const facing = {
+    east: [1, 0], west: [-1, 0], north: [0, -1], south: [0, 1],
+    'north-east': [0.7, -0.7], 'north-west': [-0.7, -0.7],
+    'south-east': [0.7, 0.7], 'south-west': [-0.7, 0.7]
+  }[dir] || [0, 1];
+  const attackLunge = classFx ? attackProgress * (p.classId === 'assasino' ? 12 : 7) : 0;
+
+  // Ultimate Runic Aura under feet
+  if (isUltimate) {
+    const ultRot = (last / 300) % (Math.PI * 2);
+    g.save();
+    g.translate(p.x, p.y + 10);
+    g.rotate(ultRot);
+    g.strokeStyle = '#f59e0b';
+    g.shadowColor = '#fbbf24';
+    g.shadowBlur = 18;
+    g.lineWidth = 2.5;
+    g.beginPath();
+    g.arc(0, 0, 48 + Math.sin(last / 140) * 4, 0, Math.PI * 2);
+    g.stroke();
+    // 8-point geometric star
+    for (let i = 0; i < 8; i++) {
+      const a = (i * Math.PI) / 4;
+      g.beginPath();
+      g.moveTo(Math.cos(a) * 36, Math.sin(a) * 36);
+      g.lineTo(Math.cos(a + Math.PI / 8) * 48, Math.sin(a + Math.PI / 8) * 48);
+      g.stroke();
+    }
+    g.restore();
+  }
+
+  // Dash ghost trail
+  if (p.dashTrail && p.dashTrail.length) {
+    p.dashTrail.forEach((ghost, idx) => {
+      g.save();
+      g.globalAlpha = ghost.alpha * 0.45;
+      g.translate(ghost.x, ghost.y + 12);
+      g.scale(drawScale, drawScale);
+      if (im && im.complete && im.naturalWidth) {
+        g.drawImage(im, -sprW / 2, -sprH, sprW, sprH);
+      }
+      g.restore();
+    });
+  }
+
+  // Shadow
+  g.fillStyle = '#050c07aa';
+  g.beginPath();
+  g.ellipse(p.x, p.y + 11, isUltimate ? 28 : 22, isUltimate ? 10 : 8, 0, 0, Math.PI * 2);
+  g.fill();
+
+  // Distinct class silhouettes get a restrained colored aura. The warrior's
+  // existing sprite and base draw treatment are deliberately left untouched.
+  if (classFx && (isAttacking || p.shield > 0 || isUltimate || isBerserk)) {
+    const pulse = 0.45 + Math.sin(last / 55) * 0.12;
+    g.save();
+    g.globalAlpha = isAttacking ? 0.25 + attackProgress * 0.42 : isBerserk ? 0.42 + Math.sin(last / 65) * 0.2 : pulse;
+    g.fillStyle = classFx.glow;
+    g.beginPath();
+    g.ellipse(p.x, p.y - 13, 23 + attackProgress * 7, 30 + attackProgress * 5, 0, 0, Math.PI * 2);
+    g.fill();
+    g.restore();
+  }
+
+  if (isBerserk) {
+    g.save();
+    g.translate(p.x, p.y - 18);
+    g.strokeStyle = '#ff855c';
+    g.shadowColor = '#f43f2f';
+    g.shadowBlur = 12;
+    g.globalAlpha = 0.55 + Math.sin(last / 70) * 0.18;
+    g.lineWidth = 2.5;
+    g.beginPath();
+    g.arc(0, 0, 32 + Math.sin(last / 90) * 3, 0.1, Math.PI * 1.85);
+    g.stroke();
+    g.restore();
+  }
+
+  if (im && im.complete && im.naturalWidth) {
+    const bob = walkFrame || isAttacking || isPickingUp ? 0 : p.moving ? Math.abs(Math.sin(p.walk)) * 2.5 : Math.sin(last / 360) * 0.9;
+    g.save();
+    g.translate(p.x + facing[0] * attackLunge, p.y + 12 + bob + facing[1] * attackLunge);
+    g.scale(drawScale, drawScale);
+    const classAttackTilt = classFx && isAttacking ? facing[0] * Math.sin(attackAge / 260 * Math.PI) * 0.11 : 0;
+    g.rotate(classAttackTilt || (!isAttacking && !isPickingUp && !walkFrame && p.moving ? Math.sin(p.walk) * 0.035 : 0));
+    if (classFx && isAttacking) {
+      g.filter = `drop-shadow(0 0 ${3 + attackProgress * 8}px ${classFx.color})`;
+    }
+    g.drawImage(im, -sprW / 2, -sprH, sprW, sprH);
+    g.restore();
+  } else {
+    // Fallback chibi renderer
+    g.save();
+    g.translate(p.x, p.y);
+    g.scale(drawScale, drawScale);
+    g.fillStyle = '#7b2530';
+    g.beginPath();
+    g.moveTo(-14, 14);
+    g.lineTo(-12, -15);
+    g.lineTo(12, -15);
+    g.lineTo(16, 14);
+    g.fill();
+    box(-9, -13, 18, 22, '#d74b48');
+    box(-11, -33, 22, 20, '#354039');
+    box(-7, -29, 14, 11, '#e6d9bd');
+    box(-7, -27, 5, 3, '#242a26');
+    box(3, -27, 5, 3, '#242a26');
+    box(-14, -11, 28, 4, '#d6ad54');
+    box(p.face * 12, -12, 5, 24, '#b6c0b9');
+    box(p.face * 12 - 3, -17, 11, 7, '#f3e5b5');
+    g.restore();
+  }
+
+  // Class-specific attack silhouettes make attacks readable even when the
+  // class has no dedicated attack sheet. These are canvas VFX; source sprites
+  // stay pixel-identical, including the warrior art.
+  if (classFx && isAttacking && attackAge < 300) {
+    const progress = Math.max(0, Math.min(1, attackAge / 300));
+    const alpha = Math.sin(progress * Math.PI);
+    const target = p.attackTarget || { x: p.x + facing[0] * 58, y: p.y + facing[1] * 42 };
+    g.save();
+    g.globalAlpha = alpha * 0.9;
+    g.strokeStyle = classFx.color;
+    g.fillStyle = classFx.glow;
+    g.shadowColor = classFx.color;
+    g.shadowBlur = 12;
+    g.lineWidth = p.combo === 2 ? 5 : 3;
+    if (p.classId === 'assasino') {
+      for (let i = 0; i < 2; i++) {
+        g.beginPath();
+        g.arc(target.x - facing[0] * 9, target.y - 10 + i * 9, 21, -1.15 + i * 0.24 + progress, 0.75 + i * 0.24 + progress);
+        g.stroke();
+      }
+    } else if (p.classId === 'barbaro') {
+      g.beginPath();
+      g.ellipse(target.x, target.y + 7, 18 + progress * 25, 6 + progress * 8, Math.atan2(facing[1], facing[0]), 0, Math.PI * 2);
+      g.stroke();
+    } else if (p.classId === 'clerigo') {
+      g.beginPath();
+      g.arc(target.x, target.y - 8, 15 + progress * 13, 0, Math.PI * 2);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(target.x, target.y - 30);
+      g.lineTo(target.x, target.y + 14);
+      g.moveTo(target.x - 14, target.y - 8);
+      g.lineTo(target.x + 14, target.y - 8);
+      g.stroke();
+    } else if (p.classId === 'mago') {
+      const orbX = p.x + (target.x - p.x) * progress;
+      const orbY = p.y - 20 + (target.y - p.y) * progress;
+      g.beginPath();
+      g.arc(orbX, orbY, 5 + (1 - progress) * 5, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+    }
+    g.restore();
+  }
+
+  // Attack slash wave arc effect (Authentic Mana Seed luminous crescent moon sprites)
+  if (isAttacking && attackAge < 320 && p.classId !== 'arqueiro') {
+    const slashProg = attackAge / 320;
+    const frameIdx = Math.min(2, Math.floor(slashProg * 3));
+    let baseDir = 'south';
+    if (dir.includes('north')) baseDir = 'north';
+    else if (dir.includes('east')) baseDir = 'east';
+    else if (dir.includes('west')) baseDir = 'west';
+    else if (dir.includes('south')) baseDir = 'south';
+
+    const slashImg = slashVFXSprites[baseDir] && slashVFXSprites[baseDir][frameIdx];
+    if (slashImg && slashImg.complete && slashImg.naturalWidth > 0) {
+      g.save();
+      g.translate(p.x, p.y - 10);
+      const ox = baseDir === 'east' ? 22 : baseDir === 'west' ? -22 : 0;
+      const oy = baseDir === 'south' ? 20 : baseDir === 'north' ? -22 : 0;
+      g.globalAlpha = Math.max(0, 1 - slashProg * 0.35);
+      const isFinisher = p.combo === 2;
+      const isHitTwo = p.combo === 1;
+
+      let scale = (isUltimate || isFinisher) ? 2.1 : isHitTwo ? 1.75 : 1.5;
+      if (isUltimate || isFinisher) {
+        g.filter = 'drop-shadow(0 0 16px #f59e0b) brightness(1.4) saturate(1.8)';
+      } else if (isHitTwo) {
+        g.filter = 'drop-shadow(0 0 10px #38bdf8) brightness(1.25) hue-rotate(180deg)';
+      } else {
+        g.filter = 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))';
+      }
+      const slashW = slashImg.naturalWidth * scale;
+      const slashH = slashImg.naturalHeight * scale;
+      g.drawImage(slashImg, ox - slashW / 2, oy - slashH / 2, slashW, slashH);
+      g.restore();
+    } else {
+      const facingAngle = p.dir === 'east' ? 0 : p.dir === 'west' ? Math.PI : p.dir === 'south' ? Math.PI / 2 : p.dir === 'north' ? -Math.PI / 2 : (p.dir === 'south-east' ? Math.PI / 4 : p.dir === 'south-west' ? 3 * Math.PI / 4 : p.dir === 'north-east' ? -Math.PI / 4 : -3 * Math.PI / 4);
+      g.save();
+      g.translate(p.x, p.y - 10);
+      g.rotate(facingAngle);
+      g.beginPath();
+      g.arc(18, 0, 28, -Math.PI / 3 + slashProg * 0.8, Math.PI / 3 + slashProg * 0.8);
+      g.strokeStyle = isUltimate ? 'rgba(251, 191, 36, ' + (1 - slashProg) + ')' : 'rgba(255, 235, 160, ' + (1 - slashProg) + ')';
+      g.lineWidth = isUltimate ? 5 : 3.5;
+      g.shadowColor = isUltimate ? '#f59e0b' : '#ffd56b';
+      g.shadowBlur = 12;
+      g.stroke();
+      g.restore();
+    }
+  }
+
+  // Shield aura VFX
+  if (p.shield > 0) {
+    const shieldAngle = (last / 400) % (Math.PI * 2);
+    g.save();
+    g.translate(p.x, p.y - 14);
+    g.shadowColor = '#64e5f7';
+    g.shadowBlur = 16;
+    g.strokeStyle = 'rgba(100, 230, 250, 0.85)';
+    g.lineWidth = 2.5;
+    g.beginPath();
+    g.arc(0, 0, 42 + Math.sin(last / 120) * 2, 0, Math.PI * 2);
+    g.stroke();
+
+    // Dual orbiting runes
+    for (let i = 0; i < 4; i++) {
+      const a = shieldAngle + (i * Math.PI * 2) / 4;
+      const rx = Math.cos(a) * 42;
+      const ry = Math.sin(a) * 42 * 0.7;
+      g.fillStyle = '#bdf9ff';
+      g.beginPath();
+      g.arc(rx, ry, 3.5, 0, Math.PI * 2);
+      g.fill();
+    }
+    g.restore();
+  }
+
+  // Character Nameplate & Status Over Hero Head
+  const charClass = window.GameClasses?.get ? window.GameClasses.get(p.classId) : { name: 'Guerreiro', icon: '⚔' };
+  const nameplateY = p.y - (isUltimate ? 68 : 56);
+  g.save();
+  g.font = '700 10px "Outfit", sans-serif';
+  g.textAlign = 'center';
+  g.fillStyle = isUltimate ? '#fde047' : '#e2e8f0';
+  g.shadowColor = '#000000';
+  g.shadowBlur = 6;
+  g.fillText(`${charClass.icon} ${charClass.name} · Nv. ${p.lvl}`, p.x, nameplateY);
+
+  // Micro Health Bar when damaged
+  if (p.hp < p.max) {
+    const barW = 38;
+    const barH = 4;
+    const hpRatio = Math.max(0, Math.min(1, p.hp / p.max));
+    g.fillStyle = '#0f172acc';
+    g.fillRect(p.x - barW / 2 - 1, nameplateY + 4, barW + 2, barH + 2);
+    g.fillStyle = '#1e293b';
+    g.fillRect(p.x - barW / 2, nameplateY + 5, barW, barH);
+    g.fillStyle = hpRatio > 0.5 ? '#22c55e' : hpRatio > 0.25 ? '#eab308' : '#ef4444';
+    g.fillRect(p.x - barW / 2, nameplateY + 5, barW * hpRatio, barH);
+  }
+  g.restore();
+
+  g.restore();
+}
+
+window.GamePlayer = { createHeroSprites, faceDirection, drawHero };

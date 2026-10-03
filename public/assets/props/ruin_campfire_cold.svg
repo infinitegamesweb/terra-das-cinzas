@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Sombra Exterior na Grama -->
+  <ellipse cx="24" cy="27" rx="21" ry="12" fill="#000000" opacity="0.25"/>
+
+  <!-- Terra Queimada / Círculo de Tiziu Sob a Fogueira -->
+  <ellipse cx="24" cy="26" rx="17" ry="9.5" fill="#1c1917" opacity="0.7"/>
+
+  <!-- Cama de Cinzas Frias e Carvão (Tons de Cinza e Grafite) -->
+  <ellipse cx="24" cy="25" rx="13" ry="7" fill="#292524"/>
+  <ellipse cx="23" cy="25.5" rx="10" ry="5" fill="#44403c"/>
+  <ellipse cx="24" cy="26" rx="6" ry="3" fill="#78716c"/>
+
+  <!-- Pequenas Fagilhas de Cinzas Brancas Espalhadas -->
+  <circle cx="21" cy="24" r="0.8" fill="#d6d3d1"/>
+  <circle cx="27" cy="26" r="0.7" fill="#e7e5e4"/>
+  <circle cx="25" cy="27.5" r="0.6" fill="#d6d3d1"/>
+  <circle cx="19" cy="26.5" r="0.5" fill="#a8a29e"/>
+
+  <!-- Troncos de Madeira Carbonizada Cruzados -->
+  <!-- Tronco 1 (Diagonal /) -->
+  <path d="M15 30 L32 20 L34 22 L17 32 Z" fill="#181512" stroke="#0c0a09" stroke-width="1.2" stroke-linejoin="round"/>
+  <ellipse cx="16" cy="31" rx="1.5" ry="1" fill="#382d23" transform="rotate(-30 16 31)"/>
+  <!-- Tronco 2 (Diagonal \) -->
+  <path d="M31 31 L14 21 L16 19 L33 29 Z" fill="#201a14" stroke="#0c0a09" stroke-width="1.2" stroke-linejoin="round"/>
+  <ellipse cx="32" cy="30" rx="1.5" ry="1" fill="#382d23" transform="rotate(30 32 30)"/>
+  <!-- Rachadura de queima no tronco -->
+  <line x1="20" y1="23" x2="28" y2="28" stroke="#0c0a09" stroke-width="0.8"/>
+  <line x1="22" y1="27" x2="27" y2="23" stroke="#0c0a09" stroke-width="0.8"/>
+
+  <!-- Círculo de Pedras ao Redor da Fogueira (Perspectiva 2.5D Oval) -->
+  <!-- Pedras Traseiras -->
+  <ellipse cx="18" cy="18" rx="4" ry="2.8" fill="#475569" stroke="#1e293b" stroke-width="1"/>
+  <ellipse cx="24" cy="17" rx="4.5" ry="3" fill="#64748b" stroke="#1e293b" stroke-width="1"/>
+  <ellipse cx="30" cy="18" rx="3.8" ry="2.7" fill="#475569" stroke="#1e293b" stroke-width="1"/>
+  <!-- Pedras Laterais -->
+  <ellipse cx="11" cy="23" rx="4.5" ry="3.5" fill="#64748b" stroke="#1e293b" stroke-width="1.2"/>
+  <ellipse cx="37" cy="23" rx="4.5" ry="3.5" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- Pedras Frontais (com volume e destaque de luz) -->
+  <ellipse cx="14" cy="29" rx="4.8" ry="3.6" fill="#64748b" stroke="#1e293b" stroke-width="1.2"/>
+  <path d="M11 28 Q14 26 17 28" stroke="#94a3b8" stroke-width="1" fill="none"/>
+  
+  <ellipse cx="22" cy="31" rx="5.2" ry="3.8" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <path d="M19 30 Q22 28 25 30" stroke="#94a3b8" stroke-width="1" fill="none"/>
+
+  <ellipse cx="30" cy="30" rx="4.8" ry="3.6" fill="#64748b" stroke="#1e293b" stroke-width="1.2"/>
+  <path d="M27 29 Q30 27 33 29" stroke="#94a3b8" stroke-width="1" fill="none"/>
+
+  <ellipse cx="36" cy="27" rx="4.2" ry="3.2" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+
+  <!-- Manchas de Musgo nas Pedras -->
+  <circle cx="12" cy="21" r="1.5" fill="#4d7836"/>
+  <circle cx="37" cy="22" r="1.3" fill="#7ca952"/>
+  <circle cx="21" cy="32" r="1.5" fill="#4d7836"/>
+</svg>

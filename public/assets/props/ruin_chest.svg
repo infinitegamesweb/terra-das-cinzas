@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Sombra Suave no Solo 2.5D -->
+  <ellipse cx="24" cy="42" rx="19" ry="5.5" fill="#000000" opacity="0.32"/>
+
+  <!-- Corpo Inferior do Baú (Madeira Envelhecida e Pedra) -->
+  <rect x="7" y="19" width="34" height="21" rx="3" fill="#3e2b1d" stroke="#1c120c" stroke-width="1.8"/>
+  <!-- Textura de Tábuas de Madeira Escura -->
+  <line x1="7" y1="26" x2="41" y2="26" stroke="#2a1c12" stroke-width="1.2"/>
+  <line x1="7" y1="33" x2="41" y2="33" stroke="#2a1c12" stroke-width="1.2"/>
+
+  <!-- Reforços Laterais de Ferro e Rebites -->
+  <rect x="7" y="19" width="5" height="21" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <rect x="36" y="19" width="5" height="21" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- Rebites -->
+  <circle cx="9.5" cy="22.5" r="1" fill="#94a3b8"/>
+  <circle cx="9.5" cy="30" r="1" fill="#94a3b8"/>
+  <circle cx="9.5" cy="37.5" r="1" fill="#94a3b8"/>
+  <circle cx="38.5" cy="22.5" r="1" fill="#94a3b8"/>
+  <circle cx="38.5" cy="30" r="1" fill="#94a3b8"/>
+  <circle cx="38.5" cy="37.5" r="1" fill="#94a3b8"/>
+
+  <!-- Tampa Abobadada Superior (Perspectiva Aérea) -->
+  <path d="M5 19 C5 11, 43 11, 43 19 Z" fill="#5c4028" stroke="#1c120c" stroke-width="1.8"/>
+  <!-- Faixas Metálicas da Tampa -->
+  <path d="M7 19 C7 12, 13 12, 13 19 Z" fill="#64748b" stroke="#1e293b" stroke-width="1"/>
+  <path d="M35 19 C35 12, 41 12, 41 19 Z" fill="#64748b" stroke="#1e293b" stroke-width="1"/>
+  <!-- Brilho no Topo da Madeira -->
+  <path d="M14 14 Q24 12 34 14" stroke="#855b38" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Fechadura de Bronze / Runa Ancestral -->
+  <rect x="21" y="17" width="6" height="9" rx="1.5" fill="#d97706" stroke="#78350f" stroke-width="1.2"/>
+  <circle cx="24" cy="20" r="1.5" fill="#1c120c"/>
+  <polygon points="23.5,21 24.5,21 25,23.5 23,23.5" fill="#1c120c"/>
+  <circle cx="24" cy="19.5" r="0.6" fill="#fde68a"/>
+
+  <!-- Musgo do Bosque Crescendo no Canto Esquerdo -->
+  <path d="M5 32 Q9 30 11 34 Q8 40 5 39 Z" fill="#4d7836" stroke="#2e4720" stroke-width="0.8"/>
+  <circle cx="7" cy="33" r="1.2" fill="#7ca952"/>
+  <circle cx="9" cy="36" r="1" fill="#7ca952"/>
+  <path d="M7 19 Q10 16 8 14" stroke="#4d7836" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>

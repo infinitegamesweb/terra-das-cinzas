@@ -1,0 +1,107 @@
+{
+  "operation": "style-reference",
+  "prompt": "Create a new full-body 64x64 top-down orthographic pixel-art NPC for Terra das Cinzas, a dark fantasy browser RPG. Use the reference only to match its visual language: compact readable in-game scale, crisp chunky pixel clusters, clean dark outlines, restrained earthy colors, and transparent background. New character: a wary marsh ferryman and herbal guide in a weathered moss-green hooded coat, carrying a crooked reed staff and a small warm amber lantern with one tiny cyan swamp charm. Three-quarter top-down facing, centered, feet visible, distinctive silhouette. Transparent background; no scenery, no text, no contact sheet, no spritesheet.",
+  "reference": "public/assets/characters/npcs/forge_ignis_idle.png",
+  "requestId": "req_4dd494aa-0efa-4ac6-9749-b781abc5de14",
+  "outputs": [
+    {
+      "index": 1,
+      "assetId": "468745c7-adc2-42c9-a93b-e6ba6d236c24",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/468745c7-adc2-42c9-a93b-e6ba6d236c24/image.png?v=1791068765207",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-01.png",
+      "bytes": 2796
+    },
+    {
+      "index": 2,
+      "assetId": "071bcb1c-d976-401a-9e57-28df51e17720",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/071bcb1c-d976-401a-9e57-28df51e17720/image.png?v=1791068765787",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-02.png",
+      "bytes": 2574
+    },
+    {
+      "index": 3,
+      "assetId": "e258ccf4-f113-4259-bd22-7f6af536523e",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/e258ccf4-f113-4259-bd22-7f6af536523e/image.png?v=1791068766345",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-03.png",
+      "bytes": 2548
+    },
+    {
+      "index": 4,
+      "assetId": "11f12a81-f3b8-4fd0-a20d-5b0220b06a39",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/11f12a81-f3b8-4fd0-a20d-5b0220b06a39/image.png?v=1791068766938",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-04.png",
+      "bytes": 3199
+    },
+    {
+      "index": 5,
+      "assetId": "0913a226-5139-48fd-ac74-24afcd92e54f",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/0913a226-5139-48fd-ac74-24afcd92e54f/image.png?v=1791068768609",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-05.png",
+      "bytes": 2893
+    },
+    {
+      "index": 6,
+      "assetId": "c8c47a87-e1b6-4826-b4c2-eeb76a16074b",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/c8c47a87-e1b6-4826-b4c2-eeb76a16074b/image.png?v=1791068769171",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-06.png",
+      "bytes": 3109
+    },
+    {
+      "index": 7,
+      "assetId": "2efc9825-4f26-4455-9d0b-daa3f520208b",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/2efc9825-4f26-4455-9d0b-daa3f520208b/image.png?v=1791068769712",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-07.png",
+      "bytes": 3310
+    },
+    {
+      "index": 8,
+      "assetId": "7b05970d-6c7e-48ec-bc30-848194502607",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/7b05970d-6c7e-48ec-bc30-848194502607/image.png?v=1791068770277",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-08.png",
+      "bytes": 2965
+    },
+    {
+      "index": 9,
+      "assetId": "2347da90-3156-43dd-ae19-94c2955698e9",
+      "type": "image",
+      "assetUrl": "https://media.spritefusion.com/pixel-art-assets/acedb6e3-0e34-467b-9dcd-ff5acd3c4419/2347da90-3156-43dd-ae19-94c2955698e9/image.png?v=1791068770887",
+      "contentType": "image/png",
+      "width": 64,
+      "height": 64,
+      "localPath": "option-09.png",
+      "bytes": 2886
+    }
+  ]
+}

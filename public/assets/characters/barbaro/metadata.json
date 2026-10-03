@@ -1,0 +1,36 @@
+{
+  "group_id": "33001be3-7ad0-4d7b-b088-72108c904947",
+  "states": [
+    {
+      "character": {
+        "id": "2fcf7cff-217a-4f0b-a691-ed5a0edc189c",
+        "name": "Idle",
+        "prompt": "A highly detailed, full-body pixel art character sprite of the 'B\u00e1rbaro' (Barbarian/Berserker) class, inspired by the bottom-right character in the selection roster. The character stands in a wide, powerful front-facing battle stance against a solid, neutral grey background. The sprite follows a classic 16-bit to 32-bit retro JRPG aesthetic with bold outlines and rich pixel shading. The barbarian features a muscular, bare-chested build adorned with a leather harness belt across his torso, studded leather wrist bracers, and a ragged fur-trimmed loincloth with sturdy leather boots. He wears a rugged iron helmet with prominent curved horns pointing outward, framing an aggressive, weathered face with a strong jaw. In his right hand, resting angled upwards, he grips a massive double-edged battleaxe (greataxe) with a notched steel blade and worn wooden haft. The sprite maintains the proportional scale and chibi-heroic proportions of the party roster, using detailed dithering on muscular shadows, rough iron textures, and fur to convey a savage, battle-hardened warrior.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-10-02T00:06:49.945628+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-02T00:09:56.593279"
+}

@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "uploadedAt": "2026-10-03T22:49:49.574221+00:00",
+  "fileCount": 43,
+  "files": [
+    {
+      "path": "death-s/chroma-keyed/background-key-metadata.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/chroma-keyed/background-key-metadata.json",
+      "size": 4433
+    },
+    {
+      "path": "death-s/events.jsonl",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/events.jsonl",
+      "size": 6070
+    },
+    {
+      "path": "death-s/export/baseline-report.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/baseline-report.json",
+      "size": 213
+    },
+    {
+      "path": "death-s/export/manifest.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/manifest.json",
+      "size": 347
+    },
+    {
+      "path": "death-s/export/preserve-canvas.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/preserve-canvas.json",
+      "size": 9002
+    },
+    {
+      "path": "death-s/export/preview.gif",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/preview.gif",
+      "size": 276670
+    },
+    {
+      "path": "death-s/export/spritesheet.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/spritesheet.png",
+      "size": 646373
+    },
+    {
+      "path": "death-s/export/spritesheet.raw.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/export/spritesheet.raw.png",
+      "size": 646373
+    },
+    {
+      "path": "death-s/fal/fal-video-create-meta.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-create-meta.json",
+      "size": 68
+    },
+    {
+      "path": "death-s/fal/fal-video-create.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-create.json",
+      "size": 405
+    },
+    {
+      "path": "death-s/fal/fal-video-final-meta.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-final-meta.json",
+      "size": 679
+    },
+    {
+      "path": "death-s/fal/fal-video-final.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-final.json",
+      "size": 324
+    },
+    {
+      "path": "death-s/fal/fal-video-run.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-run.json",
+      "size": 956830
+    },
+    {
+      "path": "death-s/fal/fal-video-status-meta.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-status-meta.json",
+      "size": 421
+    },
+    {
+      "path": "death-s/fal/fal-video-status.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/fal-video-status.json",
+      "size": 505
+    },
+    {
+      "path": "death-s/fal/raw-video.mp4",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/fal/raw-video.mp4",
+      "size": 1045788
+    },
+    {
+      "path": "death-s/input/prompt.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/input/prompt.txt",
+      "size": 3215
+    },
+    {
+      "path": "death-s/input/source.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/input/source.png",
+      "size": 750316
+    },
+    {
+      "path": "death-s/logs/build-contact-sheet.command.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-contact-sheet.command.json",
+      "size": 981
+    },
+    {
+      "path": "death-s/logs/build-contact-sheet.stderr.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-contact-sheet.stderr.txt",
+      "size": 0
+    },
+    {
+      "path": "death-s/logs/build-contact-sheet.stdout.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-contact-sheet.stdout.txt",
+      "size": 65
+    },
+    {
+      "path": "death-s/logs/build-review-gif.command.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-review-gif.command.json",
+      "size": 1005
+    },
+    {
+      "path": "death-s/logs/build-review-gif.stderr.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-review-gif.stderr.txt",
+      "size": 0
+    },
+    {
+      "path": "death-s/logs/build-review-gif.stdout.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/build-review-gif.stdout.txt",
+      "size": 65
+    },
+    {
+      "path": "death-s/logs/extract-video-frames.command.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/extract-video-frames.command.json",
+      "size": 698
+    },
+    {
+      "path": "death-s/logs/extract-video-frames.stderr.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/extract-video-frames.stderr.txt",
+      "size": 3742
+    },
+    {
+      "path": "death-s/logs/extract-video-frames.stdout.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/extract-video-frames.stdout.txt",
+      "size": 0
+    },
+    {
+      "path": "death-s/logs/fal-video.command.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/fal-video.command.json",
+      "size": 4283
+    },
+    {
+      "path": "death-s/logs/fal-video.stderr.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/fal-video.stderr.txt",
+      "size": 0
+    },
+    {
+      "path": "death-s/logs/fal-video.stdout.txt",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/logs/fal-video.stdout.txt",
+      "size": 0
+    },
+    {
+      "path": "death-s/normalized/preserve-canvas-metadata.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/normalized/preserve-canvas-metadata.json",
+      "size": 9002
+    },
+    {
+      "path": "death-s/recovered/despill-metadata.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/recovered/despill-metadata.json",
+      "size": 5183
+    },
+    {
+      "path": "death-s/recovered/green-fringe-metadata.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/recovered/green-fringe-metadata.json",
+      "size": 4904
+    },
+    {
+      "path": "death-s/review/compare-01-selected-to-canvas-cleaned.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/compare-01-selected-to-canvas-cleaned.png",
+      "size": 344746
+    },
+    {
+      "path": "death-s/review/compare-02-canvas-cleaned-to-runtime.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/compare-02-canvas-cleaned-to-runtime.png",
+      "size": 302165
+    },
+    {
+      "path": "death-s/review/contact.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/contact.png",
+      "size": 639349
+    },
+    {
+      "path": "death-s/review/index.md",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/index.md",
+      "size": 2462
+    },
+    {
+      "path": "death-s/review/preview.gif",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/preview.gif",
+      "size": 276670
+    },
+    {
+      "path": "death-s/review/selected-contact.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/selected-contact.png",
+      "size": 317625
+    },
+    {
+      "path": "death-s/review/selected-preview.gif",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/review/selected-preview.gif",
+      "size": 179287
+    },
+    {
+      "path": "death-s/run.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/run.json",
+      "size": 2566
+    },
+    {
+      "path": "death-s/selected/selection.json",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/death-s/selected/selection.json",
+      "size": 1426
+    },
+    {
+      "path": "input/reference-anchor.png",
+      "key": "jobs/kh73w5rqscrrta1dczb67anzan8fkpxt-646c324a0e4c8b4c/run/input/reference-anchor.png",
+      "size": 750316
+    }
+  ]
+}

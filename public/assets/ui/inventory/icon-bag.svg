@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <path fill="#2c1810" d="M10 6h12v4H10z"/>
+  <path fill="#5c3826" d="M11 7h10v2H11z"/>
+  <path fill="#78350f" d="M6 10h20v18H6z"/>
+  <path fill="#92400e" d="M8 12h16v14H8z"/>
+  <path fill="#b45309" d="M10 13h12v12H10z"/>
+  <!-- Leather Straps -->
+  <path fill="#451a03" d="M11 10h2v18h-2zm8 0h2v18h-2z"/>
+  <!-- Brass Buckles -->
+  <path fill="#f59e0b" d="M11 17h2v3h-2zm8 17h2v3h-2zM11 18h2v2h-2zm8 0h2v2h-2z"/>
+  <rect x="15" y="19" width="2" height="3" fill="#fbbf24"/>
+  <!-- Flap Edge -->
+  <path fill="#3b1d11" d="M6 16h20v2H6z"/>
+</svg>

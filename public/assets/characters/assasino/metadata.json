@@ -1,0 +1,36 @@
+{
+  "group_id": "1d9fceba-232f-4e07-b147-0994f6519677",
+  "states": [
+    {
+      "character": {
+        "id": "2dbe31dc-4aee-428e-90cb-3f4e0d89f319",
+        "name": "Idle",
+        "prompt": "A highly detailed, full-body pixel art character sprite of the 'Assassino' (Rogue/Assassin) class, inspired by the top-center figure in the character selection screen. The character stands in an agile, menacing battle-ready stance against a solid, neutral grey background. The sprite maintains the 16-bit to 32-bit retro JRPG aesthetic with crisp outlines and detailed pixel shading. The assassin is clad in dark charcoal-grey and black leather armor, fitted with tactical belts, silver buckles, and pouches around the waist and chest. A deep hooded cowl conceals the upper face, revealing only two piercing, glowing red eyes shining from beneath the shadow of the hood. A dark crimson cloth mask covers the lower face. In each hand, the rogue wields a pair of sharp, serrated steel daggers with dark hilts, held in a dual-wield combat grip. The character has a lean, athletic build with proportions consistent with classic fantasy RPG sprites. Clean pixel art execution with precise dithering and edge highlighting to emphasize the dark textures and lethal silhouette.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-10-01T23:55:10.557150+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-02T00:08:10.142703"
+}

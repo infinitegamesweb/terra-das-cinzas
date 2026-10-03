@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Terra das Cinzas - RPG de Aventura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon-32.png">
+  <link rel="apple-touch-icon" href="favicon-64.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="menu-open">
+    <section class="main-menu" id="mainMenu" role="dialog" aria-modal="true" aria-label="Menu principal">
+      <div class="menu-layout">
+        <section class="menu-frame">
+          <div class="menu-brand-plaque">
+            <h1>TERRA DAS CINZAS</h1>
+          </div>
+          <div class="menu-panel-content" id="menuHome">
+            <p class="menu-kicker">UMA AVENTURA ATÉ O NÍVEL 300</p>
+            <p class="menu-intro">As ruínas de Miraluz<br>aguardam por você.</p>
+            <div class="menu-actions">
+              <button class="menu-button" id="menuAccount" type="button">CONECTAR CONTA</button>
+              <button class="menu-button menu-primary" id="menuContinue">CONTINUAR JORNADA</button>
+              <button class="menu-button" id="menuNew">NOVA JORNADA</button>
+              <button class="menu-button" id="menuGuide" type="button">GUIA DO JOGO</button>
+              <button class="menu-button" id="menuOptions">OPÇÕES</button>
+              <button class="menu-button" id="menuCredits">CRÉDITOS</button>
+            </div>
+            <p class="menu-version">UM RPG DE AVENTURA EM PIXEL ART</p>
+          </div>
+          <div class="menu-subview" id="menuSubview" hidden></div>
+        </section>
+        <aside class="menu-hero-card">
+          <div class="menu-seal">
+            <img src="assets/ui/logo.png" alt="Terra das Cinzas — RPG de Aventura" class="menu-hero-logo">
+          </div>
+          <h2>A JORNADA COMEÇA</h2>
+          <p>Explore as ruínas de Miraluz e descubra o que resta sob as cinzas.</p>
+          <span class="hero-divider">• · • · •</span>
+        </aside>
+      </div>
+      <div class="menu-hint"><span>ENTER</span> continuar <i>·</i> <span>W A S D</span> mover <i>·</i> clique para interagir</div>
+    </section>
+
+    <header class="top">
+      <div class="brand"><img src="assets/ui/logo.png" alt="Terra das Cinzas — RPG de Aventura" class="header-game-logo" /></div>
+      <div class="online"><i></i><span>Mundo solo · progresso salvo</span></div>
+      <div class="wallet">
+        <button class="account-top" id="castleTop" type="button" aria-label="Castelo em Cinzas" title="Castelo em Cinzas · Hub Seguro (Tecla C)"><span>CASTELO</span></button>
+        <button class="account-top" id="invTop" type="button" aria-label="Menu de Inventário" title="Menu de Inventário e Equipamentos (Tecla I ou B)"><span>INVENTÁRIO</span></button>
+        <button class="account-top" id="forgeTop" type="button" aria-label="Forja das Cinzas" title="A Forja das Cinzas · Aprimorar Armas"><span>FORJA</span></button>
+        <button class="account-top" id="marketTop" type="button" aria-label="Bazar local do Castelo" title="Bazar local · ofertas demonstrativas salvas neste navegador"><span>BAZAR</span></button>
+        <button class="account-top" id="shopTop" type="button" aria-label="Loja de Poções" title="Loja de Poções e Consumíveis"><span>LOJA</span></button>
+        <button class="account-top" id="mapTop" type="button" aria-label="Mapa do Mundo" title="Mapa do Mundo (Tecla M)"><span>MAPA</span></button>
+        <button class="account-top" id="talentsTop" type="button" aria-label="Árvore de Talentos" title="Árvore de Talentos (Tecla T)"><span>TALENTOS</span></button>
+        <button class="account-top" id="accountTop" type="button" aria-label="Conta e salvamento na nuvem" title="Conta e salvamento na nuvem"><span>CONTA</span></button>
+        <button class="account-top guide-top" id="guideTop" type="button" aria-label="Guia do Aventureiro e Tutorial" title="Guia do Aventureiro (Ajuda e Tutorial - Tecla H)"><span>GUIA</span></button>
+        <button class="sound-toggle" id="soundToggle" type="button" title="Alternar som e música">
+          <span id="soundIcon">SOM</span>
+        </button>
+        <span class="currency-badge"><img src="assets/items/gold-coin.svg" alt="Ouro"> <b id="gold">125</b></span>
+        <span class="currency-badge"><img src="assets/items/forest-crystal.svg" alt="Cristal"> <b id="crystal">8</b></span>
+        <div class="avatar" title="Personagem"><img src="assets/items/ashen-shield.svg" width="20" height="20" alt="Personagem" /></div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="world" id="world">
+        <canvas id="game" aria-label="Bosque das Ruínas, área jogável"></canvas>
+        
+        <!-- HUD Principal -->
+        <div class="hud">
+          <div class="line">
+            <b id="heroClassName">Guerreiro Errante</b>
+            <span id="level" class="level-badge">Nv. 3</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar hp" title="Vida">
+              <i id="hp"></i>
+              <div class="bar-shine"></div>
+              <label id="hpt"></label>
+            </div>
+            <div class="bar xp" title="Experiência">
+              <i id="xp"></i>
+              <div class="bar-shine"></div>
+              <label id="xpt"></label>
+            </div>
+            <div class="bar en" title="Energia">
+              <i id="energy"></i>
+              <div class="bar-shine"></div>
+              <label id="energyt"></label>
+            </div>
+          </div>
+          <!-- Buff / Status Ativo -->
+          <div class="hud-status" id="hudStatus" hidden>
+            <span class="buff-icon"><img src="assets/items/ashen-shield.svg" width="16" height="16" alt="Escudo" /></span>
+            <span class="buff-label" id="buffLabel">Escudo de Cinzas</span>
+            <span class="buff-timer" id="buffTimer">5s</span>
+          </div>
+        </div>
+
+        <div class="zone">
+          <span class="zone-tag">REGIÃO 01 · BOSQUE DAS RUÍNAS</span>
+          <b>Ruínas de Miraluz</b>
+        </div>
+
+        <div class="map" id="mapContainer" title="Radar da Região">
+          <canvas id="radar" width="105" height="105"></canvas>
+          <small>N</small>
+        </div>
+
+        <div class="hint" id="hint"></div>
+
+        <div class="controls">
+          <span class="control-key">W A S D</span> mover · <span class="control-key">E</span> coletar · <span class="control-key">Z</span> auto · <span class="control-key">I / B</span> inventário · <span class="control-key">Q / R</span> habilidades · <span class="control-key">M</span> mapa · <span class="control-key">T</span> talentos
+        </div>
+
+        <div class="actions">
+          <button class="auto-toggle" id="autoToggle" type="button" aria-pressed="false" title="Atacar inimigos, curar e recolher saques automaticamente (Tecla Z)">
+            <small class="action-key">Z</small>
+            <span class="auto-title">AUTO</span>
+            <small class="auto-state">OFF</small>
+            <div class="auto-pulse"></div>
+          </button>
+          
+          <button class="action" data-k="1" id="skillBtn1" title="Poção de cura (Tecla 1)">
+            <small class="action-key">1</small>
+            <span class="action-icon" id="skillIcon1"><img src="assets/icons/skills/Icon42.png" alt="Cura" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+          
+          <button class="action" data-k="2" id="skillBtn2" title="Ataque de classe (Tecla 2)">
+            <small class="action-key">2</small>
+            <span class="action-icon" id="skillIcon2"><img src="assets/icons/skills/Icon19.png" alt="Ataque" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+          
+          <button class="action" data-k="3" id="skillBtn3" title="Escudo de cinzas (Tecla 3)">
+            <small class="action-key">3</small>
+            <span class="action-icon" id="skillIcon3"><img src="assets/icons/skills/Icon43.png" alt="Escudo" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+          
+          <button class="action" data-k="4" id="skillBtn4" title="Investida rápida (Tecla 4)">
+            <small class="action-key">4</small>
+            <span class="action-icon" id="skillIcon4"><img src="assets/icons/skills/Icon24.png" alt="Investida" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+          
+          <button class="action" data-k="5" id="skillBtn5" title="Habilidade de Área (Tecla Q ou 5)">
+            <small class="action-key">Q</small>
+            <span class="action-icon" id="skillIcon5"><img src="assets/icons/skills/Icon25.png" alt="Área" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+          
+          <button class="action action-ultimate" data-k="6" id="skillBtn6" title="Habilidade Suprema (Tecla R ou 6)">
+            <small class="action-key">R</small>
+            <span class="action-icon" id="skillIcon6"><img src="assets/icons/skills/Icon20.png" alt="Suprema" /></span>
+            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+          </button>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </section>
+
+      <aside class="side">
+        <nav class="tabs">
+          <button class="active" data-tab="0">Missões</button>
+          <button data-tab="1">Personagem</button>
+          <button data-tab="2">Bolsa</button>
+          <button data-tab="3">Guilda</button>
+          <button data-tab="4">Masmorras</button>
+          <button data-tab="5">Códice</button>
+        </nav>
+        <div class="inside">
+          <div class="title">MISSÕES DO BOSQUE</div>
+          <article class="quest">
+            <div class="icon"><img src="assets/ui/inventory/icon-stat-sword.png" width="20" height="20" alt="Combate" /></div>
+            <div>
+              <h3>Guardião das Ruínas</h3>
+              <p>Derrote os invasores do bosque.</p>
+              <div class="progress"><i id="qk"></i></div>
+              <small id="qkt"></small>
+            </div>
+            <b class="reward">+120</b>
+          </article>
+          <article class="quest">
+            <div class="icon"><img src="assets/items/forest-crystal.svg" width="20" height="20" alt="Minério" /></div>
+            <div>
+              <h3>Veio Luminoso</h3>
+              <p>Extraia minério das ruínas antigas.</p>
+              <div class="progress"><i id="qo"></i></div>
+              <small id="qot"></small>
+            </div>
+            <b class="reward">+100</b>
+          </article>
+          <article class="quest">
+            <div class="icon"><img src="assets/items/gold-coin.svg" width="20" height="20" alt="Relíquia" /></div>
+            <div>
+              <h3>Caçador de Relíquias</h3>
+              <p>Recolha cristais e abra baús.</p>
+              <div class="progress"><i id="ql"></i></div>
+              <small id="qlt"></small>
+            </div>
+            <b class="reward">+200</b>
+          </article>
+          <div class="card contract-card">
+            <strong>Contrato da Região</strong>
+            <p>Complete as três tarefas para receber ouro e experiência.</p>
+            <button id="claim">RECOMPENSA: 250 G + 80 XP</button>
+          </div>
+          <div class="equip">
+            <span>ARMA</span>
+            <span>ESCUDO</span>
+            <span>ELMO</span>
+            <span>ANEL</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="game.bundle.js?v=2.2"></script>
+</body>
+</html>

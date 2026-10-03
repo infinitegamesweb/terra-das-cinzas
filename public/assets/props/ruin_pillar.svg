@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 64" width="48" height="64">
+  <!-- Sombra Projetada no Chão -->
+  <ellipse cx="24" cy="57" rx="18" ry="6" fill="#000000" opacity="0.35"/>
+
+  <!-- Bloco de Pedra Caído ao Lado da Base -->
+  <polygon points="34,50 43,48 45,55 36,57" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <polygon points="34,50 39,47 43,48 38,51" fill="#64748b"/>
+
+  <!-- Base Esculpida do Pilar (Pedestal de Granito) -->
+  <rect x="10" y="50" width="28" height="7" rx="1.5" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="12" y="47" width="24" height="4" rx="1" fill="#475569" stroke="#1e293b" stroke-width="1.2"/>
+  <line x1="12" y1="48" x2="36" y2="48" stroke="#94a3b8" stroke-width="1"/>
+
+  <!-- Fuste do Pilar (Corpo Cilíndrico de Pedra com Ranhuras) -->
+  <path d="M14 47 L14 18 L24 23 L34 14 L34 47 Z" fill="#64748b" stroke="#1e293b" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Sombra no Lado Direito do Fuste -->
+  <path d="M28 20 L28 47 L34 47 L34 14 Z" fill="#475569"/>
+
+  <!-- Caneluras / Linhas Verticais Clássicas da Coluna -->
+  <line x1="18" y1="47" x2="18" y2="20" stroke="#334155" stroke-width="1.2"/>
+  <line x1="23" y1="47" x2="23" y2="23" stroke="#334155" stroke-width="1.2"/>
+  <line x1="28" y1="47" x2="28" y2="20" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- Destaques de Luz na Pedra -->
+  <line x1="15" y1="45" x2="15" y2="22" stroke="#94a3b8" stroke-width="1"/>
+
+  <!-- Topo Quebrado Irregular (Fratura por Impacto/Terremoto) -->
+  <polygon points="14,18 19,16 22,22 27,17 31,21 34,14 34,19 14,24" fill="#334155"/>
+  <line x1="14" y1="18" x2="24" y2="23" stroke="#cbd5e1" stroke-width="1.2"/>
+  <line x1="24" y1="23" x2="34" y2="14" stroke="#cbd5e1" stroke-width="1.2"/>
+
+  <!-- Racha Profunda no Centro do Pilar -->
+  <path d="M21 28 L23 33 L20 37 L22 42" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Hera / Musgo Rastejante Subindo pela Coluna -->
+  <path d="M12 52 Q15 44 14 38 Q18 36 17 30 Q21 28 19 25" stroke="#2e4720" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- Folhinhas de Musgo e Hera Verde -->
+  <ellipse cx="14" cy="46" rx="2.5" ry="1.5" fill="#4d7836" transform="rotate(-20 14 46)"/>
+  <ellipse cx="16" cy="37" rx="2.2" ry="1.4" fill="#7ca952" transform="rotate(30 16 37)"/>
+  <ellipse cx="15" cy="32" rx="2" ry="1.2" fill="#4d7836" transform="rotate(-15 15 32)"/>
+  <ellipse cx="19" cy="27" rx="2" ry="1.2" fill="#7ca952" transform="rotate(25 19 27)"/>
+</svg>

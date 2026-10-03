@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Borda Externa Estilizada (Estilo Dark Fantasy) -->
+  <rect x="2" y="2" width="60" height="60" rx="10" fill="#141118" stroke="#332a3d" stroke-width="2.5"/>
+  <!-- Chanfro Metálico Interno -->
+  <rect x="5" y="5" width="54" height="54" rx="7" fill="#1e1826" stroke="#f59e0b" stroke-width="1.2" opacity="0.6"/>
+
+  <!-- Brilho de Fundo da Defesa / Aura Protetora -->
+  <circle cx="32" cy="32" r="22" fill="#047857" opacity="0.25"/>
+
+  <!-- Arcos de Ondas de Choque Protetoras -->
+  <path d="M12 18 Q32 8 52 18" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M9 24 Q32 12 55 24" stroke="#6ee7b7" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.3"/>
+
+  <!-- Escudo de Granito Ancestral (Corpo Principal) -->
+  <path d="M17 18 L47 18 L47 34 C47 45, 32 53, 32 53 C32 53, 17 45, 17 34 Z" fill="#475569" stroke="#0f172a" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Lado Esquerdo Iluminado da Pedra -->
+  <path d="M18 19 L32 19 L32 51 C32 51, 18 44, 18 34 Z" fill="#64748b"/>
+  <!-- Borda Biselada do Escudo -->
+  <path d="M20 21 L44 21 L44 33 C44 42, 32 48, 32 48 C32 48, 20 42, 20 33 Z" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+
+  <!-- Runa Mística Celta/Arcana Ciselada na Pedra (Glow Esmeralda) -->
+  <circle cx="32" cy="32" r="6" stroke="#34d399" stroke-width="1.8" fill="none"/>
+  <line x1="32" y1="23" x2="32" y2="41" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="32" x2="40" y2="32" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+  <!-- Ponto de Foco Central da Runa -->
+  <circle cx="32" cy="32" r="2.2" fill="#ecfdf5"/>
+
+  <!-- Rebites de Ferro Forjado nos Cantos do Escudo -->
+  <circle cx="20" cy="21" r="1.5" fill="#f59e0b"/>
+  <circle cx="44" cy="21" r="1.5" fill="#f59e0b"/>
+  <circle cx="32" cy="48" r="1.5" fill="#f59e0b"/>
+</svg>

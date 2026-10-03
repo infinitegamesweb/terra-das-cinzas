@@ -1,0 +1,18 @@
+{
+  "name": "terra-das-cinzas",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build-pages.mjs",
+    "dev": "node tools/build-pages.mjs --watch",
+    "preview": "wrangler pages dev dist --port 4173 --compatibility-date=2026-10-01"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "wrangler": "^3.100.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.0"
+  }
+}

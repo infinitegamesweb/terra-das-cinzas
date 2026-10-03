@@ -1,0 +1,14 @@
+Use case: stylized-concept
+Asset type: production-ready top-down RPG boss sprite sheet
+Primary request: Recreate the exact original magma-and-basalt golem from reference image 0 as one consistent idle animation with exactly 8 sequential frames, arranged in a strict 4-column by 2-row grid filling a 1024x1024 canvas with no gutters, margins, separators, labels, or extra objects. Read frames left-to-right across row 1, then left-to-right across row 2. Every 256x256 cell contains one complete sprite, same scale and silhouette, front/south view, feet resting on the exact same bottom-center pivot. Keep the pose almost still: frame sequence shows a subtle breathing rise and fall, slight molten core pulse, and small changes to the crown flame only. Preserve the original stone silhouette, horned/crowned head, broad shoulders, heavy fists, dark violet-brown basalt, and glowing orange-red cracks. It must remain unmistakably the same creature in all eight cells.
+Input images: Image 0: direct character identity and palette reference, the existing south-facing Colossus of the Red Furnace sprite.
+Scene/backdrop: perfectly flat uniform pure magenta #FF00FF across the entire canvas, with no cast shadow and no ground plane, for automatic transparency removal.
+Subject: one large readable magma stone golem, centered within each frame, full body visible, low top-down JRPG view.
+Style/medium: crisp hand-crafted 16-bit pixel art, hard pixel clusters, restrained 24-color palette, no smoothing, no photographic texture, matching the existing 64x64 reference sprite.
+Composition/framing: square canvas, exact 4x2 grid, each sprite occupies about 65 percent of its cell height, centered horizontally; all eight frames use identical bounds and scale; bottom-center pivot at the same position in each cell.
+Lighting/mood: warm lava glow from the chest and eyes, readable against dark stone.
+Color palette: charcoal basalt, deep violet-brown shadow, ember red, molten orange and pale yellow highlights.
+Materials/textures: blocky cracked volcanic stone with small bright lava seams.
+Text (verbatim): none.
+Constraints: exactly eight frames; strict equal 256x256 cells; stable character identity; no alpha checkerboard; no background props; no text, border, watermark, extra limbs, camera rotation, or pose changes beyond a restrained idle pulse. Keep all character pixels inside each cell with clear spacing from neighboring cells.
+Avoid: blurry pixels, anti-aliasing, gradients, photorealism, smooth 3D rendering, multiple creatures inside one cell, sprite-sheet labels, or grid lines.

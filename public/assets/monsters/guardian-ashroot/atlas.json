@@ -1,0 +1,1589 @@
+{
+  "meta": {
+    "app": "Terra das Cinzas: A Deep RPG",
+    "format": "RGBA8888",
+    "frameSize": {
+      "w": 64,
+      "h": 64
+    },
+    "directions": [
+      "east",
+      "south-east",
+      "south",
+      "south-west",
+      "west",
+      "north-west",
+      "north",
+      "north-east"
+    ],
+    "directionsPerRow": true,
+    "fps": 10.0,
+    "anchor": "bottom-center",
+    "images": {
+      "idle": {
+        "image": "idle-directions.png",
+        "size": {
+          "w": 512,
+          "h": 64
+        }
+      },
+      "running": {
+        "image": "running.png",
+        "size": {
+          "w": 512,
+          "h": 512
+        }
+      }
+    }
+  },
+  "animations": {
+    "idle": {
+      "loop": true,
+      "fps": 1,
+      "directions": {
+        "east": [
+          {
+            "name": "idle_east",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/east.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 2,
+              "w": 35,
+              "h": 60
+            }
+          }
+        ],
+        "south-east": [
+          {
+            "name": "idle_south-east",
+            "frame": {
+              "x": 64,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/south-east.png",
+            "sourceBounds": {
+              "x": 10,
+              "y": 2,
+              "w": 45,
+              "h": 60
+            }
+          }
+        ],
+        "south": [
+          {
+            "name": "idle_south",
+            "frame": {
+              "x": 128,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/south.png",
+            "sourceBounds": {
+              "x": 4,
+              "y": 2,
+              "w": 55,
+              "h": 59
+            }
+          }
+        ],
+        "south-west": [
+          {
+            "name": "idle_south-west",
+            "frame": {
+              "x": 192,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/south-west.png",
+            "sourceBounds": {
+              "x": 8,
+              "y": 2,
+              "w": 46,
+              "h": 60
+            }
+          }
+        ],
+        "west": [
+          {
+            "name": "idle_west",
+            "frame": {
+              "x": 256,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/west.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 2,
+              "w": 34,
+              "h": 60
+            }
+          }
+        ],
+        "north-west": [
+          {
+            "name": "idle_north-west",
+            "frame": {
+              "x": 320,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/north-west.png",
+            "sourceBounds": {
+              "x": 9,
+              "y": 1,
+              "w": 43,
+              "h": 61
+            }
+          }
+        ],
+        "north": [
+          {
+            "name": "idle_north",
+            "frame": {
+              "x": 384,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/north.png",
+            "sourceBounds": {
+              "x": 4,
+              "y": 2,
+              "w": 56,
+              "h": 59
+            }
+          }
+        ],
+        "north-east": [
+          {
+            "name": "idle_north-east",
+            "frame": {
+              "x": 448,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "rotations/north-east.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 1,
+              "w": 43,
+              "h": 59
+            }
+          }
+        ]
+      }
+    },
+    "running": {
+      "loop": true,
+      "fps": 10.0,
+      "directions": {
+        "east": [
+          {
+            "name": "running_east_000",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_000.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 7,
+              "w": 39,
+              "h": 57
+            }
+          },
+          {
+            "name": "running_east_001",
+            "frame": {
+              "x": 64,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_001.png",
+            "sourceBounds": {
+              "x": 9,
+              "y": 7,
+              "w": 40,
+              "h": 55
+            }
+          },
+          {
+            "name": "running_east_002",
+            "frame": {
+              "x": 128,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_002.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 7,
+              "w": 38,
+              "h": 50
+            }
+          },
+          {
+            "name": "running_east_003",
+            "frame": {
+              "x": 192,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_003.png",
+            "sourceBounds": {
+              "x": 19,
+              "y": 7,
+              "w": 30,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_east_004",
+            "frame": {
+              "x": 256,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_004.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 8,
+              "w": 40,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_east_005",
+            "frame": {
+              "x": 320,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_005.png",
+            "sourceBounds": {
+              "x": 9,
+              "y": 6,
+              "w": 41,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_east_006",
+            "frame": {
+              "x": 384,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_006.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 7,
+              "w": 37,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_east_007",
+            "frame": {
+              "x": 448,
+              "y": 0,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/east/frame_007.png",
+            "sourceBounds": {
+              "x": 18,
+              "y": 7,
+              "w": 31,
+              "h": 54
+            }
+          }
+        ],
+        "south-east": [
+          {
+            "name": "running_south-east_000",
+            "frame": {
+              "x": 0,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_000.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 7,
+              "w": 29,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south-east_001",
+            "frame": {
+              "x": 64,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_001.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 6,
+              "w": 33,
+              "h": 50
+            }
+          },
+          {
+            "name": "running_south-east_002",
+            "frame": {
+              "x": 128,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_002.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 6,
+              "w": 32,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south-east_003",
+            "frame": {
+              "x": 192,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_003.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 9,
+              "w": 32,
+              "h": 49
+            }
+          },
+          {
+            "name": "running_south-east_004",
+            "frame": {
+              "x": 256,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_004.png",
+            "sourceBounds": {
+              "x": 12,
+              "y": 8,
+              "w": 42,
+              "h": 48
+            }
+          },
+          {
+            "name": "running_south-east_005",
+            "frame": {
+              "x": 320,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_005.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 6,
+              "w": 43,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_south-east_006",
+            "frame": {
+              "x": 384,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_006.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 7,
+              "w": 37,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_south-east_007",
+            "frame": {
+              "x": 448,
+              "y": 64,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-east/frame_007.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 8,
+              "w": 31,
+              "h": 52
+            }
+          }
+        ],
+        "south": [
+          {
+            "name": "running_south_000",
+            "frame": {
+              "x": 0,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_000.png",
+            "sourceBounds": {
+              "x": 24,
+              "y": 16,
+              "w": 34,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south_001",
+            "frame": {
+              "x": 64,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_001.png",
+            "sourceBounds": {
+              "x": 21,
+              "y": 14,
+              "w": 33,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_south_002",
+            "frame": {
+              "x": 128,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_002.png",
+            "sourceBounds": {
+              "x": 22,
+              "y": 15,
+              "w": 32,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_south_003",
+            "frame": {
+              "x": 192,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_003.png",
+            "sourceBounds": {
+              "x": 26,
+              "y": 17,
+              "w": 30,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south_004",
+            "frame": {
+              "x": 256,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_004.png",
+            "sourceBounds": {
+              "x": 28,
+              "y": 16,
+              "w": 34,
+              "h": 50
+            }
+          },
+          {
+            "name": "running_south_005",
+            "frame": {
+              "x": 320,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_005.png",
+            "sourceBounds": {
+              "x": 31,
+              "y": 15,
+              "w": 32,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south_006",
+            "frame": {
+              "x": 384,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_006.png",
+            "sourceBounds": {
+              "x": 30,
+              "y": 16,
+              "w": 33,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_south_007",
+            "frame": {
+              "x": 448,
+              "y": 128,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south/frame_007.png",
+            "sourceBounds": {
+              "x": 26,
+              "y": 18,
+              "w": 34,
+              "h": 49
+            }
+          }
+        ],
+        "south-west": [
+          {
+            "name": "running_south-west_000",
+            "frame": {
+              "x": 0,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_000.png",
+            "sourceBounds": {
+              "x": 20,
+              "y": 7,
+              "w": 29,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south-west_001",
+            "frame": {
+              "x": 64,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_001.png",
+            "sourceBounds": {
+              "x": 20,
+              "y": 6,
+              "w": 33,
+              "h": 50
+            }
+          },
+          {
+            "name": "running_south-west_002",
+            "frame": {
+              "x": 128,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_002.png",
+            "sourceBounds": {
+              "x": 19,
+              "y": 6,
+              "w": 32,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_south-west_003",
+            "frame": {
+              "x": 192,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_003.png",
+            "sourceBounds": {
+              "x": 19,
+              "y": 9,
+              "w": 32,
+              "h": 49
+            }
+          },
+          {
+            "name": "running_south-west_004",
+            "frame": {
+              "x": 256,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_004.png",
+            "sourceBounds": {
+              "x": 10,
+              "y": 8,
+              "w": 42,
+              "h": 48
+            }
+          },
+          {
+            "name": "running_south-west_005",
+            "frame": {
+              "x": 320,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_005.png",
+            "sourceBounds": {
+              "x": 10,
+              "y": 6,
+              "w": 43,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_south-west_006",
+            "frame": {
+              "x": 384,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_006.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 7,
+              "w": 37,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_south-west_007",
+            "frame": {
+              "x": 448,
+              "y": 192,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/south-west/frame_007.png",
+            "sourceBounds": {
+              "x": 19,
+              "y": 8,
+              "w": 31,
+              "h": 52
+            }
+          }
+        ],
+        "west": [
+          {
+            "name": "running_west_000",
+            "frame": {
+              "x": 0,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_000.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 7,
+              "w": 39,
+              "h": 57
+            }
+          },
+          {
+            "name": "running_west_001",
+            "frame": {
+              "x": 64,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_001.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 7,
+              "w": 40,
+              "h": 55
+            }
+          },
+          {
+            "name": "running_west_002",
+            "frame": {
+              "x": 128,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_002.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 7,
+              "w": 38,
+              "h": 50
+            }
+          },
+          {
+            "name": "running_west_003",
+            "frame": {
+              "x": 192,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_003.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 7,
+              "w": 30,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_west_004",
+            "frame": {
+              "x": 256,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_004.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 8,
+              "w": 40,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_west_005",
+            "frame": {
+              "x": 320,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_005.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 6,
+              "w": 41,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_west_006",
+            "frame": {
+              "x": 384,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_006.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 7,
+              "w": 37,
+              "h": 53
+            }
+          },
+          {
+            "name": "running_west_007",
+            "frame": {
+              "x": 448,
+              "y": 256,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/west/frame_007.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 7,
+              "w": 31,
+              "h": 54
+            }
+          }
+        ],
+        "north-west": [
+          {
+            "name": "running_north-west_000",
+            "frame": {
+              "x": 0,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_000.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 6,
+              "w": 32,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_north-west_001",
+            "frame": {
+              "x": 64,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_001.png",
+            "sourceBounds": {
+              "x": 17,
+              "y": 6,
+              "w": 35,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_north-west_002",
+            "frame": {
+              "x": 128,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_002.png",
+            "sourceBounds": {
+              "x": 17,
+              "y": 7,
+              "w": 34,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_north-west_003",
+            "frame": {
+              "x": 192,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_003.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 8,
+              "w": 35,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_north-west_004",
+            "frame": {
+              "x": 256,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_004.png",
+            "sourceBounds": {
+              "x": 12,
+              "y": 8,
+              "w": 40,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_north-west_005",
+            "frame": {
+              "x": 320,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_005.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 6,
+              "w": 42,
+              "h": 56
+            }
+          },
+          {
+            "name": "running_north-west_006",
+            "frame": {
+              "x": 384,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_006.png",
+            "sourceBounds": {
+              "x": 14,
+              "y": 6,
+              "w": 37,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_north-west_007",
+            "frame": {
+              "x": 448,
+              "y": 320,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-west/frame_007.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 7,
+              "w": 34,
+              "h": 51
+            }
+          }
+        ],
+        "north": [
+          {
+            "name": "running_north_000",
+            "frame": {
+              "x": 0,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_000.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 10,
+              "w": 33,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_north_001",
+            "frame": {
+              "x": 64,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_001.png",
+            "sourceBounds": {
+              "x": 19,
+              "y": 10,
+              "w": 34,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_north_002",
+            "frame": {
+              "x": 128,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_002.png",
+            "sourceBounds": {
+              "x": 20,
+              "y": 10,
+              "w": 32,
+              "h": 47
+            }
+          },
+          {
+            "name": "running_north_003",
+            "frame": {
+              "x": 192,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_003.png",
+            "sourceBounds": {
+              "x": 17,
+              "y": 11,
+              "w": 30,
+              "h": 49
+            }
+          },
+          {
+            "name": "running_north_004",
+            "frame": {
+              "x": 256,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_004.png",
+            "sourceBounds": {
+              "x": 12,
+              "y": 11,
+              "w": 33,
+              "h": 51
+            }
+          },
+          {
+            "name": "running_north_005",
+            "frame": {
+              "x": 320,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_005.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 10,
+              "w": 33,
+              "h": 52
+            }
+          },
+          {
+            "name": "running_north_006",
+            "frame": {
+              "x": 384,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_006.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 10,
+              "w": 34,
+              "h": 47
+            }
+          },
+          {
+            "name": "running_north_007",
+            "frame": {
+              "x": 448,
+              "y": 384,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north/frame_007.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 11,
+              "w": 32,
+              "h": 49
+            }
+          }
+        ],
+        "north-east": [
+          {
+            "name": "running_north-east_000",
+            "frame": {
+              "x": 0,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_000.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 4,
+              "w": 40,
+              "h": 59
+            }
+          },
+          {
+            "name": "running_north-east_001",
+            "frame": {
+              "x": 64,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_001.png",
+            "sourceBounds": {
+              "x": 11,
+              "y": 4,
+              "w": 41,
+              "h": 60
+            }
+          },
+          {
+            "name": "running_north-east_002",
+            "frame": {
+              "x": 128,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_002.png",
+            "sourceBounds": {
+              "x": 12,
+              "y": 3,
+              "w": 36,
+              "h": 54
+            }
+          },
+          {
+            "name": "running_north-east_003",
+            "frame": {
+              "x": 192,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_003.png",
+            "sourceBounds": {
+              "x": 15,
+              "y": 6,
+              "w": 30,
+              "h": 55
+            }
+          },
+          {
+            "name": "running_north-east_004",
+            "frame": {
+              "x": 256,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_004.png",
+            "sourceBounds": {
+              "x": 16,
+              "y": 3,
+              "w": 28,
+              "h": 58
+            }
+          },
+          {
+            "name": "running_north-east_005",
+            "frame": {
+              "x": 320,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_005.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 3,
+              "w": 32,
+              "h": 58
+            }
+          },
+          {
+            "name": "running_north-east_006",
+            "frame": {
+              "x": 384,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_006.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 5,
+              "w": 32,
+              "h": 55
+            }
+          },
+          {
+            "name": "running_north-east_007",
+            "frame": {
+              "x": 448,
+              "y": 448,
+              "w": 64,
+              "h": 64
+            },
+            "duration": 100,
+            "pivot": {
+              "x": 32,
+              "y": 62
+            },
+            "source": "boss-fase-1/Idle/animations/Running/north-east/frame_007.png",
+            "sourceBounds": {
+              "x": 13,
+              "y": 5,
+              "w": 31,
+              "h": 56
+            }
+          }
+        ]
+      }
+    }
+  }
+}

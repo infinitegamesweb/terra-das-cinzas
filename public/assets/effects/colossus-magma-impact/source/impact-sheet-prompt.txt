@@ -1,0 +1,13 @@
+Use case: stylized-concept
+Asset type: transparent 2D pixel-art combat VFX sprite sheet for an RPG boss attack
+Primary request: Create one coherent 9-frame animation of a magical volcanic ground impact caused by the creature in reference image 0. Strict 3-column by 3-row grid on a 1024x1024 canvas, one centered effect per equal cell, read left-to-right then top-to-bottom. Sequence: tiny ember appears; ember brightens; glowing cracks spread outward; magma ring erupts; short orange flame spikes rise; molten fragments arc outward; flame collapses; scattered red embers fade; final nearly empty fading sparks. Keep each effect's center anchor at exactly the center of its cell and keep frame silhouettes inside the cell.
+Input images: Image 0: visual style, dark volcanic palette, and lava colors reference from the existing Colossus of the Red Furnace boss sprite.
+Scene/backdrop: uniform pure magenta #FF00FF, no terrain, no background, no cast shadow, intended for chroma transparency removal.
+Subject: a radial low-top-down fiery slam impact made of molten-orange cracks, ember fragments, and brief jagged flame tongues.
+Style/medium: crisp 16-bit pixel art, hard-edged pixel clusters, sharp nearest-neighbor look, dark fantasy RPG VFX matching the existing boss art.
+Composition/framing: square 1024x1024 canvas; exact regular 3x3 cells; each effect occupies at most 70 percent of a 256x256 cell; center pivot fixed at cell center; generous spacing between cells.
+Lighting/mood: high contrast bright molten orange and amber against deep red embers; compact readable silhouette at small game scale.
+Color palette: dark charcoal, deep red, ember red, hot orange, small yellow highlights.
+Materials/textures: cracked basalt fragments, glowing magma seams, sparks.
+Text (verbatim): none.
+Constraints: exactly one distinct sequential VFX frame per cell; no character, no weapon, no UI, no labels, no grid lines, no border, no watermark; flat magenta background; no photorealism, no blur, no anti-aliased gradients.

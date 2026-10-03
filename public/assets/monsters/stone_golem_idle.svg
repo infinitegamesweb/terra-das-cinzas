@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Sombra no Chão (Perspectiva 2.5D Top-Down) -->
+  <ellipse cx="32" cy="56" rx="20" ry="6" fill="#000000" opacity="0.35"/>
+
+  <!-- Pés e Pernas de Rocha -->
+  <path d="M20 48 L25 48 L26 55 L19 55 Z" fill="#334155" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M39 48 L44 48 L45 55 L38 55 Z" fill="#334155" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Punhos Pesados de Pedra (Repouso) -->
+  <rect x="11" y="34" width="10" height="15" rx="3" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="43" y="34" width="10" height="15" rx="3" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+  <!-- Destaque de volume nos punhos -->
+  <path d="M12 36 L19 36" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M44 36 L51 36" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Tronco de Rocha Granítica -->
+  <path d="M22 25 L42 25 L45 47 L19 47 Z" fill="#475569" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Camada de Sombra Interior do Tronco -->
+  <path d="M20 42 L44 42 L43 47 L21 47 Z" fill="#334155"/>
+
+  <!-- Núcleo de Cristal Corrompido no Peito (Glow Roxo) -->
+  <polygon points="32,30 37,36 32,42 27,36" fill="#a855f7" stroke="#c084fc" stroke-width="1.2"/>
+  <polygon points="32,32 35,36 32,40 29,36" fill="#f3e8ff"/>
+  <!-- Fissuras de Energia Corrompida -->
+  <path d="M28 34 L23 33 M36 34 L41 33 M32 42 L32 46" stroke="#c084fc" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Ombros Largos com Musgo do Bosque -->
+  <circle cx="17" cy="24" r="8" fill="#64748b" stroke="#1e293b" stroke-width="1.8"/>
+  <circle cx="47" cy="24" r="8" fill="#64748b" stroke="#1e293b" stroke-width="1.8"/>
+  <!-- Manchas de Musgo Verde nos Ombros -->
+  <path d="M11 22 Q16 18 21 21 Q19 25 13 25 Z" fill="#4d7836" stroke="#2e4720" stroke-width="1"/>
+  <path d="M43 21 Q48 18 53 22 Q51 25 45 25 Z" fill="#4d7836" stroke="#2e4720" stroke-width="1"/>
+  <circle cx="15" cy="20" r="1.5" fill="#7ca952"/>
+  <circle cx="49" cy="20" r="1.5" fill="#7ca952"/>
+
+  <!-- Cabeça de Pedra / Máscara Ancestral -->
+  <polygon points="26,11 38,11 41,23 23,23" fill="#64748b" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Detalhe superior da testa -->
+  <polygon points="28,8 36,8 38,11 26,11" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Olhos com Brilho Místico Corrompido -->
+  <rect x="27" y="15" width="3" height="2.5" rx="1" fill="#f43f5e"/>
+  <rect x="34" y="15" width="3" height="2.5" rx="1" fill="#f43f5e"/>
+  <circle cx="28.5" cy="16.2" r="0.8" fill="#ffffff"/>
+  <circle cx="35.5" cy="16.2" r="0.8" fill="#ffffff"/>
+</svg>

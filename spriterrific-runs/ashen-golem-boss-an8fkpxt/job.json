@@ -1,0 +1,48 @@
+{
+  "id": null,
+  "status": "completed",
+  "characterName": "ashen-golem-boss",
+  "referenceJobId": null,
+  "type": "action",
+  "actions": [
+    "death"
+  ],
+  "createdAt": 1791067638070.3228,
+  "artifacts": [
+    {
+      "name": "death/spritesheet",
+      "contentType": "image/png",
+      "sizeBytes": null
+    },
+    {
+      "name": "death/preview",
+      "contentType": "image/gif",
+      "sizeBytes": null
+    },
+    {
+      "name": "death/manifest",
+      "contentType": "application/json",
+      "sizeBytes": null
+    },
+    {
+      "name": "death/frames-index",
+      "contentType": "application/json",
+      "sizeBytes": null
+    },
+    {
+      "name": "run-index",
+      "contentType": "application/json",
+      "sizeBytes": null
+    },
+    {
+      "name": "death/contact",
+      "contentType": null,
+      "sizeBytes": null
+    },
+    {
+      "name": "death/raw-video",
+      "contentType": null,
+      "sizeBytes": null
+    }
+  ]
+}

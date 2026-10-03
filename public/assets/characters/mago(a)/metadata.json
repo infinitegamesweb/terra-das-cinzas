@@ -1,0 +1,36 @@
+{
+  "group_id": "ec19bbe7-6e05-4193-a754-c0ab95e2acb5",
+  "states": [
+    {
+      "character": {
+        "id": "f0ea0a84-7cb0-4a03-9b3a-07a5ed6356c2",
+        "name": "Idle",
+        "prompt": "A highly detailed, full-body pixel art character sprite of the 'Mago' class, inspired by the top-left figure in image_23.png. The character is a traditional fantasy wizard, standing in a composed, three-quarter view, centered against a solid, neutral grey background. The sprite maintains the classic 16-bit to 32-bit retro JRPG aesthetic and detailed pixel shading established in image_23.png. The mage is dressed in an ornate, dark indigo blue robe with heavy, burnished gold trim and filigree, and intricate, geometric golden patterns covering the chest and sleeves. A dark brown leather cowl/hood is drawn up, framing a focused, slightly rugged face with dark hair and a serious expression. A heavy brown leather satchel with a buckle and small pouches is strapped across his waist. In his right hand, he holds the prominent wooden staff, carved with gnarled, dark wood patterns and topped with a large, faceted, glowing sapphire crystal, exactly like in image_23.png. In his left hand, he holds a small, closed, leather-bound book with a golden emblem. The lighting is dominated by the glowing staff crystal and soft, directional light. The character sprite is proportional to the characters in image_23.png. Anti-aliasing and precise dithering create depth in the textures.",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-10-01T23:51:37.093754+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-02T00:07:30.722779"
+}
