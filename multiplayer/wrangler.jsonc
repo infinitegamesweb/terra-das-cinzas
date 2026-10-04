@@ -1,0 +1,21 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "terra-das-cinzas-multiplayer",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-03",
+  "observability": {
+    "enabled": true
+  },
+  "durable_objects": {
+    "bindings": [
+      { "name": "GAME_CHANNEL", "class_name": "GameChannel" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["GameChannel"] }
+  ],
+  "vars": {
+    "SUPABASE_URL": "https://ajaxhsitwkcsoibjvxnr.supabase.co",
+    "ALLOWED_ORIGINS": "https://aetheria-bxi.pages.dev,http://localhost:4173,http://127.0.0.1:4173"
+  }
+}

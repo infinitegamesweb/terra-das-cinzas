@@ -1228,11 +1228,8 @@
   }
 
   function blockedAt(x, y, radius, trees, decor) {
-    for (const tree of trees) {
-      const isMangrove = tree.kind?.startsWith('mangrove_tree_') || tree.kind?.startsWith('swamp_dead_tree_');
-      const obstacleRadius = (tree.kind === 'pine' ? 13 : tree.kind === 'mana_seed_oak_tree' ? 24 : isMangrove ? 26 : 18) * (tree.s || 1);
-      if (Math.hypot(x - tree.x, y - (tree.y - 7)) < radius + obstacleRadius) return true;
-    }
+    // Tree canopies are visual scenery. Keep their trunks permeable so they
+    // cannot trap manual movement or the auto-pilot; solid props still block.
     for (const item of decor) {
       const key = item.kind || '';
       if (key.startsWith('medieval_') || item.isBuilding) {

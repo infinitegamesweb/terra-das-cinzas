@@ -16,6 +16,7 @@ import { tutorialManager } from './systems/ui/TutorialManager.js';
 import { menuManager } from './systems/ui/MenuManager.js';
 import { uiManager, renderUI } from './systems/ui/UIManager.js';
 import { inventoryUI } from './systems/ui/InventoryUI.js';
+import { channelManager } from './systems/multiplayer/ChannelManager.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -129,7 +130,7 @@ const c = document.querySelector('#game');
 
   const REGIONS = [
     CASTLE_HUB,
-    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 20, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#b9ae85', enemy: 'shade', hp: 58, sp: 74, ambientColor: '#95e86e', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] },
+    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 20, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#b9ae85', enemy: 'shade', hp: 78, sp: 74, ambientColor: '#95e86e', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] },
     { id: 2, name: 'Pântano Espectral', subtitle: 'Águas que sussurram', col: 1, row: 0, min: 21, max: 40, unlocks: 21, bg: '#183638', path: '#718681', tree: '#28534a', accent: '#79d3bd', enemy: 'wolf', hp: 95, sp: 82, ambientColor: '#6ee5e8', bossName: 'Serpente das Águas Mortas', bossSprite: 'monster_void_serpent', dungeonName: 'Cripta Submersa', dungeonBossFive: 'Velyss, a Náufraga-Mor', dungeonBossTen: 'O Rei sob as Águas', npcName: 'Barqueira Ysold', points: [['Margem Afogada', 340, 350], ['Juncal Nebuloso', 1510, 350], ['Vila Submersa', 340, 1080], ['Altar das Vozes', 1510, 1080], ['Olho do Pântano', 960, 1260]] },
     { id: 3, name: 'Montanhas Rubras', subtitle: 'Cinzas sob a neve', col: 1, row: 1, min: 41, max: 60, unlocks: 41, bg: '#3a2925', path: '#a18b79', tree: '#704333', accent: '#ef9864', enemy: 'golem', hp: 145, sp: 92, ambientColor: '#e87e51', bossName: 'Colosso da Fornalha Rubra', bossSprite: 'boss_ashen_golem', dungeonName: 'Veias da Fornalha', dungeonBossFive: 'Lorde de Magma Ignis', dungeonBossTen: 'Viúva do Magma Antigo', npcName: 'Mineradora Brann', points: [['Trilha do Degelo', 340, 350], ['Pedreira Rubra', 1510, 350], ['Fendas de Brasa', 340, 1080], ['Ponte Partida', 1510, 1080], ['Cratera do Colosso', 960, 1260]] },
     { id: 4, name: 'Cidadela das Cinzas', subtitle: 'O último reino', col: 0, row: 1, min: 61, max: 80, unlocks: 61, bg: '#30253b', path: '#8d819a', tree: '#503a61', accent: '#cd91df', enemy: 'golem', hp: 205, sp: 100, ambientColor: '#c577e8', bossName: 'Arquivista das Cinzas', bossSprite: 'monster_haunted_grimoire', dungeonName: 'Arquivo Sepultado', dungeonBossFive: 'Nhal, o Bibliophage', dungeonBossTen: 'A Palavra que Devora', npcName: 'Escriba Odran', points: [['Portão Partido', 340, 350], ['Pátio dos Exilados', 1510, 350], ['Galeria Silenciosa', 340, 1080], ['Torre das Brasas', 1510, 1080], ['Arquivo sem Nome', 960, 1260]] },
@@ -228,6 +229,12 @@ const c = document.querySelector('#game');
     targetDrop: null
   };
 
+  function syncPetToPlayer() {
+    pet.x = p.x - 30;
+    pet.y = p.y - 35;
+    pet.targetDrop = null;
+  }
+
   const mobs = [];
   const nodes = [];
   const drops = [];
@@ -291,6 +298,7 @@ const c = document.querySelector('#game');
     p.x = region.col * ZONE_W + ZONE_W / 2;
     p.y = region.row * ZONE_H + ZONE_H / 2;
   }
+  syncPetToPlayer();
   window._tdcPlayer = p;
   window._tdcRegions = REGIONS;
   p.potions = Number.isFinite(p.potions) ? C(Math.floor(p.potions), 0, MAX_POTIONS) : 3;
@@ -462,7 +470,7 @@ const c = document.querySelector('#game');
     'cave_hole_1', 'cave_hole_2', 'cave_hole_3',
     'training_dummy', 'ruined_statue', 'arcane_brazier',
     'library_bookshelf', 'stone_gargoyle', 'stone_dragon_statue',
-    'cave_dungeon_entrance', 'mana_seed_oak_tree', 'stone_stairs',
+    'cave_dungeon_entrance', 'stone_stairs',
     'ruin_chest', 'ruin_pillar', 'ruin_campfire_cold'
   ];
   propList.forEach((n) => {
@@ -572,10 +580,12 @@ const c = document.querySelector('#game');
   });
 
   const worldSprites = {};
-  ['tree', 'pine', 'bush', 'flowers', 'rocks', 'ruin'].forEach((n) => {
+  ['pine', 'bush', 'flowers', 'rocks', 'ruin'].forEach((n) => {
     worldSprites[n] = new Image();
     worldSprites[n].src = 'assets/world/' + n + '.svg';
   });
+  worldSprites.tree = new Image();
+  worldSprites.tree.src = 'assets/props/nature/tree_elm_medium.png';
 
   // Floating text / combat numbers
   function addFloatingText(x, y, text, color = '#ffd464', size = 13) {
@@ -790,6 +800,7 @@ const c = document.querySelector('#game');
     dungeonSession = { regionId: region.id, floor: nextFloor, cleared: false };
     p.x = region.col * ZONE_W + 960;
     p.y = region.row * ZONE_H + 230;
+    syncPetToPlayer();
     goal = null;
     route = [];
     enemy = object = null;
@@ -805,6 +816,7 @@ const c = document.querySelector('#game');
     dungeonSession = null;
     p.x = dungeonReturn.x;
     p.y = dungeonReturn.y;
+    syncPetToPlayer();
     dungeonReturn = null;
     goal = null;
     route = [];
@@ -844,6 +856,7 @@ const c = document.querySelector('#game');
     dungeonProgress[region.id] = nextFloor;
     p.x = region.col * ZONE_W + 960;
     p.y = region.row * ZONE_H + 230;
+    syncPetToPlayer();
     populateDungeonFloor(nextFloor);
     showTab(4);
     msg('Masmorra · Andar ' + nextFloor + ' de ' + DUNGEON_FLOORS + ' · Nv. recomendado ' + dungeonFloorLevel(nextFloor));
@@ -940,17 +953,20 @@ const c = document.querySelector('#game');
     const now = performance.now();
     const offline = Math.max(0, Date.now() - (Number(saved.savedAt) || Date.now()));
     (saved.mobs || []).filter((m) => !m.isMinion).forEach((m, index) => {
-      const maxHp = Math.max(1, Number(m.max) || 100);
+      const savedMaxHp = Math.max(1, Number(m.max) || 100);
+      const level = C(Number(m.level) || region.min + (index % 20), region.min, region.max);
+      const tunedMaxHp = Math.round(region.hp * Math.pow(1.035, Math.max(0, level - region.min)) * (m.boss ? 8 : m.t === 'golem' ? 1.15 : 1));
+      const maxHp = region.id === 1 ? Math.max(savedMaxHp, tunedMaxHp) : savedMaxHp;
       const rawHp = Number(m.hp);
       const isAlive = Boolean(m.alive) && !isNaN(rawHp) && rawHp > 0;
       mobs.push({
-        level: m.level || region.min + (index % 20),
         boss: !!m.boss,
         bossName: m.bossName || '',
         windup: false,
         attackCount: 0,
         ...m,
-        hp: isAlive ? Math.min(maxHp, rawHp) : 0,
+        level,
+        hp: isAlive ? Math.min(maxHp, Math.round(maxHp * rawHp / savedMaxHp)) : 0,
         max: maxHp,
         alive: isAlive,
         t: region.id === 1 && m.boss && m.t === 'monster_mushroom_fiend' ? region.bossSprite : m.t,
@@ -992,7 +1008,7 @@ const c = document.querySelector('#game');
       const ly = y - oy;
       if (onTrail(lx, ly, 86) || isRegionLandmarkKeepout(lx, ly)) continue;
       const kind = region.id === 1
-        ? (i % 3 === 0 ? 'pine' : (i % 2 === 0 ? 'mana_seed_oak_tree' : 'tree'))
+        ? (i % 3 === 0 ? 'pine' : 'tree')
         : region.id === 2
           ? (i % 5 === 0 ? 'mangrove_tree_broad' : (i % 4 === 0 ? 'swamp_dead_tree_1' : (i % 3 === 0 ? 'swamp_dead_tree_2' : (i % 2 === 0 ? 'mangrove_tree_tall' : 'mangrove_tree_dense'))))
           : 'pine';
@@ -1260,7 +1276,7 @@ const c = document.querySelector('#game');
       route = [];
       return;
     }
-    const previous = REGIONS[next.id - 2];
+    const previous = REGIONS.find((candidate) => candidate.id === next.id - 1);
     if (p.lvl < next.unlocks || (previous && !bossDefeats[previous.id])) {
       p.x = C(p.x, region.col * ZONE_W + 30, (region.col + 1) * ZONE_W - 30);
       p.y = C(p.y, region.row * ZONE_H + 30, (region.row + 1) * ZONE_H - 30);
@@ -2458,6 +2474,7 @@ const c = document.querySelector('#game');
     region = target;
     p.x = target.col * ZONE_W + ZONE_W / 2;
     p.y = target.row * ZONE_H + ZONE_H / 2;
+    syncPetToPlayer();
     goal = null;
     route = [];
     populateRegion();
@@ -2607,6 +2624,7 @@ const c = document.querySelector('#game');
     const idx = drops.indexOf(d);
     if (idx === -1) return;
     drops.splice(idx, 1);
+    if (pet.targetDrop === d) pet.targetDrop = null;
     audio.playLoot();
 
     if (d.kind === 'crystal') {
@@ -3130,7 +3148,7 @@ const c = document.querySelector('#game');
           }
         } else if (now - m.atk > 1150) {
           m.atk = now;
-          let incoming = Math.max(5, Math.round(5 + m.level * 0.11));
+          let incoming = Math.max(10, Math.round(10 + m.level * 0.32));
           if (m.t === 'golem') incoming = Math.round(incoming * 1.45);
           if (p.shield) incoming = 2;
           if (!p.shield) incoming = Math.max(1, incoming - (p.shieldEquipped ? 4 : 0) - window.GameClasses.get(p.classId).armor - (p.talents.includes('iron') ? 2 : 0));
@@ -3540,6 +3558,7 @@ const c = document.querySelector('#game');
       p.respawnGraceUntil = now + 2200;
       p.x = region.col * ZONE_W + ZONE_W / 2;
       p.y = region.row * ZONE_H + ZONE_H / 2;
+      syncPetToPlayer();
       goal = null;
       route = [];
       enemy = object = null;
@@ -3559,6 +3578,7 @@ const c = document.querySelector('#game');
     p.respawnGraceUntil = now + 2200;
     p.x = region.col * ZONE_W + ZONE_W / 2;
     p.y = region.row * ZONE_H + ZONE_H / 2;
+    syncPetToPlayer();
     goal = null;
     route = [];
     enemy = null;
@@ -3592,12 +3612,17 @@ const c = document.querySelector('#game');
     const { x, y, s, kind = 'tree' } = t;
     const isOak = kind === 'mana_seed_oak_tree';
     const isMangrove = kind.startsWith('mangrove_tree_') || kind.startsWith('swamp_dead_tree_');
-    const im = isOak ? propSprites.mana_seed_oak_tree : (isMangrove ? propSprites[kind] : (worldSprites[kind] || worldSprites.tree));
-    groundShadow(x, y - 2, (kind === 'pine' ? 21 : isOak ? 32 : isMangrove ? 38 : 28) * (s || 1), 8 * (s || 1), 0.32);
+    const im = isOak ? propSprites.tree_oak_giant : (isMangrove ? propSprites[kind] : (worldSprites[kind] || worldSprites.tree));
+    const scale = s || 1;
+    const w = (kind === 'pine' ? 74 : isOak ? 104 : isMangrove ? 116 : kind === 'tree' ? 79 : 70) * scale;
+    const h = (kind === 'pine' ? 110 : isOak ? 124 : isMangrove ? 212 : kind === 'tree' ? 120 : 62) * scale;
+    groundShadow(x, y - 2, (kind === 'pine' ? 21 : isOak ? 32 : isMangrove ? 38 : 28) * scale, 8 * scale, 0.32);
     if (im?.complete && im.naturalWidth) {
-      const w = (kind === 'pine' ? 74 : isOak ? 104 : isMangrove ? 116 : kind === 'tree' ? 92 : 70) * s;
-      const h = (kind === 'pine' ? 110 : isOak ? 124 : isMangrove ? 212 : kind === 'tree' ? 106 : 62) * s;
+      const overlapsHero = Math.abs(p.x - x) < w * 0.38 + 12 && p.y < y + 12 && p.y > y - h * 0.72;
+      g.save();
+      if (overlapsHero) g.globalAlpha *= 0.38;
       g.drawImage(im, x - w / 2, y - h + 14, w, h);
+      g.restore();
     }
   }
 
@@ -4465,9 +4490,9 @@ const c = document.querySelector('#game');
     let targetY = p.y - 36;
 
     // Check for nearby uncollected drops within 300px
-    let foundDrop = null;
+    let foundDrop = drops.includes(pet.targetDrop) ? pet.targetDrop : null;
     let minDist = 300;
-    for (let i = 0; i < drops.length; i++) {
+    for (let i = 0; i < drops.length && !foundDrop; i++) {
       const d = drops[i];
       if (d.collected) continue;
       const dist = Math.hypot(d.x - p.x, d.y - p.y);
@@ -4476,6 +4501,7 @@ const c = document.querySelector('#game');
         foundDrop = d;
       }
     }
+    pet.targetDrop = foundDrop;
 
     if (foundDrop) {
       targetX = foundDrop.x;
@@ -5014,6 +5040,8 @@ const c = document.querySelector('#game');
       location.reload();
     }
   });
+
+  channelManager.init();
 
   if (autoStart) {
     const root = document.querySelector('#mainMenu');

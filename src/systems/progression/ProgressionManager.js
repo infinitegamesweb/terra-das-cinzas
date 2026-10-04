@@ -23,11 +23,16 @@ export function enemyXp(monsterLevel, playerLevel, rarity) {
     rarity = isBoss ? 'boss' : 'comum';
     playerLevel = 1;
   }
-  const base = baseMonsterXp(monsterLevel);
+  // High-level mobs should remain dangerous, not become an early-game XP skip.
+  const effectiveMonsterLevel = Math.min(
+    Math.max(1, monsterLevel),
+    Math.max(1, playerLevel || 1) + 1
+  );
+  const base = baseMonsterXp(effectiveMonsterLevel);
   const mult = RARITY_MULT[rarity] != null ? RARITY_MULT[rarity] : 1.0;
   const raw  = Math.floor(base * mult);
 
-  const diff = (playerLevel || 1) - Math.max(1, monsterLevel);
+  const diff = (playerLevel || 1) - effectiveMonsterLevel;
   if (diff >= 10) return 0;
   if (diff >= 6) {
     const penalty = (diff - 5) * 0.20;

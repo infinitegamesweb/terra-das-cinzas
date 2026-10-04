@@ -410,6 +410,12 @@ if (typeof window !== 'undefined') {
     bootstrap: (k) => authManager.bootstrap(k),
     queueSave: (p) => authManager.queueSave(p),
     flushSave: () => authManager.flushSave(),
+    getAccessToken: async () => {
+      if (!authManager.supabase) return null;
+      const { data, error } = await authManager.supabase.auth.getSession();
+      if (error) return null;
+      return data.session?.access_token || null;
+    },
     open: () => authManager.open()
   };
 }

@@ -40,6 +40,7 @@ const localEnv = loadEnv();
 
 // Credenciais públicas padrão do Supabase para o front-end (apenas chave anon pública)
 const SUPABASE_URL = process.env.SUPABASE_URL || localEnv.SUPABASE_URL || 'https://ajaxhsitwkcsoibjvxnr.supabase.co';
+const GAME_MULTIPLAYER_URL = process.env.GAME_MULTIPLAYER_URL || localEnv.GAME_MULTIPLAYER_URL || '';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || localEnv.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYXhoc2l0d2tjc29pYmp2eG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MDMzNjMsImV4cCI6MjEwNjQ3OTM2M30.iNoLmFRycMhceTwIUQB09lRg7tOCOKnqbK4joQnxZGI';
 
 function syncPublicToDist() {
@@ -65,7 +66,8 @@ const buildOptions = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
     'process.env.SUPABASE_URL': JSON.stringify(SUPABASE_URL),
-    'process.env.SUPABASE_ANON_KEY': JSON.stringify(SUPABASE_ANON_KEY)
+    'process.env.SUPABASE_ANON_KEY': JSON.stringify(SUPABASE_ANON_KEY),
+    'process.env.GAME_MULTIPLAYER_URL': JSON.stringify(GAME_MULTIPLAYER_URL)
   },
   loader: {
     '.png': 'file',

@@ -57,6 +57,126 @@ button {
   z-index: 5;
 }
 
+.channels-top {
+  border-color: #46725a;
+}
+
+.channels-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 7, 5, 0.84);
+  backdrop-filter: blur(5px);
+}
+
+.channels-dialog {
+  width: min(620px, 100%);
+  max-height: min(86dvh, 760px);
+  overflow: auto;
+  padding: 22px;
+  color: var(--text);
+  background: linear-gradient(155deg, #17251a, #0b120e 72%);
+  border: 1px solid #7d6740;
+  border-radius: 14px;
+  box-shadow: 0 24px 90px #000c, inset 0 1px #fff1;
+}
+
+.channels-dialog-header,
+.channels-dialog footer,
+.channels-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.channels-dialog-header small {
+  color: #96c99c;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.channels-dialog-header h2 {
+  margin: 4px 0 0;
+  color: #f1d394;
+  font-family: var(--font-display);
+  font-size: 22px;
+}
+
+.channels-close,
+.channels-card button,
+.channels-disconnect {
+  border: 1px solid #594a31;
+  border-radius: 7px;
+  color: #f2e9cf;
+  background: #151e17;
+  cursor: pointer;
+}
+
+.channels-close {
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+}
+
+.channels-capacity-note,
+.channels-stage-note,
+.channels-dialog footer {
+  color: #bac3b3;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.channels-stage-note {
+  padding: 10px 12px;
+  color: #e9d49e;
+  background: #40321455;
+  border: 1px solid #80643466;
+  border-radius: 7px;
+}
+
+.channels-status {
+  min-height: 20px;
+  color: #b8cfba;
+  font-size: 13px;
+}
+
+.channels-status[data-kind="error"] { color: #ff928b; }
+.channels-status[data-kind="success"] { color: #81e0a0; }
+
+.channels-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.channels-card {
+  min-width: 0;
+  padding: 12px;
+  background: #0a100d99;
+  border: 1px solid #374531;
+  border-radius: 8px;
+}
+
+.channels-card-info { display: grid; min-width: 0; gap: 4px; }
+.channels-card-info strong { color: #f0d797; font-size: 13px; }
+.channels-card-info small { color: #bac3b3; font-size: 11px; }
+.channels-progress { width: 130px; max-width: 24vw; height: 4px; overflow: hidden; background: #283029; border-radius: 9px; }
+.channels-progress i { display: block; height: 100%; background: linear-gradient(90deg, #66c77c, #e5c26b); }
+.channels-card button, .channels-disconnect { padding: 8px 10px; color: #dfc277; font-size: 10px; font-weight: 800; }
+.channels-card button:disabled { cursor: default; opacity: .52; }
+.channels-dialog footer { margin-top: 16px; }
+
+@media (max-width: 760px) {
+  .channels-dialog { padding: 16px; }
+  .channels-list { grid-template-columns: 1fr; }
+  .channels-card { padding: 10px; }
+}
+
 .brand {
   display: flex;
   align-items: center;
