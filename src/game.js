@@ -382,7 +382,6 @@ const c = document.querySelector('#game');
 
   // Mana Seed Animated NPC Sprites
   const npcSprites = {};
-  const npcAnimSprites = {};
   [
     'forge_ignis', 'shop_maeve', 'portal_kaelen', 'quest_vane',
     'market_silas', 'sentinel_lyanna', 'lore_ether', 'bard_dorian'
@@ -390,10 +389,6 @@ const c = document.querySelector('#game');
     const im = new Image();
     im.src = `assets/characters/npcs/${id}_idle.png`;
     npcSprites[id] = im;
-
-    const anim = new Image();
-    anim.src = `assets/characters/npcs/${id}_anim.png`;
-    npcAnimSprites[id] = anim;
   });
 
   // Castle Hub & Map Icons
@@ -3722,8 +3717,7 @@ const c = document.querySelector('#game');
     const y = npc.y;
     g.save();
     groundShadow(x, y + 3, 19, 7, 0.42);
-    const pulse = 0.5 + Math.sin(last / 320) * 0.12;
-    g.strokeStyle = `rgba(232, 190, 96, ${pulse})`;
+    g.strokeStyle = 'rgba(232, 190, 96, 0.62)';
     g.lineWidth = 2;
     g.beginPath();
     g.ellipse(x, y + 3, 24, 10, 0, 0, Math.PI * 2);
@@ -3757,29 +3751,22 @@ const c = document.querySelector('#game');
     g.restore();
   }
 
-  function drawRegionalGuide(n, t) {
+  function drawRegionalGuide(n) {
     g.save();
     const nearby = D(p, n) < 92;
-    const pulse = 0.58 + Math.sin(t / 260) * 0.18;
     groundShadow(n.x, n.y + 3, 20, 7, 0.38);
-    g.globalAlpha = pulse;
+    g.globalAlpha = 0.76;
     g.strokeStyle = n.color;
     g.lineWidth = 2;
     g.beginPath();
     g.ellipse(n.x, n.y + 2, 25, 9, 0, 0, Math.PI * 2);
     g.stroke();
     g.globalAlpha = 1;
-    const sprite = npcSprites[n.sprite];
-    const animated = npcAnimSprites[n.sprite];
-    const spr = animated?.complete && animated.naturalWidth ? animated : sprite;
-    const breath = Math.sin(t / 350 + n.x) * 1.2;
+    const spr = npcSprites[n.sprite];
     if (spr?.complete && spr.naturalWidth) {
-      const frame = Math.floor((t / 180 + n.x % 6) % 6);
-      if (spr === animated && spr.naturalWidth >= 384) {
-        g.drawImage(spr, frame * 64, 0, 64, 64, n.x - 34, n.y - 79 + breath, 68, 68);
-      } else {
-        g.drawImage(spr, n.x - 34, n.y - 79 + breath, 68, 68);
-      }
+      const spriteSize = n.spriteSize || 104;
+      const feetOffset = (45 / 64) * spriteSize;
+      g.drawImage(spr, 0, 0, 64, 64, n.x - spriteSize / 2, n.y - feetOffset, spriteSize, spriteSize);
     }
     const bannerY = n.y - (nearby ? 104 : 91);
     g.fillStyle = 'rgba(14, 18, 17, 0.9)';
@@ -3909,22 +3896,14 @@ const c = document.querySelector('#game');
     } else {
       // Mana Seed Animated Character Sprite (Harmonized size: ~58px tall, crisp 2x scale)
       const spriteId = n.sprite || n.id;
-      const animSprite = npcAnimSprites[spriteId];
       const idleSprite = npcSprites[spriteId];
-      const spr = (animSprite?.complete && animSprite.naturalWidth) ? animSprite : ((idleSprite?.complete && idleSprite.naturalWidth) ? idleSprite : null);
+      const spr = idleSprite?.complete && idleSprite.naturalWidth ? idleSprite : null;
 
       if (spr) {
-        const sw = 120;
-        const sh = 120;
-        const feetOffset = (44 / 64) * sh;
-        const breath = Math.sin(t / 400 + (n.x % 10)) * 1.2;
-
-        if (spr === animSprite && spr.naturalWidth >= 384) {
-          const frameIndex = Math.floor((t / 180 + (n.x % 6)) % 6);
-          g.drawImage(spr, frameIndex * 64, 0, 64, 64, x - sw / 2, y - feetOffset + breath, sw, sh);
-        } else {
-          g.drawImage(spr, 0, 0, 64, 64, x - sw / 2, y - feetOffset + breath, sw, sh);
-        }
+        const sw = 120 * (n.spriteScale || 1);
+        const sh = sw;
+        const feetOffset = (45 / 64) * sh;
+        g.drawImage(spr, 0, 0, 64, 64, x - sw / 2, y - feetOffset, sw, sh);
       } else {
         g.fillStyle = n.color || '#f59e0b';
         g.beginPath();
@@ -4891,7 +4870,7 @@ const c = document.querySelector('#game');
         effect?.draw(g, t, item.impactX - 42, item.impactY - 42, 84, 84, item.impactAt);
       }
       else if (type === 'npc') drawDungeonNpc();
-      else if (type === 'regional_guide') drawRegionalGuide(item, t);
+      else if (type === 'regional_guide') drawRegionalGuide(item);
       else if (type === 'castle_npc') drawCastleNpc(item, t);
       else if (type === 'online_player') drawOnlinePlayer(item, t);
       else drawHero(g, p, last, heroSprites, box);
