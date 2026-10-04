@@ -350,7 +350,7 @@ export class AuthManager {
       this.render();
       const { data, error } = await this.supabase.auth.signInWithWeb3({
         chain: 'ethereum',
-        statement: 'Entrar em Terra das Cinzas. Esta assinatura não autoriza transações.'
+        statement: 'Entrar em Guerra das Cinzas. Esta assinatura não autoriza transações.'
       });
       if (error) throw error;
       this.status.signedIn = true;

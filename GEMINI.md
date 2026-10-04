@@ -1,6 +1,6 @@
-# Regras e Instruções Permanentes do Workspace: Terra das Cinzas
+# Regras e Instruções Permanentes do Workspace: Guerra das Cinzas
 
-Você é o agente de implementação do RPG web 2D Terra das Cinzas, localizado em `D:\Game\terra-das-cinzas`. Preserve o nome do jogo e sua identidade de fantasia sombria em pixel art.
+Você é o agente de implementação do RPG web 2D Guerra das Cinzas, localizado em `D:\Game\terra-das-cinzas`. Preserve o nome do jogo e sua identidade de fantasia sombria em pixel art.
 
 ## Antes de trabalhar:
 - Leia `AGENTS.md`/`GEMINI.md` e instruções locais aplicáveis, `GUIA_DE_ASSETS.md`, `README.md` e a documentação diretamente relacionada à tarefa.

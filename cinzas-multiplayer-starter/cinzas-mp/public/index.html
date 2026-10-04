@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terra das Cinzas - teste multiplayer</title>
+<style>
+ body{margin:0;background:#15141a;color:#d6d3d1;font:14px monospace}
+ #top{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+ button,select,input{background:#2a2830;color:#e7e5e4;border:1px solid #57534e;padding:6px 10px;font:inherit}
+ button:hover{border-color:#ea580c} canvas{display:block;margin:0 auto;background:#1c1b21;border:1px solid #3f3b3a}
+ #chat{max-width:640px;margin:8px auto;padding:0 8px} #log{height:90px;overflow:auto;background:#1c1b21;padding:6px;border:1px solid #3f3b3a}
+</style></head><body>
+<div id="top">
+ <button id="btnWallet">Conectar wallet</button>
+ <button id="btnGuest">Entrar como convidado (dev)</button>
+ <select id="chan"><option>bosque-1</option><option>bosque-2</option><option>bosque-3</option></select>
+ <span id="status">desconectado</span>
+</div>
+<canvas id="c" width="640" height="400"></canvas>
+<div id="chat"><div id="log"></div><input id="msg" placeholder="Enter para enviar" style="width:100%;box-sizing:border-box" maxlength="140"></div>
+<script type="module">
+import { CinzasNet } from "./mp.js";
+const net = new CinzasNet(), $ = (id) => document.getElementById(id);
+const cv = $("c"), g = cv.getContext("2d"); let view = new Map(); // id -> {x,y,tx,ty,name}
+const status = (t) => ($("status").textContent = t);
+async function enter(loginFn) {
+  try { status("entrando..."); const u = await loginFn(); await net.connect($("chan").value);
+    status("online como " + u.name); }
+  catch (e) { status("erro: " + e.message); }
+}
+$("btnWallet").onclick = () => enter(() => net.loginWithWallet());
+$("btnGuest").onclick = () => enter(() => net.loginAsGuest());
+net.onState = (ps) => { const seen = new Set();
+  for (const p of ps) { seen.add(p.id); const v = view.get(p.id) || { x: p.x, y: p.y };
+    view.set(p.id, { x: v.x, y: v.y, tx: p.x, ty: p.y, name: p.name }); }
+  for (const id of [...view.keys()]) if (!seen.has(id)) view.delete(id); };
+net.onChat = (m) => { const l = $("log"); l.textContent += m.from + ": " + m.text + "\n"; l.scrollTop = l.scrollHeight; };
+const keys = {}; const send = () => net.setInput((keys.d||keys.ArrowRight?1:0)-(keys.a||keys.ArrowLeft?1:0), (keys.s||keys.ArrowDown?1:0)-(keys.w||keys.ArrowUp?1:0));
+addEventListener("keydown", (e) => { if (e.target.id === "msg") return; if (!keys[e.key]) { keys[e.key] = true; send(); } });
+addEventListener("keyup", (e) => { keys[e.key] = false; send(); });
+$("msg").addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.value.trim()) { net.sendChat(e.target.value); e.target.value = ""; } });
+(function draw() {
+  g.clearRect(0, 0, cv.width, cv.height);
+  const me = view.get(net.myId); const cx = me ? me.x : 1000, cy = me ? me.y : 1000;
+  for (const [id, v] of view) { v.x += (v.tx - v.x) * 0.25; v.y += (v.ty - v.y) * 0.25; // interpolacao
+    const sx = v.x - cx + cv.width / 2, sy = v.y - cy + cv.height / 2;
+    g.fillStyle = id === net.myId ? "#ea580c" : "#78a35a"; g.fillRect(sx - 8, sy - 8, 16, 16);
+    g.fillStyle = "#d6d3d1"; g.font = "10px monospace"; g.textAlign = "center"; g.fillText(v.name, sx, sy - 12); }
+  requestAnimationFrame(draw);
+})();
+</script></body></html>

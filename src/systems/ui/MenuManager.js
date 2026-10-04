@@ -76,7 +76,7 @@ export class MenuManager {
     document.querySelector('#menuNew')?.addEventListener('click', showClassSelection);
     document.querySelector('#menuGuide')?.addEventListener('click', () => tutorialManager.show());
     document.querySelector('#menuOptions')?.addEventListener('click', () => showInfo('OPÇÕES', '<p><b>W A S D</b> ou setas — mover</p><p><b>Clique</b> — mover e interagir</p><p><b>E</b> — recolher itens</p><p><b>1–4</b> — usar habilidades</p>'));
-    document.querySelector('#menuCredits')?.addEventListener('click', () => showInfo('CRÉDITOS', '<p><b>TERRA DAS CINZAS</b></p><p>Uma aventura independente nas ruínas de Miraluz.</p>'));
+    document.querySelector('#menuCredits')?.addEventListener('click', () => showInfo('CRÉDITOS', '<p><b>GUERRA DAS CINZAS</b></p><p>Uma aventura independente nas ruínas de Miraluz.</p>'));
     
     document.addEventListener('keydown', (event) => {
       if (!root || root.hidden) return;

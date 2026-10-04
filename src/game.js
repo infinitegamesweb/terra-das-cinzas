@@ -18,6 +18,7 @@ import { menuManager } from './systems/ui/MenuManager.js';
 import { uiManager, renderUI } from './systems/ui/UIManager.js';
 import { inventoryUI } from './systems/ui/InventoryUI.js';
 import { channelManager } from './systems/multiplayer/ChannelManager.js';
+import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -3055,6 +3056,7 @@ const c = document.querySelector('#game');
       faceDirection(p, dx, dy);
       p.moving = true;
       goal = null;
+      if (cinzasNet?.isConnected) cinzasNet.setInput(dx, dy);
     } else if (goal) {
       dx = goal.x - p.x;
       dy = goal.y - p.y;
@@ -3066,7 +3068,10 @@ const c = document.querySelector('#game');
         p.moving = true;
         movePlayer((dx / n) * Math.min(n, 220 * dt), (dy / n) * Math.min(n, 220 * dt));
         faceDirection(p, dx, dy);
+        if (cinzasNet?.isConnected) cinzasNet.setInput(dx, dy);
       }
+    } else {
+      if (cinzasNet?.isConnected) cinzasNet.setInput(0, 0);
     }
 
     if (p.moving) p.walk += dt * 13;
@@ -4148,7 +4153,7 @@ const c = document.querySelector('#game');
     g.fillText(op.name, x + 3, y - 37);
 
     // Subtle chat message bubble
-    if (op.msg && (Math.floor(t / 6000) % 2 === 0)) {
+    if (op.msg) {
       g.fillStyle = 'rgba(30, 27, 40, 0.92)';
       g.strokeStyle = '#c084fc';
       g.lineWidth = 1;
@@ -4985,7 +4990,7 @@ const c = document.querySelector('#game');
       ...(!dungeonMode && region.id !== 0 ? [{ y: dungeonNpcPosition().y, type: 'npc', item: dungeonNpcPosition() }] : []),
       ...(!dungeonMode && region.id !== 0 && regionalGuidePosition() ? [{ y: regionalGuidePosition().y, type: 'regional_guide', item: regionalGuidePosition() }] : []),
       ...(region.id === 0 && window.GameCastleHub?.CASTLE_NPCS ? window.GameCastleHub.CASTLE_NPCS.map((n) => ({ y: n.y, type: 'castle_npc', item: n })) : []),
-      ...(region.id === 0 && window.GameCastleHub?.ONLINE_PLAYERS ? window.GameCastleHub.ONLINE_PLAYERS.map((op) => ({ y: op.y, type: 'online_player', item: op })) : []),
+      ...(cinzasNet?.isConnected && cinzasNet.getRemotePlayers().length > 0 ? cinzasNet.getRemotePlayers().map((op) => ({ y: op.y, type: 'online_player', item: op })) : (region.id === 0 && window.GameCastleHub?.ONLINE_PLAYERS ? window.GameCastleHub.ONLINE_PLAYERS.map((op) => ({ y: op.y, type: 'online_player', item: op })) : [])),
       { y: p.y, type: 'hero', item: p }
     ];
     depth.sort((a, b) => a.y - b.y);
@@ -5102,6 +5107,7 @@ const c = document.querySelector('#game');
     last = t;
     if (!menuOpen) {
       update(dt, t);
+      if (cinzasNet?.isConnected) cinzasNet.update(dt);
       saveClock += dt;
       if (saveClock >= 3) {
         save();

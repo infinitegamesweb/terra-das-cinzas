@@ -1,3 +1,11 @@
+// src/systems/multiplayer/ChannelManager.js
+// ═══════════════════════════════════════════════════════════════
+//  GUERRA DAS CINZAS — Gerenciador de Canais Multiplayer
+//  Suporta o servidor autoritativo CinzasNet e canais regionais
+// ═══════════════════════════════════════════════════════════════
+
+import { cinzasNet } from './CinzasNet.js';
+
 class ChannelManager {
   constructor() {
     this.socket = null;
@@ -6,12 +14,15 @@ class ChannelManager {
     this.listNode = null;
     this.serverBase = this.resolveServerBase();
     this.refreshTimer = null;
+    this.activeChannelId = null;
   }
 
   resolveServerBase() {
     const configured = (typeof __TDC_MULTIPLAYER_URL__ === 'string' ? __TDC_MULTIPLAYER_URL__ : '').trim();
     if (configured) return configured.replace(/\/$/, '');
-    if (['localhost', '127.0.0.1'].includes(location.hostname)) return 'http://127.0.0.1:8787';
+    if (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname)) {
+      return 'http://localhost:3000';
+    }
     return 'https://terra-das-cinzas-multiplayer.infinited3signer.workers.dev';
   }
 
@@ -34,16 +45,19 @@ class ChannelManager {
           <div><small>JORNADA MULTIJOGADOR</small><h2 id="channelsTitle">Canais do mundo</h2></div>
           <button class="channels-close" type="button" aria-label="Fechar canais">×</button>
         </header>
-        <p class="channels-capacity-note">12 canais · até 100 jogadores por canal · capacidade total de 1.200 conexões</p>
-        <p class="channels-stage-note">Nesta etapa, os canais validam a presença e a lotação. Movimento, combate, inimigos, XP e saques ainda ficam locais.</p>
+        <p class="channels-capacity-note">Canais em tempo real · até 50 jogadores por canal · sincronização autoritativa</p>
+        <p class="channels-stage-note">Movimentação síncrona e chat em tempo real ativos neste canal.</p>
         <p class="channels-status" role="status" aria-live="polite"></p>
         <div class="channels-list" aria-label="Lista de canais"></div>
-        <footer><button class="channels-disconnect" type="button" hidden>Desconectar</button><span>Entre na sua conta para acessar um canal.</span></footer>
+        <footer>
+          <button class="channels-disconnect" type="button" hidden>Desconectar</button>
+          <span>Conexão rápida como convidado ou por assinatura Solana.</span>
+        </footer>
       </section>`;
     overlay.addEventListener('click', (event) => {
       if (event.target === overlay || event.target.closest('.channels-close')) this.close();
       const button = event.target.closest('[data-channel-id]');
-      if (button) this.join(Number(button.dataset.channelId));
+      if (button) this.join(button.dataset.channelId);
       if (event.target.closest('.channels-disconnect')) this.disconnect();
     });
     document.querySelector('#app')?.append(overlay);
@@ -76,11 +90,29 @@ class ChannelManager {
 
   async loadChannels() {
     if (!this.listNode) return;
-    if (!this.serverBase) {
-      this.setStatus('Servidor de canais ainda não configurado para este site.', 'error');
-      this.renderChannels([]);
-      return;
+
+    // Tenta primeiro o servidor autoritativo CinzasNet
+    try {
+      const netUrl = cinzasNet.serverUrl || 'http://localhost:3000';
+      const response = await fetch(`${netUrl}/channels`, { cache: 'no-store' });
+      if (response.ok) {
+        const rawChannels = await response.json();
+        const formatted = rawChannels.map((c, idx) => ({
+          id: c.id,
+          name: `Canal ${c.id.toUpperCase()}`,
+          online: c.players,
+          capacity: c.max || 50,
+          available: c.players < (c.max || 50)
+        }));
+        this.renderChannels(formatted);
+        if (!cinzasNet.isConnected) this.setStatus('Escolha um canal disponível para entrar.');
+        return;
+      }
+    } catch {
+      // Falha silenciosa, tenta o endpoint legado abaixo
     }
+
+    // Fallback legado
     try {
       const response = await fetch(`${this.serverBase}/api/channels`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`Servidor respondeu ${response.status}`);
@@ -88,22 +120,25 @@ class ChannelManager {
       this.renderChannels(Array.isArray(channels) ? channels : []);
       if (!this.socket || this.socket.readyState !== WebSocket.OPEN) this.setStatus('Escolha um canal disponível.');
     } catch (error) {
-      this.setStatus('Não foi possível conectar ao servidor de canais. Tente novamente em instantes.', 'error');
+      this.setStatus('Servidor multiplayer desconectado. Inicie o servidor local para conectar.', 'error');
       this.renderChannels([]);
-      console.warn('Falha ao consultar canais:', error);
     }
   }
 
   renderChannels(channels) {
     if (!this.listNode) return;
     this.listNode.replaceChildren();
+
+    const isConnected = cinzasNet.isConnected || (this.socket?.readyState === WebSocket.OPEN);
+    const activeId = cinzasNet.channel || this.socketChannelId;
+
     for (const channel of channels) {
       const card = document.createElement('article');
       card.className = 'channels-card';
       const info = document.createElement('div');
       info.className = 'channels-card-info';
       const title = document.createElement('strong');
-      title.textContent = channel.name || `Canal ${String(channel.id).padStart(2, '0')}`;
+      title.textContent = channel.name || `Canal ${channel.id}`;
       const count = document.createElement('small');
       count.textContent = `${channel.online} / ${channel.capacity} jogadores`;
       const progress = document.createElement('span');
@@ -112,28 +147,54 @@ class ChannelManager {
       fill.style.width = `${Math.min(100, Math.max(0, channel.online / channel.capacity * 100))}%`;
       progress.append(fill);
       info.append(title, count, progress);
+
+      const isCurrent = isConnected && String(activeId) === String(channel.id);
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.channelId = channel.id;
-      button.textContent = this.socket?.readyState === WebSocket.OPEN && Number(this.socketChannelId) === channel.id
-        ? 'CONECTADO'
-        : channel.available ? 'ENTRAR' : 'LOTADO';
-      button.disabled = !channel.available || (this.socket?.readyState === WebSocket.OPEN && Number(this.socketChannelId) === channel.id);
+      button.textContent = isCurrent ? 'CONECTADO' : (channel.available ? 'ENTRAR' : 'LOTADO');
+      button.disabled = !channel.available || isCurrent;
       card.append(info, button);
       this.listNode.append(card);
     }
-    this.overlay?.querySelector('.channels-disconnect')?.toggleAttribute('hidden', !this.socket || this.socket.readyState !== WebSocket.OPEN);
+    this.overlay?.querySelector('.channels-disconnect')?.toggleAttribute('hidden', !isConnected);
   }
 
   async join(channelId) {
-    if (!this.serverBase) return this.setStatus('Servidor de canais não configurado.', 'error');
-    const token = await window.GameAuth?.getAccessToken?.();
-    if (!token) return this.setStatus('Entre na sua conta pelo botão CONTA antes de conectar.', 'error');
-
     const button = this.listNode?.querySelector(`[data-channel-id="${channelId}"]`);
     if (button) button.disabled = true;
-    this.setStatus(`Conectando ao Canal ${String(channelId).padStart(2, '0')}…`);
+    this.setStatus(`Conectando ao Canal ${channelId}…`);
+
+    // 1. Tenta conectar via CinzasNet
     try {
+      if (!cinzasNet.token) {
+        // Tenta carteira se conectada, senão convidado
+        try {
+          if (window.solana && window.solana.isPhantom) {
+            await cinzasNet.loginWithWallet();
+          } else {
+            await cinzasNet.loginAsGuest();
+          }
+        } catch {
+          await cinzasNet.loginAsGuest();
+        }
+      }
+
+      await cinzasNet.connect(channelId);
+      this.activeChannelId = channelId;
+      this.setStatus(`Conectado com sucesso ao Canal ${channelId}!`, 'success');
+      this.setHeaderStatus(`Canal ${channelId} · Online`);
+      await this.loadChannels();
+      return;
+    } catch (netErr) {
+      console.warn('CinzasNet join falhou, tentando fallback legado:', netErr);
+    }
+
+    // 2. Fallback legado se CinzasNet não estiver disponível
+    try {
+      const token = await window.GameAuth?.getAccessToken?.();
+      if (!token) return this.setStatus('Inicie o servidor multiplayer local para jogar online.', 'error');
+
       const response = await fetch(`${this.serverBase}/api/channels/${channelId}/ticket`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
@@ -149,48 +210,41 @@ class ChannelManager {
       this.socket = socket;
       this.socketChannelId = channelId;
       socket.addEventListener('open', () => {
-        this.setStatus(`Conectado ao Canal ${String(channelId).padStart(2, '0')}.`, 'success');
-        this.setHeaderStatus(`Canal ${String(channelId).padStart(2, '0')} · presença`);
+        this.setStatus(`Conectado ao Canal ${channelId}.`, 'success');
+        this.setHeaderStatus(`Canal ${channelId} · presença`);
         this.loadChannels();
       });
-      socket.addEventListener('message', (event) => this.handleMessage(event));
-      socket.addEventListener('close', (event) => {
-        if (this.socket !== socket) return;
-        this.socket = null;
-        this.socketChannelId = null;
-        this.setHeaderStatus('Mundo solo · desconectado');
-        this.setStatus(event.code === 1000 ? 'Você saiu do canal.' : 'Conexão encerrada. Você continua no modo local.', event.code === 1000 ? '' : 'error');
-        this.loadChannels();
+      socket.addEventListener('close', () => {
+        this.disconnect();
       });
-      socket.addEventListener('error', () => this.setStatus('Falha na conexão. Confira sua rede e tente novamente.', 'error'));
     } catch (error) {
       await this.loadChannels();
       this.setStatus(error.message || 'Não foi possível entrar no canal.', 'error');
     }
   }
 
-  handleMessage(event) {
-    let payload;
-    try { payload = JSON.parse(event.data); } catch { return; }
-    if (payload.type === 'welcome') {
-      this.setStatus(`Presença confirmada · ${payload.online}/${payload.capacity} jogadores.`, 'success');
-    } else if (payload.type === 'player_joined' || payload.type === 'player_left') {
-      this.setStatus(`${payload.player?.name || 'Um aventureiro'} ${payload.type === 'player_joined' ? 'entrou no' : 'saiu do'} canal · ${payload.online}/100 online.`);
-    }
-  }
-
   disconnect() {
+    if (cinzasNet.isConnected) {
+      cinzasNet.disconnect();
+    }
     const socket = this.socket;
     this.socket = null;
     this.socketChannelId = null;
+    this.activeChannelId = null;
     if (socket && socket.readyState < WebSocket.CLOSING) socket.close(1000, 'Jogador saiu do canal.');
     this.overlay?.querySelector('.channels-disconnect')?.setAttribute('hidden', '');
     this.setHeaderStatus('Mundo solo · desconectado');
+    this.setStatus('Você saiu do canal.');
+    this.loadChannels();
   }
 
   setHeaderStatus(message) {
     const label = document.querySelector('.online span');
     if (label) label.textContent = message;
+    const dot = document.querySelector('.online i');
+    if (dot) {
+      dot.style.background = message.includes('Online') ? '#22c55e' : '';
+    }
   }
 }
 

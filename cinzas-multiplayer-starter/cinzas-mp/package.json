@@ -1,0 +1,17 @@
+{
+  "name": "cinzas-multiplayer-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "ALLOW_GUEST=true node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "bs58": "^5.0.0",
+    "express": "^4.19.2",
+    "tweetnacl": "^1.0.3",
+    "ws": "^8.18.0"
+  }
+}

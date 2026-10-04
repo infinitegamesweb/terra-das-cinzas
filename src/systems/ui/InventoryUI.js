@@ -63,7 +63,7 @@ export class InventoryUI {
     const xpPercent = Math.min(100, Math.max(5, Math.round(((p.xp || 450) / (p.nextLvlXp || 1000)) * 100)));
 
     overlay.innerHTML = `
-      <div class="inv-mockup-dialog" role="dialog" aria-modal="true" aria-label="Inventário de Terra das Cinzas">
+      <div class="inv-mockup-dialog" role="dialog" aria-modal="true" aria-label="Inventário de Guerra das Cinzas">
         <!-- Header: Avatar, Nível, Barra de XP e Fechar -->
         <img src="assets/ui/inventory/avatar_hooded.png" class="inv-hdr-avatar" alt="Retrato do Herói" />
         <div class="inv-hdr-lvl" id="invPlayerLvl">NÍVEL ${p.lvl || 24}</div>

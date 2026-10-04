@@ -1,5 +1,5 @@
 // src/systems/ui/TutorialManager.js
-// Guia do Aventureiro e Tutorial Interativo para Terra das Cinzas
+// Guia do Aventureiro e Tutorial Interativo para Guerra das Cinzas
 
 const STORAGE_KEY = 'terra_guide_seen_v1';
 
@@ -182,7 +182,7 @@ export class TutorialManager {
     this.modal.innerHTML = `
       <div class="account-card guide-card">
         <button class="account-close" id="guideClose" type="button" aria-label="Fechar Guia">×</button>
-        <p class="menu-kicker">TERRA DAS CINZAS · GUIA DO AVENTUREIRO</p>
+        <p class="menu-kicker">GUERRA DAS CINZAS · GUIA DO AVENTUREIRO</p>
         <h2 id="guideTitle">Instruções da Jornada</h2>
         <div class="guide-tabs">${navButtons}</div>
         <div class="guide-content" id="guideContent">
