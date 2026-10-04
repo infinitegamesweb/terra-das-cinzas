@@ -85,8 +85,8 @@ As quatro skills do projeto estão em `.agents/skills/` e orientam o trabalho ne
 ## Próxima sequência
 
 1. [Concluído] Revisar as nove propostas da barqueira e integrar a melhor candidata (opção 1 alinhada com pivô no chão Y=45) como sprite único do NPC Tomas (`fisher_tomas` no Pântano Espectral).
-2. Fazer uma amostra de um pack Foozle CC0 e comparar uma criatura, um efeito e a escala em jogo antes de qualquer importação em lote.
-3. Finalizar a revisão de compra, venda, cancelamento e bolsa cheia no bazar.
+2. [Concluído] Fazer uma amostra técnica dos packs Foozle CC0 (Lucifer e Spire) em `art-staging/foozle-sample/`: comprovados alpha binário 100% limpo, grid 64×64 nativo (Spire) e 48×48 (Lucifer), paletas escuras correspondentes e manifest com licença CC0 1.0.
+3. [Concluído] Finalizar a revisão de compra, venda, cancelamento e bolsa cheia no bazar (validado interativamente no navegador com zero erros).
 4. [Concluído] Fazer inventário de carregamento e higienização de assets para reduzir o pacote servido (redução de 132 MB em `dist/`).
 5. Continuar a revisão jogável dos sistemas principais e priorizar UI/sprites com maior impacto visual.
 
