@@ -227,8 +227,9 @@
       const isLocked = status === 'locked';
       const isCleared = status === 'cleared';
       const isCurrent = playerLevel >= map.min && playerLevel <= map.max;
+      const isPlayable = window._wmCanNavigateTo ? window._wmCanNavigateTo(map.id) : true;
       return `
-        <article class="wm-card ${isLocked ? 'wm-locked' : ''} ${isCleared ? 'wm-cleared' : ''} ${isCurrent ? 'wm-current' : ''}"
+        <article class="wm-card ${isLocked ? 'wm-locked' : ''} ${isCleared ? 'wm-cleared' : ''} ${isCurrent ? 'wm-current' : ''} ${!isPlayable ? 'wm-unavailable' : ''}"
                  style="--map-color: ${map.color}" data-wm-map="${map.id}" ${isLocked ? 'data-locked' : ''}>
           <div class="wm-card-header">
             <span class="wm-card-icon">${map.icon}</span>
@@ -237,7 +238,7 @@
               <small class="wm-card-sub">${map.sub}</small>
             </div>
             <div class="wm-card-badge ${status}">
-              ${isLocked ? ` Nv. ${map.min}` : isCleared ? ' Concluído' : isCurrent ? '▶ Aqui' : ' Disponível'}
+              ${isLocked ? ` Nv. ${map.min}` : !isPlayable ? ' Em produção' : isCleared ? ' Concluído' : isCurrent ? '▶ Aqui' : ' Disponível'}
             </div>
           </div>
           <div class="wm-card-body">
@@ -250,6 +251,8 @@
             </div>
             ${isLocked
               ? `<div class="wm-lock-info">Requer nível <b>${map.min}</b> · faltam <b>${map.min - playerLevel}</b> níveis</div>`
+              : !isPlayable
+                ? '<div class="wm-lock-info">Esta região ainda não está conectada ao mundo jogável.</div>'
               : isCurrent
                 ? `<button class="wm-btn-enter" data-wm-goto="${map.id}">▶ EXPLORAR</button>`
                 : isCleared

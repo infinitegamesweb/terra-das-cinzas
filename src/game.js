@@ -2485,6 +2485,12 @@ const c = document.querySelector('#game');
 
   // World Map overlay callbacks
   window._wmGetPlayerLevel = () => p.lvl;
+  window._wmCanNavigateTo = (mapId) => {
+    const map = window.WorldMap?.WORLD_MAPS.find((entry) => entry.id === mapId);
+    return Boolean(map && REGIONS.some((candidate) =>
+      candidate.id !== CASTLE_HUB.id && map.max >= candidate.min && map.min <= candidate.max
+    ));
+  };
   window._wmNavigateTo = (mapId) => {
     if (!window.WorldMap) return;
     const map = window.WorldMap.WORLD_MAPS.find(m => m.id === mapId);
@@ -2493,14 +2499,18 @@ const c = document.querySelector('#game');
       msg('Nível ' + map.min + ' necessário para acessar ' + map.name + '.');
       return;
     }
-    // Find the closest REGION that overlaps this map's level range
-    const target = REGIONS.reduce((best, r) => {
-      const overlap = Math.min(r.max, map.max) - Math.max(r.min, map.min);
-      const bestOverlap = best ? Math.min(best.max, map.max) - Math.max(best.min, map.min) : -Infinity;
-      return overlap > bestOverlap ? r : best;
+    // The castle spans the full progression range, but it is a hub, not a destination map.
+    // Only select playable regions with an actual level-range intersection.
+    const candidates = REGIONS.filter((candidate) =>
+      candidate.id !== CASTLE_HUB.id && map.max >= candidate.min && map.min <= candidate.max
+    );
+    const target = candidates.reduce((best, candidate) => {
+      const overlap = Math.min(candidate.max, map.max) - Math.max(candidate.min, map.min) + 1;
+      const bestOverlap = best ? Math.min(best.max, map.max) - Math.max(best.min, map.min) + 1 : -1;
+      return overlap > bestOverlap ? candidate : best;
     }, null);
     if (target) travelRegion(target.id);
-    else msg('Região ' + map.name + ' ainda não tem mapa no mundo — em breve!');
+    else msg('O mapa ' + map.name + ' ainda não está conectado a uma região jogável.');
   };
 
 

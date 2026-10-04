@@ -50,18 +50,18 @@
       <div class="brand"><img src="assets/ui/logo.png" alt="Terra das Cinzas — RPG de Aventura" class="header-game-logo" /></div>
       <div class="online"><i></i><span>Mundo solo · progresso salvo</span></div>
       <div class="wallet">
-        <button class="account-top" id="castleTop" type="button" aria-label="Castelo em Cinzas" title="Castelo em Cinzas · Hub Seguro (Tecla C)"><span>CASTELO</span></button>
-        <button class="account-top" id="invTop" type="button" aria-label="Menu de Inventário" title="Menu de Inventário e Equipamentos (Tecla I ou B)"><span>INVENTÁRIO</span></button>
-        <button class="account-top" id="forgeTop" type="button" aria-label="Forja das Cinzas" title="A Forja das Cinzas · Aprimorar Armas"><span>FORJA</span></button>
-        <button class="account-top" id="marketTop" type="button" aria-label="Bazar local do Castelo" title="Bazar local · ofertas demonstrativas salvas neste navegador"><span>BAZAR</span></button>
-        <button class="account-top" id="shopTop" type="button" aria-label="Loja de Poções" title="Loja de Poções e Consumíveis"><span>LOJA</span></button>
-        <button class="account-top" id="mapTop" type="button" aria-label="Mapa do Mundo" title="Mapa do Mundo (Tecla M)"><span>MAPA</span></button>
-        <button class="account-top channels-top" id="channelsTop" type="button" aria-label="Canais multiplayer" title="Canais multiplayer · até 100 jogadores por canal"><span>CANAIS</span></button>
-        <button class="account-top" id="talentsTop" type="button" aria-label="Árvore de Talentos" title="Árvore de Talentos (Tecla T)"><span>TALENTOS</span></button>
-        <button class="account-top" id="accountTop" type="button" aria-label="Conta e salvamento na nuvem" title="Conta e salvamento na nuvem"><span>CONTA</span></button>
-        <button class="account-top guide-top" id="guideTop" type="button" aria-label="Guia do Aventureiro e Tutorial" title="Guia do Aventureiro (Ajuda e Tutorial - Tecla H)"><span>GUIA</span></button>
+        <button class="account-top" id="castleTop" type="button" aria-label="Castelo em Cinzas" title="Castelo em Cinzas · Hub Seguro (Tecla C)"><img class="menu-icon" src="assets/ui/logo-icon.png" alt=""><span class="menu-label">CASTELO</span></button>
+        <button class="account-top" id="invTop" type="button" aria-label="Menu de Inventário" title="Menu de Inventário e Equipamentos (Tecla I ou B)"><img class="menu-icon" src="assets/ui/inventory/icon-bag.svg" alt=""><span class="menu-label">INVENTÁRIO</span></button>
+        <button class="account-top" id="forgeTop" type="button" aria-label="Forja das Cinzas" title="A Forja das Cinzas · Aprimorar Armas"><img class="menu-icon" src="assets/icons/forge_anvil.png" alt=""><span class="menu-label">FORJA</span></button>
+        <button class="account-top" id="marketTop" type="button" aria-label="Bazar local do Castelo" title="Bazar local · ofertas demonstrativas salvas neste navegador"><img class="menu-icon" src="assets/icons/market_scales.png" alt=""><span class="menu-label">BAZAR</span></button>
+        <button class="account-top" id="shopTop" type="button" aria-label="Loja de Poções" title="Loja de Poções e Consumíveis"><img class="menu-icon" src="assets/icons/alchemy_potion.png" alt=""><span class="menu-label">LOJA</span></button>
+        <button class="account-top" id="mapTop" type="button" aria-label="Mapa do Mundo" title="Mapa do Mundo (Tecla M)"><img class="menu-icon" src="assets/icons/menu-map.svg" alt=""><span class="menu-label">MAPA</span></button>
+        <button class="account-top channels-top" id="channelsTop" type="button" aria-label="Canais multiplayer" title="Canais multiplayer · até 100 jogadores por canal"><img class="menu-icon" src="assets/icons/menu-channels.svg" alt=""><span class="menu-label">CANAIS</span></button>
+        <button class="account-top" id="talentsTop" type="button" aria-label="Árvore de Talentos" title="Árvore de Talentos (Tecla T)"><img class="menu-icon" src="assets/icons/menu-talents.svg" alt=""><span class="menu-label">TALENTOS</span></button>
+        <button class="account-top" id="accountTop" type="button" aria-label="Conta e salvamento na nuvem" title="Conta e salvamento na nuvem"><img class="menu-icon" src="assets/icons/menu-account.svg" alt=""><span class="menu-label">CONTA</span></button>
+        <button class="account-top guide-top" id="guideTop" type="button" aria-label="Guia do Aventureiro e Tutorial" title="Guia do Aventureiro (Ajuda e Tutorial - Tecla H)"><img class="menu-icon" src="assets/icons/lore_book.png" alt=""><span class="menu-label">GUIA</span></button>
         <button class="sound-toggle" id="soundToggle" type="button" title="Alternar som e música">
-          <span id="soundIcon">SOM</span>
+          <img class="menu-icon" src="assets/icons/menu-sound.svg" alt=""><span id="soundIcon" class="menu-label">SOM</span>
         </button>
         <span class="currency-badge"><img src="assets/items/gold-coin.svg" alt="Ouro"> <b id="gold">125</b></span>
         <span class="currency-badge"><img src="assets/items/forest-crystal.svg" alt="Cristal"> <b id="crystal">8</b></span>
@@ -173,12 +173,12 @@
 
       <aside class="side">
         <nav class="tabs">
-          <button class="active" data-tab="0">Missões</button>
-          <button data-tab="1">Personagem</button>
-          <button data-tab="2">Bolsa</button>
-          <button data-tab="3">Guilda</button>
-          <button data-tab="4">Masmorras</button>
-          <button data-tab="5">Códice</button>
+          <button class="active" data-tab="0" title="Missões"><img class="tab-icon" src="assets/icons/quest_scroll.png" alt=""><span class="tab-label">Missões</span></button>
+          <button data-tab="1" title="Personagem"><img class="tab-icon" src="assets/ui/generated/errant-adventurer-portrait.png" alt=""><span class="tab-label">Personagem</span></button>
+          <button data-tab="2" title="Bolsa"><img class="tab-icon" src="assets/ui/inventory/icon-bag.svg" alt=""><span class="tab-label">Bolsa</span></button>
+          <button data-tab="3" title="Guilda"><img class="tab-icon" src="assets/icons/menu-guild.svg" alt=""><span class="tab-label">Guilda</span></button>
+          <button data-tab="4" title="Masmorras"><img class="tab-icon" src="assets/icons/menu-dungeon.svg" alt=""><span class="tab-label">Masmorras</span></button>
+          <button data-tab="5" title="Códice"><img class="tab-icon" src="assets/icons/lore_book.png" alt=""><span class="tab-label">Códice</span></button>
         </nav>
         <div class="inside">
           <div class="title">MISSÕES DO BOSQUE</div>
@@ -228,6 +228,6 @@
     </main>
   </div>
 
-  <script type="module" src="game.bundle.js?v=2.7"></script>
+  <script type="module" src="game.bundle.js?v=2.8"></script>
 </body>
 </html>

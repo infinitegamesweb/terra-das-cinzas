@@ -2153,6 +2153,40 @@ button {
   cursor: pointer;
 }
 .account-top.connected { border-color: #7b9a48; color: #c8e68e; }
+.menu-icon {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: grayscale(.48) sepia(.25) brightness(.92);
+}
+.account-top .menu-icon { width: 18px; height: 18px; flex-basis: 18px; }
+.sound-toggle .menu-icon { width: 18px; height: 18px; flex-basis: 18px; }
+.tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.tab-icon { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; image-rendering: pixelated; filter: grayscale(.48) sepia(.25) brightness(.92); }
+.tabs button[data-tab="1"] .tab-icon { border-radius: 50%; }
+.wm-unavailable { opacity: .72; }
+.wm-unavailable .wm-card-badge { color: #a79b85; }
+
+@media (max-width: 1360px) {
+  .account-top { min-width: 38px; padding-right: 5px; padding-left: 5px; }
+  .sound-toggle { min-width: 34px; padding-right: 6px; padding-left: 6px; }
+  .tab-label { display: none; }
+}
+@media (min-width: 1121px) and (max-width: 1360px) {
+  .online { display: none; }
+  .wallet { gap: 4px; }
+  .account-top { min-width: 0; gap: 3px; padding-right: 3px; padding-left: 3px; font-size: 8px; }
+}
+@media (max-width: 1120px) {
+  .menu-label { display: none; }
+}
+@media (max-width: 768px) {
+  #app > .top { overflow-x: auto; scrollbar-width: none; }
+  #app > .top::-webkit-scrollbar { display: none; }
+  .wallet { flex: 0 0 auto; }
+}
 .account-overlay {
   position: fixed;
   inset: 0;
