@@ -715,9 +715,9 @@ const c = document.querySelector('#game');
   }
 
   function regionalGuidePosition(targetRegion = region) {
-    if (targetRegion.generatedMap) return null;
     const guide = REGIONAL_GUIDES[targetRegion.id];
-    return guide ? { ...guide, x: targetRegion.col * ZONE_W + guide.x, y: targetRegion.row * ZONE_H + guide.y } : null;
+    if (!guide) return null;
+    return { ...guide, x: targetRegion.col * ZONE_W + guide.x, y: targetRegion.row * ZONE_H + guide.y };
   }
 
   function captureCombatContext() {
