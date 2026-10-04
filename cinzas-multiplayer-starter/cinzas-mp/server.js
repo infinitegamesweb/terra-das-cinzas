@@ -99,7 +99,7 @@ export function start(port = CONFIG.PORT) {
         if (p.pubkey === sess.pubkey) { p.ws.close(4002, "login em outro lugar"); room.delete(p.id); }
 
     const me = { id: nextId++, pubkey: sess.pubkey, name: shortName(sess.pubkey), ws,
-      channel: null, x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0 };
+      channel: null, classId: "guerreiro", x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0 };
     const send = (o) => ws.readyState === 1 && ws.send(JSON.stringify(o));
     const leave = () => { if (me.channel) rooms.get(me.channel)?.delete(me.id); me.channel = null; };
     const rl = setInterval(() => (me.msgs = 0), 1000);
@@ -111,10 +111,11 @@ export function start(port = CONFIG.PORT) {
         const room = rooms.get(m.channel);
         if (!room) return send({ t: "error", error: "canal invalido" });
         if (room.size >= CONFIG.MAX_PER_CHANNEL) return send({ t: "error", error: "canal cheio" });
+        if (typeof m.classId === "string" && m.classId.trim()) me.classId = m.classId.trim().slice(0, 20);
         if (Number.isFinite(m.x)) me.x = Math.max(0, Math.min(CONFIG.WORLD.w, Number(m.x)));
         if (Number.isFinite(m.y)) me.y = Math.max(0, Math.min(CONFIG.WORLD.h, Number(m.y)));
         leave(); me.channel = m.channel; room.set(me.id, me);
-        send({ t: "joined", id: me.id, channel: m.channel, name: me.name, world: CONFIG.WORLD });
+        send({ t: "joined", id: me.id, channel: m.channel, name: me.name, classId: me.classId, world: CONFIG.WORLD });
       } else if (m.t === "input" && me.channel) {
         // so intencao: -1, 0 ou 1. O servidor decide o resto.
         me.dx = Math.max(-1, Math.min(1, Math.sign(Number(m.dx) || 0)));
@@ -127,6 +128,23 @@ export function start(port = CONFIG.PORT) {
         me.lastChat = now;
         for (const p of rooms.get(me.channel).values()) p.ws.readyState === 1 &&
           p.ws.send(JSON.stringify({ t: "chat", from: me.name, text }));
+      } else if (m.t === "action" && me.channel) {
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const actionMsg = JSON.stringify({
+          t: "action",
+          fromId: me.id,
+          kind: String(m.kind || "slash").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30),
+          x: Math.round(Number(m.x) || me.x),
+          y: Math.round(Number(m.y) || me.y),
+          color: String(m.color || "#f5d37b").slice(0, 16),
+          dir: String(m.dir || "south").slice(0, 12)
+        });
+        for (const o of room.values()) {
+          if (o.id !== me.id && o.ws.readyState === 1 && Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS) {
+            o.ws.send(actionMsg);
+          }
+        }
       }
     });
     ws.on("close", () => { clearInterval(rl); leave(); });
@@ -147,7 +165,7 @@ export function start(port = CONFIG.PORT) {
         const near = [];
         for (const o of room.values())
           if (Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS)
-            near.push({ id: o.id, name: o.name, x: Math.round(o.x), y: Math.round(o.y) });
+            near.push({ id: o.id, name: o.name, classId: o.classId, x: Math.round(o.x), y: Math.round(o.y), dx: o.dx, dy: o.dy });
         me.ws.readyState === 1 && me.ws.send(JSON.stringify({ t: "state", players: near }));
       }
     }

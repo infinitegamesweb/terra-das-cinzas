@@ -17,9 +17,15 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [] };
+    const c = { ws, state: [], chat: [], actions: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
-    ws.on("message", (d) => { const m = JSON.parse(d); if (m.t === "joined") { c.id = m.id; resolve(c); } if (m.t === "state") c.state = m.players; if (m.t === "chat") c.chat.push(m); });
+    ws.on("message", (d) => {
+      const m = JSON.parse(d);
+      if (m.t === "joined") { c.id = m.id; resolve(c); }
+      if (m.t === "state") c.state = m.players;
+      if (m.t === "chat") c.chat.push(m);
+      if (m.t === "action") c.actions.push(m);
+    });
     ws.on("close", (code) => { c.closed = code; });
     ws.on("error", reject);
   });
@@ -69,7 +75,15 @@ assert.equal(cb.chat.length, 1); assert.equal(cb.chat[0].text, "boi/b mundo");
 assert.equal(cc.chat.length, 0);
 console.log("ok  chat entregue so ao canal e sanitizado");
 
-// 7. login duplicado derruba a conexao antiga
+// 7. acoes de combate e VFX replicadas entre jogadores no mesmo canal
+ca.ws.send(JSON.stringify({ t: "action", kind: "slash", x: 1050, y: 1050, color: "#f5d37b" }));
+await wait(200);
+assert.equal(cb.actions.length, 1);
+assert.equal(cb.actions[0].kind, "slash");
+assert.equal(cb.actions[0].fromId, ca.id);
+console.log("ok  acoes de combate e VFX replicadas em tempo real");
+
+// 8. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");

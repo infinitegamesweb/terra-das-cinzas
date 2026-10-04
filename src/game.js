@@ -19,6 +19,7 @@ import { uiManager, renderUI } from './systems/ui/UIManager.js';
 import { inventoryUI } from './systems/ui/InventoryUI.js';
 import { channelManager } from './systems/multiplayer/ChannelManager.js';
 import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
+import { chatUI } from './systems/multiplayer/ChatUI.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -1577,6 +1578,9 @@ const c = document.querySelector('#game');
       mago: ['arcane', '#75d9ff'], guerreiro: ['impact', '#f5d37b']
     }[p.classId] || ['impact', '#f5d37b'];
     emitCombatEffect(attackStyle[0], m.x, m.y - 12, attackStyle[1], { duration: 310, radius: 42, dir: p.dir });
+    if (cinzasNet?.isConnected) {
+      cinzasNet.sendAction({ kind: attackStyle[0], x: m.x, y: m.y - 12, color: attackStyle[1], dir: p.dir });
+    }
 
     // 3-Hit Combo System
     p.combo = (p.combo || 0);
@@ -4121,43 +4125,75 @@ const c = document.querySelector('#game');
     g.restore();
   }
 
+  const remoteHeroSpritesCache = {};
+  function getRemoteHeroSprites(classId = 'guerreiro') {
+    const id = classId || 'guerreiro';
+    if (!remoteHeroSpritesCache[id]) {
+      remoteHeroSpritesCache[id] = createHeroSprites(id);
+    }
+    return remoteHeroSpritesCache[id];
+  }
+
   function drawOnlinePlayer(op, t) {
     const x = op.x;
     const y = op.y;
     g.save();
     groundShadow(x, y + 2, 16, 6, 0.35);
 
-    // Hero figure
-    g.fillStyle = op.color || '#38bdf8';
-    g.beginPath();
-    g.arc(x, y - 24, 8, 0, Math.PI * 2);
-    g.fill();
-    g.fillStyle = '#262626';
-    g.fillRect(x - 6, y - 16, 12, 14);
+    const classId = op.classId || 'guerreiro';
+    const fakeP = {
+      x: op.x,
+      y: op.y,
+      classId: classId,
+      dir: op.dir || 'south',
+      face: op.face || 1,
+      moving: Boolean(op.moving),
+      walk: op.walk || 0,
+      attackAt: op.attackAt || 0
+    };
+
+    let drewSprite = false;
+    try {
+      const sprites = getRemoteHeroSprites(classId);
+      const idleImg = sprites?.idle?.[fakeP.dir];
+      if (idleImg && idleImg.complete && idleImg.naturalWidth) {
+        drawHero(g, fakeP, t, sprites, null);
+        drewSprite = true;
+      }
+    } catch (e) {}
+
+    if (!drewSprite) {
+      g.fillStyle = op.color || '#38bdf8';
+      g.beginPath();
+      g.arc(x, y - 24, 8, 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = '#262626';
+      g.fillRect(x - 6, y - 16, 12, 14);
+    }
 
     // Nameplate
-    g.fillStyle = 'rgba(10, 10, 15, 0.82)';
+    g.fillStyle = 'rgba(10, 10, 15, 0.85)';
     g.beginPath();
-    g.roundRect(x - 55, y - 48, 110, 16, 4);
+    g.roundRect(x - 55, y - 50, 110, 16, 4);
     g.fill();
 
     // Online green indicator dot
     g.fillStyle = '#22c55e';
     g.beginPath();
-    g.arc(x - 46, y - 40, 3, 0, Math.PI * 2);
+    g.arc(x - 46, y - 42, 3, 0, Math.PI * 2);
     g.fill();
 
     g.fillStyle = '#e2e8f0';
     g.font = '700 9px "Outfit", sans-serif';
     g.textAlign = 'center';
-    g.fillText(op.name, x + 3, y - 37);
+    g.fillText(op.name, x + 3, y - 39);
 
-    // Subtle chat message bubble
+    // Chat speech bubble
     if (op.msg) {
-      g.fillStyle = 'rgba(30, 27, 40, 0.92)';
+      g.fillStyle = 'rgba(30, 27, 40, 0.94)';
       g.strokeStyle = '#c084fc';
       g.lineWidth = 1;
-      const bw = Math.min(180, op.msg.length * 6.5 + 16);
+      const bw = Math.min(200, Math.max(60, op.msg.length * 6.5 + 16));
       g.beginPath();
       g.roundRect(x - bw / 2, y - 76, bw, 20, 5);
       g.fill();
@@ -5021,7 +5057,26 @@ const c = document.querySelector('#game');
       else if (type === 'regional_guide') drawRegionalGuide(item);
       else if (type === 'castle_npc') drawCastleNpc(item, t);
       else if (type === 'online_player') drawOnlinePlayer(item, t);
-      else drawHero(g, p, last, heroSprites, box);
+      else {
+        drawHero(g, p, last, heroSprites, box);
+        const localBubble = window.CinzasChat?.getLocalBubble?.();
+        if (localBubble) {
+          g.save();
+          g.fillStyle = 'rgba(20, 35, 25, 0.94)';
+          g.strokeStyle = '#4ade80';
+          g.lineWidth = 1;
+          const bw = Math.min(200, Math.max(60, localBubble.length * 6.5 + 16));
+          g.beginPath();
+          g.roundRect(p.x - bw / 2, p.y - 78, bw, 20, 5);
+          g.fill();
+          g.stroke();
+          g.fillStyle = '#dcfce7';
+          g.font = '600 9px "Outfit", sans-serif';
+          g.textAlign = 'center';
+          g.fillText(localBubble, p.x, p.y - 65);
+          g.restore();
+        }
+      }
     });
 
     updateAndDrawPet(g, t, dt);
@@ -5171,6 +5226,16 @@ const c = document.querySelector('#game');
   });
 
   channelManager.init();
+  chatUI.init();
+
+  cinzasNet.onAction = (action) => {
+    emitCombatEffect(action.kind || 'slash', action.x, action.y, action.color || '#f5d37b', {
+      duration: 320,
+      radius: 46,
+      dir: action.dir || 'south'
+    });
+    sparks(action.x, action.y, action.color || '#f5d37b', 14);
+  };
 
   if (autoStart) {
     const root = document.querySelector('#mainMenu');

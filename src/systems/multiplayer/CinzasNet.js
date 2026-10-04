@@ -22,6 +22,7 @@ export class CinzasNet {
     // Callbacks de eventos
     this.onState = () => {};
     this.onChat = () => {};
+    this.onAction = () => {};
     this.onJoined = () => {};
     this.onDisconnect = () => {};
 
@@ -101,7 +102,7 @@ export class CinzasNet {
   }
 
   // ─── Conexão WebSocket ───────────────────────────────────────
-  connect(channel = 'bosque-1', initialX = null, initialY = null) {
+  connect(channel = 'bosque-1', initialX = null, initialY = null, classId = null) {
     return new Promise((resolve, reject) => {
       if (!this.token) {
         return reject(new Error('Autentique-se antes de conectar ao canal.'));
@@ -111,6 +112,7 @@ export class CinzasNet {
       const p = typeof window !== 'undefined' ? window._tdcPlayer : null;
       const sx = Number.isFinite(initialX) ? initialX : (p && Number.isFinite(p.x) ? Math.round(p.x) : 1000);
       const sy = Number.isFinite(initialY) ? initialY : (p && Number.isFinite(p.y) ? Math.round(p.y) : 1000);
+      const cls = classId || (p && p.classId) || 'guerreiro';
 
       try {
         const ws = new WebSocket(this.getWsUrl());
@@ -118,7 +120,7 @@ export class CinzasNet {
 
         ws.onopen = () => {
           this.isConnected = true;
-          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy }));
+          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls }));
         };
 
         ws.onerror = (err) => {
@@ -151,6 +153,8 @@ export class CinzasNet {
             this.handleServerState(m.players || []);
           } else if (m.t === 'chat') {
             this.handleChatMessage(m);
+          } else if (m.t === 'action') {
+            this.handleActionMessage(m);
           } else if (m.t === 'error') {
             reject(new Error(m.error || 'Erro no canal'));
           }
@@ -175,10 +179,18 @@ export class CinzasNet {
         existing = {
           id: p.id,
           name: p.name || `Errante #${p.id}`,
+          classId: p.classId || 'guerreiro',
           x: p.x,
           y: p.y,
           tx: p.x,
           ty: p.y,
+          dx: p.dx || 0,
+          dy: p.dy || 0,
+          dir: 'south',
+          face: 1,
+          moving: false,
+          walk: 0,
+          attackAt: 0,
           color: this.playerColor(p.id),
           msg: null,
           msgAt: 0
@@ -187,6 +199,9 @@ export class CinzasNet {
       } else {
         existing.tx = p.x;
         existing.ty = p.y;
+        existing.dx = p.dx || 0;
+        existing.dy = p.dy || 0;
+        if (p.classId) existing.classId = p.classId;
         if (p.name) existing.name = p.name;
       }
     }
@@ -210,12 +225,39 @@ export class CinzasNet {
     this.onChat(m);
   }
 
+  handleActionMessage(m) {
+    const p = this.remotePlayers.get(m.fromId);
+    if (p) {
+      p.attackAt = performance.now();
+      if (m.dir) p.dir = m.dir;
+    }
+    this.onAction(m);
+  }
+
   // ─── Atualização de Física / Interpolação Suave (Frame a Frame)
   update(dt = 0.016) {
     const factor = Math.min(1, 14 * dt);
     for (const p of this.remotePlayers.values()) {
-      p.x += (p.tx - p.x) * factor;
-      p.y += (p.ty - p.y) * factor;
+      const diffX = p.tx - p.x;
+      const diffY = p.ty - p.y;
+      p.x += diffX * factor;
+      p.y += diffY * factor;
+
+      const isMoving = Math.hypot(p.dx || 0, p.dy || 0) > 0 || Math.hypot(diffX, diffY) > 1.2;
+      p.moving = isMoving;
+      if (isMoving) {
+        p.walk += dt * 11;
+        const moveX = p.dx || (Math.abs(diffX) > 0.6 ? Math.sign(diffX) : 0);
+        const moveY = p.dy || (Math.abs(diffY) > 0.6 ? Math.sign(diffY) : 0);
+        if (moveX || moveY) {
+          const ax = Math.abs(moveX), ay = Math.abs(moveY);
+          if (ax > ay * 2) p.dir = moveX > 0 ? 'east' : 'west';
+          else if (ay > ax * 2) p.dir = moveY > 0 ? 'south' : 'north';
+          else p.dir = moveY > 0 ? (moveX > 0 ? 'south-east' : 'south-west') : (moveX > 0 ? 'north-east' : 'north-west');
+          if (moveX) p.face = Math.sign(moveX);
+        }
+      }
+
       // Expira balão de fala após 5 segundos
       if (p.msg && performance.now() - p.msgAt > 5000) {
         p.msg = null;
@@ -239,6 +281,18 @@ export class CinzasNet {
     const sanitized = String(text || '').trim().slice(0, 140);
     if (!sanitized) return;
     this.ws.send(JSON.stringify({ t: 'chat', text: sanitized }));
+  }
+
+  sendAction(action = {}) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({
+      t: 'action',
+      kind: action.kind || 'slash',
+      x: Math.round(Number(action.x) || 0),
+      y: Math.round(Number(action.y) || 0),
+      color: action.color || '#f5d37b',
+      dir: action.dir || 'south'
+    }));
   }
 
   disconnect() {
