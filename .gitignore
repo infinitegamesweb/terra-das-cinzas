@@ -4,6 +4,7 @@
 .dev.vars
 multiplayer/.dev.vars
 dist/
+art-staging/
 node_modules/
 .wrangler/
 .wrangler-build/

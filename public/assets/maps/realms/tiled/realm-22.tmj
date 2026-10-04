@@ -1,0 +1,318 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 60,
+  "height": 46,
+  "tilewidth": 32,
+  "tileheight": 32,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 16,
+  "properties": [
+    {
+      "name": "regionId",
+      "type": "string",
+      "value": "22"
+    },
+    {
+      "name": "regionName",
+      "type": "string",
+      "value": "Cidade Fantasma"
+    },
+    {
+      "name": "recommendedLevel",
+      "type": "string",
+      "value": "226-235"
+    },
+    {
+      "name": "biome",
+      "type": "string",
+      "value": "ghosttown"
+    },
+    {
+      "name": "layoutVersion",
+      "type": "string",
+      "value": "1"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Arte de terreno · Cloudflare AI",
+      "type": "imagelayer",
+      "image": "../realm-22.png",
+      "imagewidth": 1900,
+      "imageheight": 1450,
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "offsetx": 0,
+      "offsety": 0,
+      "repeatx": false,
+      "repeaty": false
+    },
+    {
+      "id": 2,
+      "name": "Gameplay · pontos e limites",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Entrada",
+          "class": "PlayerSpawn",
+          "x": 960,
+          "y": 1270,
+          "point": true,
+          "properties": [
+            {
+              "name": "regionId",
+              "type": "string",
+              "value": "22"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Arena do chefe",
+          "class": "BossSpawn",
+          "x": 960,
+          "y": 205,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Prefeito das Sombras"
+            },
+            {
+              "name": "level",
+              "type": "string",
+              "value": "235"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "NPC",
+          "class": "NPCSpawn",
+          "x": 700,
+          "y": 760,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Moradora de Cidade Fantasma"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Grupo 1",
+          "class": "EnemySpawn",
+          "x": 931,
+          "y": 355,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Habitante Espectral"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "226"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "228"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Grupo 2",
+          "class": "EnemySpawn",
+          "x": 1522,
+          "y": 599,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Habitante Espectral"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "226"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "235"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Grupo 3",
+          "class": "EnemySpawn",
+          "x": 425,
+          "y": 841,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Habitante Espectral"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "226"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "235"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Grupo 4",
+          "class": "EnemySpawn",
+          "x": 924,
+          "y": 1116,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Habitante Espectral"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "226"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "235"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "Marco 1",
+          "class": "Landmark",
+          "x": 234,
+          "y": 262,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "barrel"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Marco 2",
+          "class": "Landmark",
+          "x": 1616,
+          "y": 327,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "crate"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Marco 3",
+          "class": "Landmark",
+          "x": 364,
+          "y": 1158,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "stone_stairs"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Marco 4",
+          "class": "Landmark",
+          "x": 1593,
+          "y": 1092,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "lamp_post"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Limite Norte",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": -48,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 13,
+          "name": "Limite Sul",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": 1450,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 14,
+          "name": "Limite Oeste",
+          "class": "WorldBoundary",
+          "x": -48,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        },
+        {
+          "id": 15,
+          "name": "Limite Leste",
+          "class": "WorldBoundary",
+          "x": 1900,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        }
+      ]
+    }
+  ],
+  "tilesets": []
+}

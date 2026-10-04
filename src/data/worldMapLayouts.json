@@ -1,0 +1,3558 @@
+{
+  "2": {
+    "id": 2,
+    "mapName": "Clareira dos Ecos",
+    "col": 1,
+    "row": 0,
+    "biome": "forest",
+    "palette": {
+      "bg": "#18351f",
+      "path": "#a69b75",
+      "tree": "#42763a",
+      "accent": "#b9ae85",
+      "ambientColor": "#95e86e"
+    },
+    "enemySprite": "monster_treant",
+    "bossSprite": "boss_ashroot_guardian",
+    "npcName": "Batedora de Clareira dos Ecos",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 983,
+        "y": 385,
+        "levelMin": 11,
+        "levelMax": 12
+      },
+      {
+        "x": 1452,
+        "y": 592,
+        "levelMin": 13,
+        "levelMax": 15
+      },
+      {
+        "x": 459,
+        "y": 847,
+        "levelMin": 16,
+        "levelMax": 17
+      },
+      {
+        "x": 1007,
+        "y": 1102,
+        "levelMin": 18,
+        "levelMax": 19
+      }
+    ],
+    "areas": [
+      {
+        "name": "Clareira dos Ecos · Norte",
+        "min": 11,
+        "max": 12,
+        "x": 983,
+        "y": 385,
+        "boss": false
+      },
+      {
+        "name": "Clareira dos Ecos · Leste",
+        "min": 13,
+        "max": 15,
+        "x": 1452,
+        "y": 592,
+        "boss": false
+      },
+      {
+        "name": "Clareira dos Ecos · Oeste",
+        "min": 16,
+        "max": 17,
+        "x": 459,
+        "y": 847,
+        "boss": false
+      },
+      {
+        "name": "Clareira dos Ecos · Sul",
+        "min": 18,
+        "max": 19,
+        "x": 1007,
+        "y": 1102,
+        "boss": false
+      },
+      {
+        "name": "Arena · Eco da Raiz-Mãe",
+        "min": 20,
+        "max": 20,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 234,
+        "y": 233,
+        "kind": "rock_moss",
+        "scale": 0.94
+      },
+      {
+        "x": 1614,
+        "y": 280,
+        "kind": "rock_small",
+        "scale": 1.12
+      },
+      {
+        "x": 319,
+        "y": 1172,
+        "kind": "stump",
+        "scale": 1.11
+      },
+      {
+        "x": 1586,
+        "y": 1126,
+        "kind": "log",
+        "scale": 1.11
+      }
+    ],
+    "levelRange": {
+      "min": 11,
+      "max": 20
+    }
+  },
+  "3": {
+    "id": 3,
+    "mapName": "Margem Afogada",
+    "col": 2,
+    "row": 0,
+    "biome": "swamp",
+    "palette": {
+      "bg": "#102b2b",
+      "path": "#718681",
+      "tree": "#28534a",
+      "accent": "#79d3bd",
+      "ambientColor": "#6ee5e8"
+    },
+    "enemySprite": "monster_swamp_witch",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Barqueira de Margem Afogada",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 943,
+        "y": 365,
+        "levelMin": 21,
+        "levelMax": 22
+      },
+      {
+        "x": 1514,
+        "y": 584,
+        "levelMin": 23,
+        "levelMax": 25
+      },
+      {
+        "x": 400,
+        "y": 821,
+        "levelMin": 26,
+        "levelMax": 27
+      },
+      {
+        "x": 1009,
+        "y": 1113,
+        "levelMin": 28,
+        "levelMax": 29
+      }
+    ],
+    "areas": [
+      {
+        "name": "Margem Afogada · Norte",
+        "min": 21,
+        "max": 22,
+        "x": 943,
+        "y": 365,
+        "boss": false
+      },
+      {
+        "name": "Margem Afogada · Leste",
+        "min": 23,
+        "max": 25,
+        "x": 1514,
+        "y": 584,
+        "boss": false
+      },
+      {
+        "name": "Margem Afogada · Oeste",
+        "min": 26,
+        "max": 27,
+        "x": 400,
+        "y": 821,
+        "boss": false
+      },
+      {
+        "name": "Margem Afogada · Sul",
+        "min": 28,
+        "max": 29,
+        "x": 1009,
+        "y": 1113,
+        "boss": false
+      },
+      {
+        "name": "Arena · Alfa das Névoas",
+        "min": 30,
+        "max": 30,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 258,
+        "y": 252,
+        "kind": "swamp_mossy_log",
+        "scale": 1.12
+      },
+      {
+        "x": 1635,
+        "y": 308,
+        "kind": "swamp_mud_mound",
+        "scale": 1.0
+      },
+      {
+        "x": 343,
+        "y": 1134,
+        "kind": "swamp_mossy_rock",
+        "scale": 0.98
+      },
+      {
+        "x": 1551,
+        "y": 1094,
+        "kind": "water_lily_cluster_3",
+        "scale": 1.03
+      }
+    ],
+    "levelRange": {
+      "min": 21,
+      "max": 30
+    }
+  },
+  "4": {
+    "id": 4,
+    "mapName": "Pântano Espectral",
+    "col": 3,
+    "row": 0,
+    "biome": "swamp",
+    "palette": {
+      "bg": "#102b2b",
+      "path": "#718681",
+      "tree": "#28534a",
+      "accent": "#79d3bd",
+      "ambientColor": "#6ee5e8"
+    },
+    "enemySprite": "monster_swamp_witch",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Barqueira de Pântano Espectral",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 951,
+        "y": 402,
+        "levelMin": 31,
+        "levelMax": 32
+      },
+      {
+        "x": 1511,
+        "y": 597,
+        "levelMin": 33,
+        "levelMax": 35
+      },
+      {
+        "x": 385,
+        "y": 843,
+        "levelMin": 36,
+        "levelMax": 37
+      },
+      {
+        "x": 915,
+        "y": 1078,
+        "levelMin": 38,
+        "levelMax": 39
+      }
+    ],
+    "areas": [
+      {
+        "name": "Pântano Espectral · Norte",
+        "min": 31,
+        "max": 32,
+        "x": 951,
+        "y": 402,
+        "boss": false
+      },
+      {
+        "name": "Pântano Espectral · Leste",
+        "min": 33,
+        "max": 35,
+        "x": 1511,
+        "y": 597,
+        "boss": false
+      },
+      {
+        "name": "Pântano Espectral · Oeste",
+        "min": 36,
+        "max": 37,
+        "x": 385,
+        "y": 843,
+        "boss": false
+      },
+      {
+        "name": "Pântano Espectral · Sul",
+        "min": 38,
+        "max": 39,
+        "x": 915,
+        "y": 1078,
+        "boss": false
+      },
+      {
+        "name": "Arena · Serpente Náufraga",
+        "min": 40,
+        "max": 40,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 266,
+        "y": 244,
+        "kind": "swamp_mossy_log",
+        "scale": 1.09
+      },
+      {
+        "x": 1643,
+        "y": 286,
+        "kind": "swamp_mud_mound",
+        "scale": 1.04
+      },
+      {
+        "x": 316,
+        "y": 1147,
+        "kind": "swamp_mossy_rock",
+        "scale": 1.06
+      },
+      {
+        "x": 1563,
+        "y": 1092,
+        "kind": "water_lily_cluster_3",
+        "scale": 0.92
+      }
+    ],
+    "levelRange": {
+      "min": 31,
+      "max": 40
+    }
+  },
+  "5": {
+    "id": 5,
+    "mapName": "Trilha do Degelo",
+    "col": 4,
+    "row": 0,
+    "biome": "snow",
+    "palette": {
+      "bg": "#29313c",
+      "path": "#b6b3aa",
+      "tree": "#495264",
+      "accent": "#b7d9e8",
+      "ambientColor": "#83cbeb"
+    },
+    "enemySprite": "monster_spiked_crawler",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Guia de Trilha do Degelo",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 934,
+        "y": 406,
+        "levelMin": 41,
+        "levelMax": 42
+      },
+      {
+        "x": 1470,
+        "y": 609,
+        "levelMin": 43,
+        "levelMax": 45
+      },
+      {
+        "x": 401,
+        "y": 865,
+        "levelMin": 46,
+        "levelMax": 47
+      },
+      {
+        "x": 924,
+        "y": 1105,
+        "levelMin": 48,
+        "levelMax": 49
+      }
+    ],
+    "areas": [
+      {
+        "name": "Trilha do Degelo · Norte",
+        "min": 41,
+        "max": 42,
+        "x": 934,
+        "y": 406,
+        "boss": false
+      },
+      {
+        "name": "Trilha do Degelo · Leste",
+        "min": 43,
+        "max": 45,
+        "x": 1470,
+        "y": 609,
+        "boss": false
+      },
+      {
+        "name": "Trilha do Degelo · Oeste",
+        "min": 46,
+        "max": 47,
+        "x": 401,
+        "y": 865,
+        "boss": false
+      },
+      {
+        "name": "Trilha do Degelo · Sul",
+        "min": 48,
+        "max": 49,
+        "x": 924,
+        "y": 1105,
+        "boss": false
+      },
+      {
+        "name": "Arena · Sentinela de Basalto",
+        "min": 50,
+        "max": 50,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 236,
+        "y": 275,
+        "kind": "rock_large",
+        "scale": 0.93
+      },
+      {
+        "x": 1624,
+        "y": 317,
+        "kind": "rock_small",
+        "scale": 1.06
+      },
+      {
+        "x": 327,
+        "y": 1149,
+        "kind": "stone_stairs",
+        "scale": 1.03
+      },
+      {
+        "x": 1546,
+        "y": 1104,
+        "kind": "pillar",
+        "scale": 0.91
+      }
+    ],
+    "levelRange": {
+      "min": 41,
+      "max": 50
+    }
+  },
+  "6": {
+    "id": 6,
+    "mapName": "Montanhas Rubras",
+    "col": 5,
+    "row": 0,
+    "biome": "mountain",
+    "palette": {
+      "bg": "#382720",
+      "path": "#9a806c",
+      "tree": "#694436",
+      "accent": "#ef9864",
+      "ambientColor": "#e87e51"
+    },
+    "enemySprite": "monster_cave_ogre",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Mineradora de Montanhas Rubras",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 956,
+        "y": 395,
+        "levelMin": 51,
+        "levelMax": 52
+      },
+      {
+        "x": 1499,
+        "y": 642,
+        "levelMin": 53,
+        "levelMax": 55
+      },
+      {
+        "x": 370,
+        "y": 812,
+        "levelMin": 56,
+        "levelMax": 57
+      },
+      {
+        "x": 923,
+        "y": 1078,
+        "levelMin": 58,
+        "levelMax": 59
+      }
+    ],
+    "areas": [
+      {
+        "name": "Montanhas Rubras · Norte",
+        "min": 51,
+        "max": 52,
+        "x": 956,
+        "y": 395,
+        "boss": false
+      },
+      {
+        "name": "Montanhas Rubras · Leste",
+        "min": 53,
+        "max": 55,
+        "x": 1499,
+        "y": 642,
+        "boss": false
+      },
+      {
+        "name": "Montanhas Rubras · Oeste",
+        "min": 56,
+        "max": 57,
+        "x": 370,
+        "y": 812,
+        "boss": false
+      },
+      {
+        "name": "Montanhas Rubras · Sul",
+        "min": 58,
+        "max": 59,
+        "x": 923,
+        "y": 1078,
+        "boss": false
+      },
+      {
+        "name": "Arena · Colosso Rubrum",
+        "min": 60,
+        "max": 60,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 247,
+        "y": 248,
+        "kind": "rock_large",
+        "scale": 1.06
+      },
+      {
+        "x": 1669,
+        "y": 302,
+        "kind": "rock_small",
+        "scale": 1.08
+      },
+      {
+        "x": 343,
+        "y": 1141,
+        "kind": "pillar",
+        "scale": 0.97
+      },
+      {
+        "x": 1546,
+        "y": 1107,
+        "kind": "arcane_brazier",
+        "scale": 1.11
+      }
+    ],
+    "levelRange": {
+      "min": 51,
+      "max": 60
+    }
+  },
+  "7": {
+    "id": 7,
+    "mapName": "Portão Partido",
+    "col": 0,
+    "row": 1,
+    "biome": "fortress",
+    "palette": {
+      "bg": "#272431",
+      "path": "#918496",
+      "tree": "#4a4258",
+      "accent": "#d3a565",
+      "ambientColor": "#c577e8"
+    },
+    "enemySprite": "monster_skeleton_warrior",
+    "bossSprite": "monster_haunted_grimoire",
+    "npcName": "Sentinela de Portão Partido",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 976,
+        "y": 363,
+        "levelMin": 61,
+        "levelMax": 63
+      },
+      {
+        "x": 1447,
+        "y": 623,
+        "levelMin": 64,
+        "levelMax": 67
+      },
+      {
+        "x": 430,
+        "y": 831,
+        "levelMin": 68,
+        "levelMax": 71
+      },
+      {
+        "x": 1002,
+        "y": 1087,
+        "levelMin": 72,
+        "levelMax": 74
+      }
+    ],
+    "areas": [
+      {
+        "name": "Portão Partido · Norte",
+        "min": 61,
+        "max": 63,
+        "x": 976,
+        "y": 363,
+        "boss": false
+      },
+      {
+        "name": "Portão Partido · Leste",
+        "min": 64,
+        "max": 67,
+        "x": 1447,
+        "y": 623,
+        "boss": false
+      },
+      {
+        "name": "Portão Partido · Oeste",
+        "min": 68,
+        "max": 71,
+        "x": 430,
+        "y": 831,
+        "boss": false
+      },
+      {
+        "name": "Portão Partido · Sul",
+        "min": 72,
+        "max": 74,
+        "x": 1002,
+        "y": 1087,
+        "boss": false
+      },
+      {
+        "name": "Arena · Arquivista das Cinzas",
+        "min": 75,
+        "max": 75,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 282,
+        "y": 267,
+        "kind": "ruined_statue",
+        "scale": 0.97
+      },
+      {
+        "x": 1631,
+        "y": 279,
+        "kind": "stone_gargoyle",
+        "scale": 0.9
+      },
+      {
+        "x": 307,
+        "y": 1162,
+        "kind": "pillar",
+        "scale": 0.99
+      },
+      {
+        "x": 1544,
+        "y": 1127,
+        "kind": "stone_stairs",
+        "scale": 0.93
+      }
+    ],
+    "levelRange": {
+      "min": 61,
+      "max": 75
+    }
+  },
+  "8": {
+    "id": 8,
+    "mapName": "Torre das Brasas",
+    "col": 1,
+    "row": 1,
+    "biome": "fortress",
+    "palette": {
+      "bg": "#272431",
+      "path": "#918496",
+      "tree": "#4a4258",
+      "accent": "#d3a565",
+      "ambientColor": "#c577e8"
+    },
+    "enemySprite": "monster_skeleton_warrior",
+    "bossSprite": "monster_haunted_grimoire",
+    "npcName": "Sentinela de Torre das Brasas",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 992,
+        "y": 396,
+        "levelMin": 76,
+        "levelMax": 78
+      },
+      {
+        "x": 1520,
+        "y": 620,
+        "levelMin": 79,
+        "levelMax": 82
+      },
+      {
+        "x": 424,
+        "y": 858,
+        "levelMin": 83,
+        "levelMax": 86
+      },
+      {
+        "x": 947,
+        "y": 1127,
+        "levelMin": 87,
+        "levelMax": 89
+      }
+    ],
+    "areas": [
+      {
+        "name": "Torre das Brasas · Norte",
+        "min": 76,
+        "max": 78,
+        "x": 992,
+        "y": 396,
+        "boss": false
+      },
+      {
+        "name": "Torre das Brasas · Leste",
+        "min": 79,
+        "max": 82,
+        "x": 1520,
+        "y": 620,
+        "boss": false
+      },
+      {
+        "name": "Torre das Brasas · Oeste",
+        "min": 83,
+        "max": 86,
+        "x": 424,
+        "y": 858,
+        "boss": false
+      },
+      {
+        "name": "Torre das Brasas · Sul",
+        "min": 87,
+        "max": 89,
+        "x": 947,
+        "y": 1127,
+        "boss": false
+      },
+      {
+        "name": "Arena · Vigília da Torre",
+        "min": 90,
+        "max": 90,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 239,
+        "y": 244,
+        "kind": "ruined_statue",
+        "scale": 1.12
+      },
+      {
+        "x": 1642,
+        "y": 327,
+        "kind": "stone_gargoyle",
+        "scale": 0.95
+      },
+      {
+        "x": 359,
+        "y": 1183,
+        "kind": "pillar",
+        "scale": 0.92
+      },
+      {
+        "x": 1572,
+        "y": 1104,
+        "kind": "stone_stairs",
+        "scale": 0.94
+      }
+    ],
+    "levelRange": {
+      "min": 76,
+      "max": 90
+    }
+  },
+  "9": {
+    "id": 9,
+    "mapName": "Campos Crepusculares",
+    "col": 2,
+    "row": 1,
+    "biome": "eclipse",
+    "palette": {
+      "bg": "#211926",
+      "path": "#8b6d70",
+      "tree": "#48303f",
+      "accent": "#cb7970",
+      "ambientColor": "#e86e8a"
+    },
+    "enemySprite": "monster_shadow_spirit",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Oráculo de Campos Crepusculares",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 975,
+        "y": 345,
+        "levelMin": 91,
+        "levelMax": 92
+      },
+      {
+        "x": 1470,
+        "y": 627,
+        "levelMin": 93,
+        "levelMax": 95
+      },
+      {
+        "x": 428,
+        "y": 853,
+        "levelMin": 96,
+        "levelMax": 97
+      },
+      {
+        "x": 958,
+        "y": 1133,
+        "levelMin": 98,
+        "levelMax": 99
+      }
+    ],
+    "areas": [
+      {
+        "name": "Campos Crepusculares · Norte",
+        "min": 91,
+        "max": 92,
+        "x": 975,
+        "y": 345,
+        "boss": false
+      },
+      {
+        "name": "Campos Crepusculares · Leste",
+        "min": 93,
+        "max": 95,
+        "x": 1470,
+        "y": 627,
+        "boss": false
+      },
+      {
+        "name": "Campos Crepusculares · Oeste",
+        "min": 96,
+        "max": 97,
+        "x": 428,
+        "y": 853,
+        "boss": false
+      },
+      {
+        "name": "Campos Crepusculares · Sul",
+        "min": 98,
+        "max": 99,
+        "x": 958,
+        "y": 1133,
+        "boss": false
+      },
+      {
+        "name": "Arena · Vharok (1ª Forma)",
+        "min": 100,
+        "max": 100,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 245,
+        "y": 242,
+        "kind": "stone_gargoyle",
+        "scale": 0.91
+      },
+      {
+        "x": 1617,
+        "y": 323,
+        "kind": "arcane_brazier",
+        "scale": 0.91
+      },
+      {
+        "x": 334,
+        "y": 1159,
+        "kind": "ruin_pillar",
+        "scale": 1.01
+      },
+      {
+        "x": 1559,
+        "y": 1111,
+        "kind": "ruined_statue",
+        "scale": 1.07
+      }
+    ],
+    "levelRange": {
+      "min": 91,
+      "max": 100
+    }
+  },
+  "10": {
+    "id": 10,
+    "mapName": "Cavernas do Vazio",
+    "col": 3,
+    "row": 1,
+    "biome": "cavern",
+    "palette": {
+      "bg": "#111a22",
+      "path": "#667d89",
+      "tree": "#273d4a",
+      "accent": "#60b8d3",
+      "ambientColor": "#50c7df"
+    },
+    "enemySprite": "monster_spiked_crawler",
+    "bossSprite": "monster_giant_eyeball",
+    "npcName": "Escavadora de Cavernas do Vazio",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 929,
+        "y": 342,
+        "levelMin": 101,
+        "levelMax": 102
+      },
+      {
+        "x": 1500,
+        "y": 596,
+        "levelMin": 103,
+        "levelMax": 105
+      },
+      {
+        "x": 388,
+        "y": 823,
+        "levelMin": 106,
+        "levelMax": 107
+      },
+      {
+        "x": 943,
+        "y": 1134,
+        "levelMin": 108,
+        "levelMax": 109
+      }
+    ],
+    "areas": [
+      {
+        "name": "Cavernas do Vazio · Norte",
+        "min": 101,
+        "max": 102,
+        "x": 929,
+        "y": 342,
+        "boss": false
+      },
+      {
+        "name": "Cavernas do Vazio · Leste",
+        "min": 103,
+        "max": 105,
+        "x": 1500,
+        "y": 596,
+        "boss": false
+      },
+      {
+        "name": "Cavernas do Vazio · Oeste",
+        "min": 106,
+        "max": 107,
+        "x": 388,
+        "y": 823,
+        "boss": false
+      },
+      {
+        "name": "Cavernas do Vazio · Sul",
+        "min": 108,
+        "max": 109,
+        "x": 943,
+        "y": 1134,
+        "boss": false
+      },
+      {
+        "name": "Arena · Rainha das Larvas",
+        "min": 110,
+        "max": 110,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 273,
+        "y": 284,
+        "kind": "stalagmite_1",
+        "scale": 0.96
+      },
+      {
+        "x": 1645,
+        "y": 310,
+        "kind": "stalagmite_2",
+        "scale": 1.04
+      },
+      {
+        "x": 302,
+        "y": 1132,
+        "kind": "rock_cave_1",
+        "scale": 1.09
+      },
+      {
+        "x": 1604,
+        "y": 1125,
+        "kind": "rock_cave_2",
+        "scale": 1.07
+      }
+    ],
+    "levelRange": {
+      "min": 101,
+      "max": 110
+    }
+  },
+  "11": {
+    "id": 11,
+    "mapName": "Labirinto de Ferro",
+    "col": 4,
+    "row": 1,
+    "biome": "iron",
+    "palette": {
+      "bg": "#202226",
+      "path": "#766e63",
+      "tree": "#373940",
+      "accent": "#d28a54",
+      "ambientColor": "#d28a54"
+    },
+    "enemySprite": "monster_haunted_grimoire",
+    "bossSprite": "monster_haunted_grimoire",
+    "npcName": "Engenheira de Labirinto de Ferro",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 956,
+        "y": 376,
+        "levelMin": 111,
+        "levelMax": 112
+      },
+      {
+        "x": 1467,
+        "y": 588,
+        "levelMin": 113,
+        "levelMax": 115
+      },
+      {
+        "x": 402,
+        "y": 850,
+        "levelMin": 116,
+        "levelMax": 117
+      },
+      {
+        "x": 993,
+        "y": 1138,
+        "levelMin": 118,
+        "levelMax": 119
+      }
+    ],
+    "areas": [
+      {
+        "name": "Labirinto de Ferro · Norte",
+        "min": 111,
+        "max": 112,
+        "x": 956,
+        "y": 376,
+        "boss": false
+      },
+      {
+        "name": "Labirinto de Ferro · Leste",
+        "min": 113,
+        "max": 115,
+        "x": 1467,
+        "y": 588,
+        "boss": false
+      },
+      {
+        "name": "Labirinto de Ferro · Oeste",
+        "min": 116,
+        "max": 117,
+        "x": 402,
+        "y": 850,
+        "boss": false
+      },
+      {
+        "name": "Labirinto de Ferro · Sul",
+        "min": 118,
+        "max": 119,
+        "x": 993,
+        "y": 1138,
+        "boss": false
+      },
+      {
+        "name": "Arena · Núcleo Central",
+        "min": 120,
+        "max": 120,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 295,
+        "y": 282,
+        "kind": "mine_cart_1",
+        "scale": 1.05
+      },
+      {
+        "x": 1646,
+        "y": 309,
+        "kind": "rock_large",
+        "scale": 1.04
+      },
+      {
+        "x": 344,
+        "y": 1181,
+        "kind": "barrel",
+        "scale": 0.97
+      },
+      {
+        "x": 1553,
+        "y": 1119,
+        "kind": "crate",
+        "scale": 1.0
+      }
+    ],
+    "levelRange": {
+      "min": 111,
+      "max": 120
+    }
+  },
+  "12": {
+    "id": 12,
+    "mapName": "Forjas Malditas",
+    "col": 5,
+    "row": 1,
+    "biome": "lava",
+    "palette": {
+      "bg": "#2a150e",
+      "path": "#9e6851",
+      "tree": "#552e24",
+      "accent": "#ff8b42",
+      "ambientColor": "#ff6b35"
+    },
+    "enemySprite": "monster_hell_hound",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Ferreira de Forjas Malditas",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 939,
+        "y": 350,
+        "levelMin": 121,
+        "levelMax": 122
+      },
+      {
+        "x": 1450,
+        "y": 590,
+        "levelMin": 123,
+        "levelMax": 125
+      },
+      {
+        "x": 438,
+        "y": 801,
+        "levelMin": 126,
+        "levelMax": 127
+      },
+      {
+        "x": 984,
+        "y": 1089,
+        "levelMin": 128,
+        "levelMax": 129
+      }
+    ],
+    "areas": [
+      {
+        "name": "Forjas Malditas · Norte",
+        "min": 121,
+        "max": 122,
+        "x": 939,
+        "y": 350,
+        "boss": false
+      },
+      {
+        "name": "Forjas Malditas · Leste",
+        "min": 123,
+        "max": 125,
+        "x": 1450,
+        "y": 590,
+        "boss": false
+      },
+      {
+        "name": "Forjas Malditas · Oeste",
+        "min": 126,
+        "max": 127,
+        "x": 438,
+        "y": 801,
+        "boss": false
+      },
+      {
+        "name": "Forjas Malditas · Sul",
+        "min": 128,
+        "max": 129,
+        "x": 984,
+        "y": 1089,
+        "boss": false
+      },
+      {
+        "name": "Arena · Mestre das Forjas",
+        "min": 130,
+        "max": 130,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 239,
+        "y": 275,
+        "kind": "rock_large",
+        "scale": 1.05
+      },
+      {
+        "x": 1614,
+        "y": 279,
+        "kind": "rock_small",
+        "scale": 1.08
+      },
+      {
+        "x": 294,
+        "y": 1155,
+        "kind": "arcane_brazier",
+        "scale": 0.94
+      },
+      {
+        "x": 1538,
+        "y": 1134,
+        "kind": "pillar",
+        "scale": 1.08
+      }
+    ],
+    "levelRange": {
+      "min": 121,
+      "max": 130
+    }
+  },
+  "13": {
+    "id": 13,
+    "mapName": "Abismo Sombrio",
+    "col": 0,
+    "row": 2,
+    "biome": "abyss",
+    "palette": {
+      "bg": "#100e1d",
+      "path": "#514a71",
+      "tree": "#252039",
+      "accent": "#8878c9",
+      "ambientColor": "#8676dc"
+    },
+    "enemySprite": "monster_void_serpent",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Vidente de Abismo Sombrio",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 992,
+        "y": 336,
+        "levelMin": 131,
+        "levelMax": 132
+      },
+      {
+        "x": 1487,
+        "y": 617,
+        "levelMin": 133,
+        "levelMax": 135
+      },
+      {
+        "x": 435,
+        "y": 859,
+        "levelMin": 136,
+        "levelMax": 137
+      },
+      {
+        "x": 974,
+        "y": 1140,
+        "levelMin": 138,
+        "levelMax": 139
+      }
+    ],
+    "areas": [
+      {
+        "name": "Abismo Sombrio · Norte",
+        "min": 131,
+        "max": 132,
+        "x": 992,
+        "y": 336,
+        "boss": false
+      },
+      {
+        "name": "Abismo Sombrio · Leste",
+        "min": 133,
+        "max": 135,
+        "x": 1487,
+        "y": 617,
+        "boss": false
+      },
+      {
+        "name": "Abismo Sombrio · Oeste",
+        "min": 136,
+        "max": 137,
+        "x": 435,
+        "y": 859,
+        "boss": false
+      },
+      {
+        "name": "Abismo Sombrio · Sul",
+        "min": 138,
+        "max": 139,
+        "x": 974,
+        "y": 1140,
+        "boss": false
+      },
+      {
+        "name": "Arena · O Sem-Nome do Abismo",
+        "min": 140,
+        "max": 140,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 279,
+        "y": 282,
+        "kind": "rock_cave_4",
+        "scale": 1.06
+      },
+      {
+        "x": 1604,
+        "y": 275,
+        "kind": "stalagmite_3",
+        "scale": 0.94
+      },
+      {
+        "x": 350,
+        "y": 1165,
+        "kind": "arcane_brazier",
+        "scale": 0.93
+      },
+      {
+        "x": 1537,
+        "y": 1098,
+        "kind": "ore_amethyst_spire",
+        "scale": 1.11
+      }
+    ],
+    "levelRange": {
+      "min": 131,
+      "max": 140
+    }
+  },
+  "14": {
+    "id": 14,
+    "mapName": "Cripta Eterna",
+    "col": 2,
+    "row": 2,
+    "biome": "crypt",
+    "palette": {
+      "bg": "#1a1924",
+      "path": "#706b75",
+      "tree": "#393644",
+      "accent": "#9b91b7",
+      "ambientColor": "#a797d6"
+    },
+    "enemySprite": "monster_ghost_spectre",
+    "bossSprite": "monster_reaper_death",
+    "npcName": "Coveira de Cripta Eterna",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 922,
+        "y": 398,
+        "levelMin": 141,
+        "levelMax": 142
+      },
+      {
+        "x": 1457,
+        "y": 631,
+        "levelMin": 143,
+        "levelMax": 145
+      },
+      {
+        "x": 374,
+        "y": 853,
+        "levelMin": 146,
+        "levelMax": 147
+      },
+      {
+        "x": 985,
+        "y": 1125,
+        "levelMin": 148,
+        "levelMax": 149
+      }
+    ],
+    "areas": [
+      {
+        "name": "Cripta Eterna · Norte",
+        "min": 141,
+        "max": 142,
+        "x": 922,
+        "y": 398,
+        "boss": false
+      },
+      {
+        "name": "Cripta Eterna · Leste",
+        "min": 143,
+        "max": 145,
+        "x": 1457,
+        "y": 631,
+        "boss": false
+      },
+      {
+        "name": "Cripta Eterna · Oeste",
+        "min": 146,
+        "max": 147,
+        "x": 374,
+        "y": 853,
+        "boss": false
+      },
+      {
+        "name": "Cripta Eterna · Sul",
+        "min": 148,
+        "max": 149,
+        "x": 985,
+        "y": 1125,
+        "boss": false
+      },
+      {
+        "name": "Arena · Senhor das Criptas",
+        "min": 150,
+        "max": 150,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 269,
+        "y": 268,
+        "kind": "ruined_statue",
+        "scale": 1.0
+      },
+      {
+        "x": 1643,
+        "y": 296,
+        "kind": "stone_gargoyle",
+        "scale": 1.02
+      },
+      {
+        "x": 326,
+        "y": 1157,
+        "kind": "cave_dungeon_entrance",
+        "scale": 0.99
+      },
+      {
+        "x": 1534,
+        "y": 1119,
+        "kind": "pillar",
+        "scale": 1.05
+      }
+    ],
+    "levelRange": {
+      "min": 141,
+      "max": 150
+    }
+  },
+  "15": {
+    "id": 15,
+    "mapName": "Floresta Amaldiçoada",
+    "col": 3,
+    "row": 2,
+    "biome": "forest",
+    "palette": {
+      "bg": "#18351f",
+      "path": "#a69b75",
+      "tree": "#42763a",
+      "accent": "#b9ae85",
+      "ambientColor": "#95e86e"
+    },
+    "enemySprite": "monster_treant",
+    "bossSprite": "boss_ashroot_guardian",
+    "npcName": "Batedora de Floresta Amaldiçoada",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 913,
+        "y": 334,
+        "levelMin": 151,
+        "levelMax": 152
+      },
+      {
+        "x": 1520,
+        "y": 595,
+        "levelMin": 153,
+        "levelMax": 155
+      },
+      {
+        "x": 379,
+        "y": 837,
+        "levelMin": 156,
+        "levelMax": 157
+      },
+      {
+        "x": 933,
+        "y": 1112,
+        "levelMin": 158,
+        "levelMax": 159
+      }
+    ],
+    "areas": [
+      {
+        "name": "Floresta Amaldiçoada · Norte",
+        "min": 151,
+        "max": 152,
+        "x": 913,
+        "y": 334,
+        "boss": false
+      },
+      {
+        "name": "Floresta Amaldiçoada · Leste",
+        "min": 153,
+        "max": 155,
+        "x": 1520,
+        "y": 595,
+        "boss": false
+      },
+      {
+        "name": "Floresta Amaldiçoada · Oeste",
+        "min": 156,
+        "max": 157,
+        "x": 379,
+        "y": 837,
+        "boss": false
+      },
+      {
+        "name": "Floresta Amaldiçoada · Sul",
+        "min": 158,
+        "max": 159,
+        "x": 933,
+        "y": 1112,
+        "boss": false
+      },
+      {
+        "name": "Arena · Espírito da Floresta",
+        "min": 160,
+        "max": 160,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 287,
+        "y": 262,
+        "kind": "rock_moss",
+        "scale": 1.1
+      },
+      {
+        "x": 1660,
+        "y": 321,
+        "kind": "rock_small",
+        "scale": 0.93
+      },
+      {
+        "x": 344,
+        "y": 1136,
+        "kind": "stump",
+        "scale": 1.0
+      },
+      {
+        "x": 1542,
+        "y": 1095,
+        "kind": "log",
+        "scale": 1.0
+      }
+    ],
+    "levelRange": {
+      "min": 151,
+      "max": 160
+    }
+  },
+  "16": {
+    "id": 16,
+    "mapName": "Torres do Esquecimento",
+    "col": 4,
+    "row": 2,
+    "biome": "tower",
+    "palette": {
+      "bg": "#211b2e",
+      "path": "#70617f",
+      "tree": "#393047",
+      "accent": "#b69be1",
+      "ambientColor": "#ba9fe6"
+    },
+    "enemySprite": "monster_flying_demon",
+    "bossSprite": "monster_haunted_grimoire",
+    "npcName": "Arquivista de Torres do Esquecimento",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 941,
+        "y": 402,
+        "levelMin": 161,
+        "levelMax": 162
+      },
+      {
+        "x": 1497,
+        "y": 616,
+        "levelMin": 163,
+        "levelMax": 165
+      },
+      {
+        "x": 429,
+        "y": 860,
+        "levelMin": 166,
+        "levelMax": 167
+      },
+      {
+        "x": 951,
+        "y": 1136,
+        "levelMin": 168,
+        "levelMax": 169
+      }
+    ],
+    "areas": [
+      {
+        "name": "Torres do Esquecimento · Norte",
+        "min": 161,
+        "max": 162,
+        "x": 941,
+        "y": 402,
+        "boss": false
+      },
+      {
+        "name": "Torres do Esquecimento · Leste",
+        "min": 163,
+        "max": 165,
+        "x": 1497,
+        "y": 616,
+        "boss": false
+      },
+      {
+        "name": "Torres do Esquecimento · Oeste",
+        "min": 166,
+        "max": 167,
+        "x": 429,
+        "y": 860,
+        "boss": false
+      },
+      {
+        "name": "Torres do Esquecimento · Sul",
+        "min": 168,
+        "max": 169,
+        "x": 951,
+        "y": 1136,
+        "boss": false
+      },
+      {
+        "name": "Arena · O Esquecedor",
+        "min": 170,
+        "max": 170,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 292,
+        "y": 238,
+        "kind": "pillar",
+        "scale": 0.9
+      },
+      {
+        "x": 1640,
+        "y": 279,
+        "kind": "ruin_pillar",
+        "scale": 0.97
+      },
+      {
+        "x": 356,
+        "y": 1183,
+        "kind": "arcane_brazier",
+        "scale": 0.99
+      },
+      {
+        "x": 1580,
+        "y": 1110,
+        "kind": "stone_stairs",
+        "scale": 1.1
+      }
+    ],
+    "levelRange": {
+      "min": 161,
+      "max": 170
+    }
+  },
+  "17": {
+    "id": 17,
+    "mapName": "Mar de Cinzas",
+    "col": 5,
+    "row": 2,
+    "biome": "ash",
+    "palette": {
+      "bg": "#252426",
+      "path": "#817a73",
+      "tree": "#4a4848",
+      "accent": "#c4b8a2",
+      "ambientColor": "#d2b78f"
+    },
+    "enemySprite": "monster_reaper_death",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Andarilha de Mar de Cinzas",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 920,
+        "y": 378,
+        "levelMin": 171,
+        "levelMax": 172
+      },
+      {
+        "x": 1454,
+        "y": 614,
+        "levelMin": 173,
+        "levelMax": 175
+      },
+      {
+        "x": 454,
+        "y": 807,
+        "levelMin": 176,
+        "levelMax": 177
+      },
+      {
+        "x": 988,
+        "y": 1085,
+        "levelMin": 178,
+        "levelMax": 179
+      }
+    ],
+    "areas": [
+      {
+        "name": "Mar de Cinzas · Norte",
+        "min": 171,
+        "max": 172,
+        "x": 920,
+        "y": 378,
+        "boss": false
+      },
+      {
+        "name": "Mar de Cinzas · Leste",
+        "min": 173,
+        "max": 175,
+        "x": 1454,
+        "y": 614,
+        "boss": false
+      },
+      {
+        "name": "Mar de Cinzas · Oeste",
+        "min": 176,
+        "max": 177,
+        "x": 454,
+        "y": 807,
+        "boss": false
+      },
+      {
+        "name": "Mar de Cinzas · Sul",
+        "min": 178,
+        "max": 179,
+        "x": 988,
+        "y": 1085,
+        "boss": false
+      },
+      {
+        "name": "Arena · Leviatã das Cinzas",
+        "min": 180,
+        "max": 180,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 234,
+        "y": 243,
+        "kind": "rock_large",
+        "scale": 0.96
+      },
+      {
+        "x": 1672,
+        "y": 308,
+        "kind": "rock_small",
+        "scale": 1.04
+      },
+      {
+        "x": 313,
+        "y": 1173,
+        "kind": "stone_gargoyle",
+        "scale": 1.05
+      },
+      {
+        "x": 1540,
+        "y": 1111,
+        "kind": "ruin_pillar",
+        "scale": 0.94
+      }
+    ],
+    "levelRange": {
+      "min": 171,
+      "max": 180
+    }
+  },
+  "18": {
+    "id": 18,
+    "mapName": "Núcleo do Vulcão",
+    "col": 0,
+    "row": 3,
+    "biome": "lava",
+    "palette": {
+      "bg": "#2a150e",
+      "path": "#9e6851",
+      "tree": "#552e24",
+      "accent": "#ff8b42",
+      "ambientColor": "#ff6b35"
+    },
+    "enemySprite": "monster_hell_hound",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Ferreira de Núcleo do Vulcão",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 957,
+        "y": 359,
+        "levelMin": 181,
+        "levelMax": 182
+      },
+      {
+        "x": 1459,
+        "y": 618,
+        "levelMin": 183,
+        "levelMax": 185
+      },
+      {
+        "x": 461,
+        "y": 838,
+        "levelMin": 186,
+        "levelMax": 187
+      },
+      {
+        "x": 964,
+        "y": 1098,
+        "levelMin": 188,
+        "levelMax": 189
+      }
+    ],
+    "areas": [
+      {
+        "name": "Núcleo do Vulcão · Norte",
+        "min": 181,
+        "max": 182,
+        "x": 957,
+        "y": 359,
+        "boss": false
+      },
+      {
+        "name": "Núcleo do Vulcão · Leste",
+        "min": 183,
+        "max": 185,
+        "x": 1459,
+        "y": 618,
+        "boss": false
+      },
+      {
+        "name": "Núcleo do Vulcão · Oeste",
+        "min": 186,
+        "max": 187,
+        "x": 461,
+        "y": 838,
+        "boss": false
+      },
+      {
+        "name": "Núcleo do Vulcão · Sul",
+        "min": 188,
+        "max": 189,
+        "x": 964,
+        "y": 1098,
+        "boss": false
+      },
+      {
+        "name": "Arena · Coração do Vulcão",
+        "min": 190,
+        "max": 190,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 263,
+        "y": 268,
+        "kind": "rock_large",
+        "scale": 1.06
+      },
+      {
+        "x": 1635,
+        "y": 274,
+        "kind": "rock_small",
+        "scale": 1.07
+      },
+      {
+        "x": 300,
+        "y": 1159,
+        "kind": "arcane_brazier",
+        "scale": 1.07
+      },
+      {
+        "x": 1567,
+        "y": 1098,
+        "kind": "pillar",
+        "scale": 1.01
+      }
+    ],
+    "levelRange": {
+      "min": 181,
+      "max": 190
+    }
+  },
+  "19": {
+    "id": 19,
+    "mapName": "Altar do Caos",
+    "col": 1,
+    "row": 3,
+    "biome": "chaos",
+    "palette": {
+      "bg": "#241528",
+      "path": "#785276",
+      "tree": "#482441",
+      "accent": "#e277ae",
+      "ambientColor": "#e277ae"
+    },
+    "enemySprite": "monster_flying_demon",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Ocultista de Altar do Caos",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 1004,
+        "y": 373,
+        "levelMin": 191,
+        "levelMax": 192
+      },
+      {
+        "x": 1479,
+        "y": 613,
+        "levelMin": 193,
+        "levelMax": 195
+      },
+      {
+        "x": 403,
+        "y": 804,
+        "levelMin": 196,
+        "levelMax": 197
+      },
+      {
+        "x": 1007,
+        "y": 1097,
+        "levelMin": 198,
+        "levelMax": 199
+      }
+    ],
+    "areas": [
+      {
+        "name": "Altar do Caos · Norte",
+        "min": 191,
+        "max": 192,
+        "x": 1004,
+        "y": 373,
+        "boss": false
+      },
+      {
+        "name": "Altar do Caos · Leste",
+        "min": 193,
+        "max": 195,
+        "x": 1479,
+        "y": 613,
+        "boss": false
+      },
+      {
+        "name": "Altar do Caos · Oeste",
+        "min": 196,
+        "max": 197,
+        "x": 403,
+        "y": 804,
+        "boss": false
+      },
+      {
+        "name": "Altar do Caos · Sul",
+        "min": 198,
+        "max": 199,
+        "x": 1007,
+        "y": 1097,
+        "boss": false
+      },
+      {
+        "name": "Arena · Arauto do Fim",
+        "min": 200,
+        "max": 200,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 241,
+        "y": 248,
+        "kind": "arcane_brazier",
+        "scale": 0.92
+      },
+      {
+        "x": 1663,
+        "y": 279,
+        "kind": "ruined_statue",
+        "scale": 1.1
+      },
+      {
+        "x": 359,
+        "y": 1140,
+        "kind": "pillar",
+        "scale": 0.99
+      },
+      {
+        "x": 1575,
+        "y": 1101,
+        "kind": "ore_amethyst_spire",
+        "scale": 1.04
+      }
+    ],
+    "levelRange": {
+      "min": 191,
+      "max": 200
+    }
+  },
+  "20": {
+    "id": 20,
+    "mapName": "Planalto Incandescente",
+    "col": 2,
+    "row": 3,
+    "biome": "lava",
+    "palette": {
+      "bg": "#2a150e",
+      "path": "#9e6851",
+      "tree": "#552e24",
+      "accent": "#ff8b42",
+      "ambientColor": "#ff6b35"
+    },
+    "enemySprite": "monster_hell_hound",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Ferreira de Planalto Incandescente",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 962,
+        "y": 386,
+        "levelMin": 201,
+        "levelMax": 203
+      },
+      {
+        "x": 1431,
+        "y": 641,
+        "levelMin": 204,
+        "levelMax": 207
+      },
+      {
+        "x": 388,
+        "y": 821,
+        "levelMin": 208,
+        "levelMax": 211
+      },
+      {
+        "x": 933,
+        "y": 1092,
+        "levelMin": 212,
+        "levelMax": 214
+      }
+    ],
+    "areas": [
+      {
+        "name": "Planalto Incandescente · Norte",
+        "min": 201,
+        "max": 203,
+        "x": 962,
+        "y": 386,
+        "boss": false
+      },
+      {
+        "name": "Planalto Incandescente · Leste",
+        "min": 204,
+        "max": 207,
+        "x": 1431,
+        "y": 641,
+        "boss": false
+      },
+      {
+        "name": "Planalto Incandescente · Oeste",
+        "min": 208,
+        "max": 211,
+        "x": 388,
+        "y": 821,
+        "boss": false
+      },
+      {
+        "name": "Planalto Incandescente · Sul",
+        "min": 212,
+        "max": 214,
+        "x": 933,
+        "y": 1092,
+        "boss": false
+      },
+      {
+        "name": "Arena · Grande Salamandra",
+        "min": 215,
+        "max": 215,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 281,
+        "y": 271,
+        "kind": "rock_large",
+        "scale": 0.94
+      },
+      {
+        "x": 1640,
+        "y": 326,
+        "kind": "rock_small",
+        "scale": 1.1
+      },
+      {
+        "x": 341,
+        "y": 1161,
+        "kind": "arcane_brazier",
+        "scale": 0.9
+      },
+      {
+        "x": 1561,
+        "y": 1140,
+        "kind": "pillar",
+        "scale": 1.0
+      }
+    ],
+    "levelRange": {
+      "min": 201,
+      "max": 215
+    }
+  },
+  "21": {
+    "id": 21,
+    "mapName": "Rio de Magma",
+    "col": 3,
+    "row": 3,
+    "biome": "lava",
+    "palette": {
+      "bg": "#2a150e",
+      "path": "#9e6851",
+      "tree": "#552e24",
+      "accent": "#ff8b42",
+      "ambientColor": "#ff6b35"
+    },
+    "enemySprite": "monster_hell_hound",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Ferreira de Rio de Magma",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 941,
+        "y": 368,
+        "levelMin": 216,
+        "levelMax": 217
+      },
+      {
+        "x": 1452,
+        "y": 647,
+        "levelMin": 218,
+        "levelMax": 220
+      },
+      {
+        "x": 408,
+        "y": 856,
+        "levelMin": 221,
+        "levelMax": 222
+      },
+      {
+        "x": 920,
+        "y": 1102,
+        "levelMin": 223,
+        "levelMax": 224
+      }
+    ],
+    "areas": [
+      {
+        "name": "Rio de Magma · Norte",
+        "min": 216,
+        "max": 217,
+        "x": 941,
+        "y": 368,
+        "boss": false
+      },
+      {
+        "name": "Rio de Magma · Leste",
+        "min": 218,
+        "max": 220,
+        "x": 1452,
+        "y": 647,
+        "boss": false
+      },
+      {
+        "name": "Rio de Magma · Oeste",
+        "min": 221,
+        "max": 222,
+        "x": 408,
+        "y": 856,
+        "boss": false
+      },
+      {
+        "name": "Rio de Magma · Sul",
+        "min": 223,
+        "max": 224,
+        "x": 920,
+        "y": 1102,
+        "boss": false
+      },
+      {
+        "name": "Arena · Senhor do Rio de Fogo",
+        "min": 225,
+        "max": 225,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 288,
+        "y": 249,
+        "kind": "rock_large",
+        "scale": 0.99
+      },
+      {
+        "x": 1657,
+        "y": 311,
+        "kind": "rock_small",
+        "scale": 0.91
+      },
+      {
+        "x": 355,
+        "y": 1181,
+        "kind": "arcane_brazier",
+        "scale": 0.98
+      },
+      {
+        "x": 1573,
+        "y": 1131,
+        "kind": "pillar",
+        "scale": 0.96
+      }
+    ],
+    "levelRange": {
+      "min": 216,
+      "max": 225
+    }
+  },
+  "22": {
+    "id": 22,
+    "mapName": "Cidade Fantasma",
+    "col": 4,
+    "row": 3,
+    "biome": "ghosttown",
+    "palette": {
+      "bg": "#20202a",
+      "path": "#78717b",
+      "tree": "#494953",
+      "accent": "#a7bac6",
+      "ambientColor": "#9fcde0"
+    },
+    "enemySprite": "monster_ghost_spectre",
+    "bossSprite": "monster_vampire_lord",
+    "npcName": "Moradora de Cidade Fantasma",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 931,
+        "y": 395,
+        "levelMin": 226,
+        "levelMax": 227
+      },
+      {
+        "x": 1522,
+        "y": 599,
+        "levelMin": 228,
+        "levelMax": 230
+      },
+      {
+        "x": 425,
+        "y": 841,
+        "levelMin": 231,
+        "levelMax": 232
+      },
+      {
+        "x": 924,
+        "y": 1116,
+        "levelMin": 233,
+        "levelMax": 234
+      }
+    ],
+    "areas": [
+      {
+        "name": "Cidade Fantasma · Norte",
+        "min": 226,
+        "max": 227,
+        "x": 931,
+        "y": 395,
+        "boss": false
+      },
+      {
+        "name": "Cidade Fantasma · Leste",
+        "min": 228,
+        "max": 230,
+        "x": 1522,
+        "y": 599,
+        "boss": false
+      },
+      {
+        "name": "Cidade Fantasma · Oeste",
+        "min": 231,
+        "max": 232,
+        "x": 425,
+        "y": 841,
+        "boss": false
+      },
+      {
+        "name": "Cidade Fantasma · Sul",
+        "min": 233,
+        "max": 234,
+        "x": 924,
+        "y": 1116,
+        "boss": false
+      },
+      {
+        "name": "Arena · Prefeito das Sombras",
+        "min": 235,
+        "max": 235,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 234,
+        "y": 262,
+        "kind": "barrel",
+        "scale": 0.94
+      },
+      {
+        "x": 1616,
+        "y": 327,
+        "kind": "crate",
+        "scale": 0.95
+      },
+      {
+        "x": 364,
+        "y": 1158,
+        "kind": "stone_stairs",
+        "scale": 1.11
+      },
+      {
+        "x": 1593,
+        "y": 1092,
+        "kind": "lamp_post",
+        "scale": 0.95
+      }
+    ],
+    "levelRange": {
+      "min": 226,
+      "max": 235
+    }
+  },
+  "23": {
+    "id": 23,
+    "mapName": "Pico dos Condenados",
+    "col": 5,
+    "row": 3,
+    "biome": "mountain",
+    "palette": {
+      "bg": "#382720",
+      "path": "#9a806c",
+      "tree": "#694436",
+      "accent": "#ef9864",
+      "ambientColor": "#e87e51"
+    },
+    "enemySprite": "monster_cave_ogre",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Mineradora de Pico dos Condenados",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 912,
+        "y": 349,
+        "levelMin": 236,
+        "levelMax": 237
+      },
+      {
+        "x": 1468,
+        "y": 647,
+        "levelMin": 238,
+        "levelMax": 240
+      },
+      {
+        "x": 437,
+        "y": 806,
+        "levelMin": 241,
+        "levelMax": 242
+      },
+      {
+        "x": 942,
+        "y": 1093,
+        "levelMin": 243,
+        "levelMax": 244
+      }
+    ],
+    "areas": [
+      {
+        "name": "Pico dos Condenados · Norte",
+        "min": 236,
+        "max": 237,
+        "x": 912,
+        "y": 349,
+        "boss": false
+      },
+      {
+        "name": "Pico dos Condenados · Leste",
+        "min": 238,
+        "max": 240,
+        "x": 1468,
+        "y": 647,
+        "boss": false
+      },
+      {
+        "name": "Pico dos Condenados · Oeste",
+        "min": 241,
+        "max": 242,
+        "x": 437,
+        "y": 806,
+        "boss": false
+      },
+      {
+        "name": "Pico dos Condenados · Sul",
+        "min": 243,
+        "max": 244,
+        "x": 942,
+        "y": 1093,
+        "boss": false
+      },
+      {
+        "name": "Arena · Rei dos Condenados",
+        "min": 245,
+        "max": 245,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 243,
+        "y": 283,
+        "kind": "rock_large",
+        "scale": 1.1
+      },
+      {
+        "x": 1664,
+        "y": 324,
+        "kind": "rock_small",
+        "scale": 0.99
+      },
+      {
+        "x": 322,
+        "y": 1147,
+        "kind": "pillar",
+        "scale": 0.92
+      },
+      {
+        "x": 1547,
+        "y": 1122,
+        "kind": "arcane_brazier",
+        "scale": 0.95
+      }
+    ],
+    "levelRange": {
+      "min": 236,
+      "max": 245
+    }
+  },
+  "24": {
+    "id": 24,
+    "mapName": "Domínio de Vharok",
+    "col": 0,
+    "row": 4,
+    "biome": "eclipse",
+    "palette": {
+      "bg": "#211926",
+      "path": "#8b6d70",
+      "tree": "#48303f",
+      "accent": "#cb7970",
+      "ambientColor": "#e86e8a"
+    },
+    "enemySprite": "monster_shadow_spirit",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Oráculo de Domínio de Vharok",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 969,
+        "y": 403,
+        "levelMin": 246,
+        "levelMax": 247
+      },
+      {
+        "x": 1475,
+        "y": 632,
+        "levelMin": 248,
+        "levelMax": 250
+      },
+      {
+        "x": 380,
+        "y": 842,
+        "levelMin": 251,
+        "levelMax": 252
+      },
+      {
+        "x": 928,
+        "y": 1095,
+        "levelMin": 253,
+        "levelMax": 254
+      }
+    ],
+    "areas": [
+      {
+        "name": "Domínio de Vharok · Norte",
+        "min": 246,
+        "max": 247,
+        "x": 969,
+        "y": 403,
+        "boss": false
+      },
+      {
+        "name": "Domínio de Vharok · Leste",
+        "min": 248,
+        "max": 250,
+        "x": 1475,
+        "y": 632,
+        "boss": false
+      },
+      {
+        "name": "Domínio de Vharok · Oeste",
+        "min": 251,
+        "max": 252,
+        "x": 380,
+        "y": 842,
+        "boss": false
+      },
+      {
+        "name": "Domínio de Vharok · Sul",
+        "min": 253,
+        "max": 254,
+        "x": 928,
+        "y": 1095,
+        "boss": false
+      },
+      {
+        "name": "Arena · Vharok (Forma Oculta)",
+        "min": 255,
+        "max": 255,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 243,
+        "y": 260,
+        "kind": "stone_gargoyle",
+        "scale": 1.06
+      },
+      {
+        "x": 1636,
+        "y": 321,
+        "kind": "arcane_brazier",
+        "scale": 1.1
+      },
+      {
+        "x": 305,
+        "y": 1151,
+        "kind": "ruin_pillar",
+        "scale": 1.0
+      },
+      {
+        "x": 1549,
+        "y": 1116,
+        "kind": "ruined_statue",
+        "scale": 0.91
+      }
+    ],
+    "levelRange": {
+      "min": 246,
+      "max": 255
+    }
+  },
+  "25": {
+    "id": 25,
+    "mapName": "Câmara do Primeiro Fogo",
+    "col": 1,
+    "row": 4,
+    "biome": "lava",
+    "palette": {
+      "bg": "#2a150e",
+      "path": "#9e6851",
+      "tree": "#552e24",
+      "accent": "#ff8b42",
+      "ambientColor": "#ff6b35"
+    },
+    "enemySprite": "monster_hell_hound",
+    "bossSprite": "boss_ashen_golem",
+    "npcName": "Ferreira de Câmara do Primeiro Fogo",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 988,
+        "y": 349,
+        "levelMin": 256,
+        "levelMax": 256
+      },
+      {
+        "x": 1497,
+        "y": 589,
+        "levelMin": 257,
+        "levelMax": 257
+      },
+      {
+        "x": 460,
+        "y": 810,
+        "levelMin": 258,
+        "levelMax": 258
+      },
+      {
+        "x": 986,
+        "y": 1095,
+        "levelMin": 259,
+        "levelMax": 259
+      }
+    ],
+    "areas": [
+      {
+        "name": "Câmara do Primeiro Fogo · Norte",
+        "min": 256,
+        "max": 256,
+        "x": 988,
+        "y": 349,
+        "boss": false
+      },
+      {
+        "name": "Câmara do Primeiro Fogo · Leste",
+        "min": 257,
+        "max": 257,
+        "x": 1497,
+        "y": 589,
+        "boss": false
+      },
+      {
+        "name": "Câmara do Primeiro Fogo · Oeste",
+        "min": 258,
+        "max": 258,
+        "x": 460,
+        "y": 810,
+        "boss": false
+      },
+      {
+        "name": "Câmara do Primeiro Fogo · Sul",
+        "min": 259,
+        "max": 259,
+        "x": 986,
+        "y": 1095,
+        "boss": false
+      },
+      {
+        "name": "Arena · O Primeiro Cinzeiro",
+        "min": 260,
+        "max": 260,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 248,
+        "y": 287,
+        "kind": "rock_large",
+        "scale": 0.93
+      },
+      {
+        "x": 1675,
+        "y": 276,
+        "kind": "rock_small",
+        "scale": 0.99
+      },
+      {
+        "x": 314,
+        "y": 1145,
+        "kind": "arcane_brazier",
+        "scale": 1.06
+      },
+      {
+        "x": 1589,
+        "y": 1140,
+        "kind": "pillar",
+        "scale": 0.98
+      }
+    ],
+    "levelRange": {
+      "min": 256,
+      "max": 260
+    }
+  },
+  "26": {
+    "id": 26,
+    "mapName": "Véu do Eclipse Final",
+    "col": 2,
+    "row": 4,
+    "biome": "eclipse",
+    "palette": {
+      "bg": "#211926",
+      "path": "#8b6d70",
+      "tree": "#48303f",
+      "accent": "#cb7970",
+      "ambientColor": "#e86e8a"
+    },
+    "enemySprite": "monster_shadow_spirit",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Oráculo de Véu do Eclipse Final",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 998,
+        "y": 362,
+        "levelMin": 261,
+        "levelMax": 262
+      },
+      {
+        "x": 1511,
+        "y": 606,
+        "levelMin": 263,
+        "levelMax": 265
+      },
+      {
+        "x": 432,
+        "y": 814,
+        "levelMin": 266,
+        "levelMax": 267
+      },
+      {
+        "x": 959,
+        "y": 1081,
+        "levelMin": 268,
+        "levelMax": 269
+      }
+    ],
+    "areas": [
+      {
+        "name": "Véu do Eclipse Final · Norte",
+        "min": 261,
+        "max": 262,
+        "x": 998,
+        "y": 362,
+        "boss": false
+      },
+      {
+        "name": "Véu do Eclipse Final · Leste",
+        "min": 263,
+        "max": 265,
+        "x": 1511,
+        "y": 606,
+        "boss": false
+      },
+      {
+        "name": "Véu do Eclipse Final · Oeste",
+        "min": 266,
+        "max": 267,
+        "x": 432,
+        "y": 814,
+        "boss": false
+      },
+      {
+        "name": "Véu do Eclipse Final · Sul",
+        "min": 268,
+        "max": 269,
+        "x": 959,
+        "y": 1081,
+        "boss": false
+      },
+      {
+        "name": "Arena · Juiz do Véu",
+        "min": 270,
+        "max": 270,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 284,
+        "y": 255,
+        "kind": "stone_gargoyle",
+        "scale": 0.92
+      },
+      {
+        "x": 1653,
+        "y": 308,
+        "kind": "arcane_brazier",
+        "scale": 0.91
+      },
+      {
+        "x": 323,
+        "y": 1178,
+        "kind": "ruin_pillar",
+        "scale": 0.96
+      },
+      {
+        "x": 1549,
+        "y": 1134,
+        "kind": "ruined_statue",
+        "scale": 0.94
+      }
+    ],
+    "levelRange": {
+      "min": 261,
+      "max": 270
+    }
+  },
+  "27": {
+    "id": 27,
+    "mapName": "Dimensão das Sombras",
+    "col": 3,
+    "row": 4,
+    "biome": "abyss",
+    "palette": {
+      "bg": "#100e1d",
+      "path": "#514a71",
+      "tree": "#252039",
+      "accent": "#8878c9",
+      "ambientColor": "#8676dc"
+    },
+    "enemySprite": "monster_void_serpent",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Vidente de Dimensão das Sombras",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 944,
+        "y": 405,
+        "levelMin": 271,
+        "levelMax": 272
+      },
+      {
+        "x": 1430,
+        "y": 600,
+        "levelMin": 273,
+        "levelMax": 275
+      },
+      {
+        "x": 423,
+        "y": 832,
+        "levelMin": 276,
+        "levelMax": 277
+      },
+      {
+        "x": 938,
+        "y": 1116,
+        "levelMin": 278,
+        "levelMax": 279
+      }
+    ],
+    "areas": [
+      {
+        "name": "Dimensão das Sombras · Norte",
+        "min": 271,
+        "max": 272,
+        "x": 944,
+        "y": 405,
+        "boss": false
+      },
+      {
+        "name": "Dimensão das Sombras · Leste",
+        "min": 273,
+        "max": 275,
+        "x": 1430,
+        "y": 600,
+        "boss": false
+      },
+      {
+        "name": "Dimensão das Sombras · Oeste",
+        "min": 276,
+        "max": 277,
+        "x": 423,
+        "y": 832,
+        "boss": false
+      },
+      {
+        "name": "Dimensão das Sombras · Sul",
+        "min": 278,
+        "max": 279,
+        "x": 938,
+        "y": 1116,
+        "boss": false
+      },
+      {
+        "name": "Arena · O Sem-Forma",
+        "min": 280,
+        "max": 280,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 296,
+        "y": 245,
+        "kind": "rock_cave_4",
+        "scale": 1.12
+      },
+      {
+        "x": 1637,
+        "y": 312,
+        "kind": "stalagmite_3",
+        "scale": 1.08
+      },
+      {
+        "x": 328,
+        "y": 1184,
+        "kind": "arcane_brazier",
+        "scale": 0.93
+      },
+      {
+        "x": 1559,
+        "y": 1104,
+        "kind": "ore_amethyst_spire",
+        "scale": 0.97
+      }
+    ],
+    "levelRange": {
+      "min": 271,
+      "max": 280
+    }
+  },
+  "28": {
+    "id": 28,
+    "mapName": "Coração do Vazio",
+    "col": 4,
+    "row": 4,
+    "biome": "abyss",
+    "palette": {
+      "bg": "#100e1d",
+      "path": "#514a71",
+      "tree": "#252039",
+      "accent": "#8878c9",
+      "ambientColor": "#8676dc"
+    },
+    "enemySprite": "monster_void_serpent",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Vidente de Coração do Vazio",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 998,
+        "y": 380,
+        "levelMin": 281,
+        "levelMax": 282
+      },
+      {
+        "x": 1496,
+        "y": 627,
+        "levelMin": 283,
+        "levelMax": 285
+      },
+      {
+        "x": 399,
+        "y": 846,
+        "levelMin": 286,
+        "levelMax": 287
+      },
+      {
+        "x": 944,
+        "y": 1091,
+        "levelMin": 288,
+        "levelMax": 289
+      }
+    ],
+    "areas": [
+      {
+        "name": "Coração do Vazio · Norte",
+        "min": 281,
+        "max": 282,
+        "x": 998,
+        "y": 380,
+        "boss": false
+      },
+      {
+        "name": "Coração do Vazio · Leste",
+        "min": 283,
+        "max": 285,
+        "x": 1496,
+        "y": 627,
+        "boss": false
+      },
+      {
+        "name": "Coração do Vazio · Oeste",
+        "min": 286,
+        "max": 287,
+        "x": 399,
+        "y": 846,
+        "boss": false
+      },
+      {
+        "name": "Coração do Vazio · Sul",
+        "min": 288,
+        "max": 289,
+        "x": 944,
+        "y": 1091,
+        "boss": false
+      },
+      {
+        "name": "Arena · Coração Pulsante",
+        "min": 290,
+        "max": 290,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 226,
+        "y": 276,
+        "kind": "rock_cave_4",
+        "scale": 1.11
+      },
+      {
+        "x": 1641,
+        "y": 320,
+        "kind": "stalagmite_3",
+        "scale": 1.08
+      },
+      {
+        "x": 322,
+        "y": 1144,
+        "kind": "arcane_brazier",
+        "scale": 1.06
+      },
+      {
+        "x": 1587,
+        "y": 1117,
+        "kind": "ore_amethyst_spire",
+        "scale": 1.07
+      }
+    ],
+    "levelRange": {
+      "min": 281,
+      "max": 290
+    }
+  },
+  "29": {
+    "id": 29,
+    "mapName": "Terra das Cinzas Eternas",
+    "col": 5,
+    "row": 4,
+    "biome": "ash",
+    "palette": {
+      "bg": "#252426",
+      "path": "#817a73",
+      "tree": "#4a4848",
+      "accent": "#c4b8a2",
+      "ambientColor": "#d2b78f"
+    },
+    "enemySprite": "monster_reaper_death",
+    "bossSprite": "monster_void_serpent",
+    "npcName": "Andarilha de Terra das Cinzas Eternas",
+    "playerSpawn": {
+      "x": 960,
+      "y": 1270
+    },
+    "npcSpawn": {
+      "x": 700,
+      "y": 760
+    },
+    "bossSpawn": {
+      "x": 960,
+      "y": 205
+    },
+    "enemySpawns": [
+      {
+        "x": 986,
+        "y": 342,
+        "levelMin": 291,
+        "levelMax": 292
+      },
+      {
+        "x": 1502,
+        "y": 633,
+        "levelMin": 293,
+        "levelMax": 295
+      },
+      {
+        "x": 410,
+        "y": 849,
+        "levelMin": 296,
+        "levelMax": 297
+      },
+      {
+        "x": 912,
+        "y": 1078,
+        "levelMin": 298,
+        "levelMax": 299
+      }
+    ],
+    "areas": [
+      {
+        "name": "Terra das Cinzas Eternas · Norte",
+        "min": 291,
+        "max": 292,
+        "x": 986,
+        "y": 342,
+        "boss": false
+      },
+      {
+        "name": "Terra das Cinzas Eternas · Leste",
+        "min": 293,
+        "max": 295,
+        "x": 1502,
+        "y": 633,
+        "boss": false
+      },
+      {
+        "name": "Terra das Cinzas Eternas · Oeste",
+        "min": 296,
+        "max": 297,
+        "x": 410,
+        "y": 849,
+        "boss": false
+      },
+      {
+        "name": "Terra das Cinzas Eternas · Sul",
+        "min": 298,
+        "max": 299,
+        "x": 912,
+        "y": 1078,
+        "boss": false
+      },
+      {
+        "name": "Arena · Vharok, A Última Cinza",
+        "min": 300,
+        "max": 300,
+        "x": 960,
+        "y": 205,
+        "boss": true
+      }
+    ],
+    "landmarks": [
+      {
+        "x": 244,
+        "y": 268,
+        "kind": "rock_large",
+        "scale": 1.02
+      },
+      {
+        "x": 1653,
+        "y": 304,
+        "kind": "rock_small",
+        "scale": 0.91
+      },
+      {
+        "x": 295,
+        "y": 1147,
+        "kind": "stone_gargoyle",
+        "scale": 1.08
+      },
+      {
+        "x": 1602,
+        "y": 1107,
+        "kind": "ruin_pillar",
+        "scale": 0.92
+      }
+    ],
+    "levelRange": {
+      "min": 291,
+      "max": 300
+    }
+  }
+}

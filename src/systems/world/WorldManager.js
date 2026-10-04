@@ -12,6 +12,21 @@
     sand: 'sand-base-32',
     lava: 'lava-rock-base-32'
   };
+  const BIOME_FALLBACKS = {
+    forest: 'grass',
+    swamp: 'grass',
+    mountain: 'snow',
+    fortress: 'snow',
+    eclipse: 'lava',
+    cavern: 'lava',
+    iron: 'lava',
+    abyss: 'lava',
+    crypt: 'lava',
+    tower: 'lava',
+    ash: 'lava',
+    chaos: 'lava',
+    ghosttown: 'lava'
+  };
   let terrainCanvas = null;
   let terrainRegionId = 0;
   let terrainSize = '';
@@ -55,6 +70,21 @@
     image.src = `assets/maps/tiles-biome/swamp/${name}.png`;
     swampTiles[name] = image;
   });
+
+  const realmArt = {};
+  const requestedRealmArt = new Set();
+  function requestRealmArt(id) {
+    if (id < 2 || id > 29 || requestedRealmArt.has(id)) return realmArt[id] || null;
+    requestedRealmArt.add(id);
+    const image = new Image();
+    image.onload = () => {
+      if (terrainRegionId === id) terrainCanvas = null;
+    };
+    image.onerror = () => { realmArt[id] = null; };
+    realmArt[id] = image;
+    image.src = `assets/maps/realms/realm-${String(id).padStart(2, '0')}.png`;
+    return image;
+  }
 
   function hash(x, y, seed = 0) {
     let n = (x * 374761393 + y * 668265263 + seed * 1442695041) | 0;
@@ -521,20 +551,31 @@
     ctx.fillStyle = wash;
     ctx.fillRect(0, 0, width, height);
 
-    if (region.id === 2) drawBiomeTexture(ctx, 'grass', width, height, 0.08);
-    if (region.id === 3) {
-      drawBiomeTexture(ctx, 'lava', width, height, 0.2);
-      drawBiomePatch(ctx, 'snow', [
-        [80, 150], [210, 108], [360, 125], [470, 185], [540, 282],
-        [472, 355], [330, 372], [205, 331], [123, 254]
-      ], width, height, 0.58);
-      drawBiomePatch(ctx, 'sand', [
-        [1190, 1000], [1322, 944], [1510, 966], [1685, 1034],
-        [1790, 1148], [1722, 1290], [1535, 1372], [1332, 1324], [1210, 1190]
-      ], width, height, 0.34);
+    if (region.generatedMap) {
+      if (region.biome === 'swamp') {
+        drawSwampBiome(ctx, region, width, height);
+      } else {
+        const fallbackBiome = BIOME_TILE_FILES[region.biome]
+          ? region.biome
+          : BIOME_FALLBACKS[region.biome];
+        if (fallbackBiome) drawBiomeTexture(ctx, fallbackBiome, width, height, 0.16);
+      }
+    } else {
+      if (region.id === 2) drawBiomeTexture(ctx, 'grass', width, height, 0.08);
+      if (region.id === 3) {
+        drawBiomeTexture(ctx, 'lava', width, height, 0.2);
+        drawBiomePatch(ctx, 'snow', [
+          [80, 150], [210, 108], [360, 125], [470, 185], [540, 282],
+          [472, 355], [330, 372], [205, 331], [123, 254]
+        ], width, height, 0.58);
+        drawBiomePatch(ctx, 'sand', [
+          [1190, 1000], [1322, 944], [1510, 966], [1685, 1034],
+          [1790, 1148], [1722, 1290], [1535, 1372], [1332, 1324], [1210, 1190]
+        ], width, height, 0.34);
+      }
+      if (region.id === 4) drawBiomeTexture(ctx, 'lava', width, height, 0.07);
+      if (region.id === 5) drawBiomeTexture(ctx, 'lava', width, height, 0.16);
     }
-    if (region.id === 4) drawBiomeTexture(ctx, 'lava', width, height, 0.07);
-    if (region.id === 5) drawBiomeTexture(ctx, 'lava', width, height, 0.16);
 
     for (let i = 0; i < 460; i++) {
       const x = hash(i, region.id, 19) * width;
@@ -1194,13 +1235,14 @@
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
-    const drawn = region.id === 0
+    const generatedArt = requestRealmArt(region.id);
+    const drawn = generatedArt && ready(generatedArt)
+      ? (ctx.imageSmoothingEnabled = false, ctx.drawImage(generatedArt, 0, 0, width, height), true)
+      : region.id === 0
       ? drawCastleRuins(ctx, region, width, height)
       : (region.id === 1
         ? drawForest(ctx, region, width, height)
-        : (region.id === 2
-          ? drawSwampBiome(ctx, region, width, height)
-          : (drawOtherBiome(ctx, region, width, height), true)));
+        : (drawOtherBiome(ctx, region, width, height), true));
     if (!drawn) return null;
     terrainCanvas = canvas;
     terrainRegionId = region.id;
@@ -1219,6 +1261,14 @@
       ctx.fillRect(x, y, width, height);
     } else if (region.id === 0) {
       ctx.fillStyle = 'rgba(251, 146, 60, 0.03)';
+      ctx.fillRect(x, y, width, height);
+    } else if (region.id > 1) {
+      ctx.fillStyle = 'rgba(10, 8, 15, 0.12)';
+      ctx.fillRect(x, y, width, height);
+      const atmosphere = ctx.createLinearGradient(x, y, x + width, y + height);
+      atmosphere.addColorStop(0, `${region.accent}12`);
+      atmosphere.addColorStop(1, 'rgba(4, 6, 12, 0.10)');
+      ctx.fillStyle = atmosphere;
       ctx.fillRect(x, y, width, height);
     } else if (region.id === 2) {
       ctx.fillStyle = 'rgba(20, 60, 52, 0.06)';

@@ -1,0 +1,318 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 60,
+  "height": 46,
+  "tilewidth": 32,
+  "tileheight": 32,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 16,
+  "properties": [
+    {
+      "name": "regionId",
+      "type": "string",
+      "value": "11"
+    },
+    {
+      "name": "regionName",
+      "type": "string",
+      "value": "Labirinto de Ferro"
+    },
+    {
+      "name": "recommendedLevel",
+      "type": "string",
+      "value": "111-120"
+    },
+    {
+      "name": "biome",
+      "type": "string",
+      "value": "iron"
+    },
+    {
+      "name": "layoutVersion",
+      "type": "string",
+      "value": "1"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Arte de terreno · Cloudflare AI",
+      "type": "imagelayer",
+      "image": "../realm-11.png",
+      "imagewidth": 1900,
+      "imageheight": 1450,
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "offsetx": 0,
+      "offsety": 0,
+      "repeatx": false,
+      "repeaty": false
+    },
+    {
+      "id": 2,
+      "name": "Gameplay · pontos e limites",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Entrada",
+          "class": "PlayerSpawn",
+          "x": 960,
+          "y": 1270,
+          "point": true,
+          "properties": [
+            {
+              "name": "regionId",
+              "type": "string",
+              "value": "11"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Arena do chefe",
+          "class": "BossSpawn",
+          "x": 960,
+          "y": 205,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Núcleo Central"
+            },
+            {
+              "name": "level",
+              "type": "string",
+              "value": "120"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "NPC",
+          "class": "NPCSpawn",
+          "x": 700,
+          "y": 760,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Engenheira de Labirinto de Ferro"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Grupo 1",
+          "class": "EnemySpawn",
+          "x": 956,
+          "y": 336,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Autômato Ferrugento"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "111"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "113"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Grupo 2",
+          "class": "EnemySpawn",
+          "x": 1467,
+          "y": 588,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Autômato Ferrugento"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "111"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "120"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Grupo 3",
+          "class": "EnemySpawn",
+          "x": 402,
+          "y": 850,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Autômato Ferrugento"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "111"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "120"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Grupo 4",
+          "class": "EnemySpawn",
+          "x": 993,
+          "y": 1138,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Autômato Ferrugento"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "111"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "120"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "Marco 1",
+          "class": "Landmark",
+          "x": 295,
+          "y": 282,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "mine_cart_1"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Marco 2",
+          "class": "Landmark",
+          "x": 1646,
+          "y": 309,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_large"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Marco 3",
+          "class": "Landmark",
+          "x": 344,
+          "y": 1181,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "barrel"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Marco 4",
+          "class": "Landmark",
+          "x": 1553,
+          "y": 1119,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "crate"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Limite Norte",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": -48,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 13,
+          "name": "Limite Sul",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": 1450,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 14,
+          "name": "Limite Oeste",
+          "class": "WorldBoundary",
+          "x": -48,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        },
+        {
+          "id": 15,
+          "name": "Limite Leste",
+          "class": "WorldBoundary",
+          "x": 1900,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        }
+      ]
+    }
+  ],
+  "tilesets": []
+}

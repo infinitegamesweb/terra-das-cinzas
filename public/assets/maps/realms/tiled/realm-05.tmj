@@ -1,0 +1,318 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 60,
+  "height": 46,
+  "tilewidth": 32,
+  "tileheight": 32,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 16,
+  "properties": [
+    {
+      "name": "regionId",
+      "type": "string",
+      "value": "5"
+    },
+    {
+      "name": "regionName",
+      "type": "string",
+      "value": "Trilha do Degelo"
+    },
+    {
+      "name": "recommendedLevel",
+      "type": "string",
+      "value": "41-50"
+    },
+    {
+      "name": "biome",
+      "type": "string",
+      "value": "snow"
+    },
+    {
+      "name": "layoutVersion",
+      "type": "string",
+      "value": "1"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Arte de terreno · Cloudflare AI",
+      "type": "imagelayer",
+      "image": "../realm-05.png",
+      "imagewidth": 1900,
+      "imageheight": 1450,
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "offsetx": 0,
+      "offsety": 0,
+      "repeatx": false,
+      "repeaty": false
+    },
+    {
+      "id": 2,
+      "name": "Gameplay · pontos e limites",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Entrada",
+          "class": "PlayerSpawn",
+          "x": 960,
+          "y": 1270,
+          "point": true,
+          "properties": [
+            {
+              "name": "regionId",
+              "type": "string",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Arena do chefe",
+          "class": "BossSpawn",
+          "x": 960,
+          "y": 205,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Sentinela de Basalto"
+            },
+            {
+              "name": "level",
+              "type": "string",
+              "value": "50"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "NPC",
+          "class": "NPCSpawn",
+          "x": 700,
+          "y": 760,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Guia de Trilha do Degelo"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Grupo 1",
+          "class": "EnemySpawn",
+          "x": 934,
+          "y": 366,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Pedra"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "41"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "43"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Grupo 2",
+          "class": "EnemySpawn",
+          "x": 1470,
+          "y": 609,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Pedra"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "41"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "50"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Grupo 3",
+          "class": "EnemySpawn",
+          "x": 401,
+          "y": 865,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Pedra"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "41"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "50"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Grupo 4",
+          "class": "EnemySpawn",
+          "x": 924,
+          "y": 1105,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Pedra"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "41"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "50"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "Marco 1",
+          "class": "Landmark",
+          "x": 236,
+          "y": 275,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_large"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Marco 2",
+          "class": "Landmark",
+          "x": 1624,
+          "y": 317,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_small"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Marco 3",
+          "class": "Landmark",
+          "x": 327,
+          "y": 1149,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "stone_stairs"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Marco 4",
+          "class": "Landmark",
+          "x": 1546,
+          "y": 1104,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "pillar"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Limite Norte",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": -48,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 13,
+          "name": "Limite Sul",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": 1450,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 14,
+          "name": "Limite Oeste",
+          "class": "WorldBoundary",
+          "x": -48,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        },
+        {
+          "id": 15,
+          "name": "Limite Leste",
+          "class": "WorldBoundary",
+          "x": 1900,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        }
+      ]
+    }
+  ],
+  "tilesets": []
+}

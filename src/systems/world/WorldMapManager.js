@@ -189,7 +189,7 @@
 
   function getMapStatus(map, playerLevel) {
     if (playerLevel < map.min) return 'locked';
-    if (playerLevel >= map.max) return 'cleared';
+    if (window._wmIsMapCleared?.(map.id)) return 'cleared';
     return 'available';
   }
 
@@ -226,8 +226,11 @@
       const status = getMapStatus(map, playerLevel);
       const isLocked = status === 'locked';
       const isCleared = status === 'cleared';
-      const isCurrent = playerLevel >= map.min && playerLevel <= map.max;
+      const isCurrent = window._wmGetCurrentMapId
+        ? window._wmGetCurrentMapId() === map.id
+        : playerLevel >= map.min && playerLevel <= map.max;
       const isPlayable = window._wmCanNavigateTo ? window._wmCanNavigateTo(map.id) : true;
+      const gateReason = window._wmGateReason ? window._wmGateReason(map.id) : '';
       return `
         <article class="wm-card ${isLocked ? 'wm-locked' : ''} ${isCleared ? 'wm-cleared' : ''} ${isCurrent ? 'wm-current' : ''} ${!isPlayable ? 'wm-unavailable' : ''}"
                  style="--map-color: ${map.color}" data-wm-map="${map.id}" ${isLocked ? 'data-locked' : ''}>
@@ -238,7 +241,7 @@
               <small class="wm-card-sub">${map.sub}</small>
             </div>
             <div class="wm-card-badge ${status}">
-              ${isLocked ? ` Nv. ${map.min}` : !isPlayable ? ' Em produção' : isCleared ? ' Concluído' : isCurrent ? '▶ Aqui' : ' Disponível'}
+              ${isLocked ? ` Nv. ${map.min}` : !isPlayable ? ' Em produção' : gateReason ? ' Chefe pendente' : isCleared ? ' Concluído' : isCurrent ? '▶ Aqui' : ' Disponível'}
             </div>
           </div>
           <div class="wm-card-body">
@@ -253,6 +256,8 @@
               ? `<div class="wm-lock-info">Requer nível <b>${map.min}</b> · faltam <b>${map.min - playerLevel}</b> níveis</div>`
               : !isPlayable
                 ? '<div class="wm-lock-info">Esta região ainda não está conectada ao mundo jogável.</div>'
+                : gateReason
+                  ? `<div class="wm-lock-info">${gateReason}</div>`
               : isCurrent
                 ? `<button class="wm-btn-enter" data-wm-goto="${map.id}">▶ EXPLORAR</button>`
                 : isCleared
@@ -263,7 +268,9 @@
         </article>`;
     }).join('');
 
-    const currentMap = WORLD_MAPS.find(m => playerLevel >= m.min && playerLevel <= m.max);
+    const currentId = window._wmGetCurrentMapId?.();
+    const currentMap = WORLD_MAPS.find((map) => map.id === currentId)
+      || WORLD_MAPS.find(m => playerLevel >= m.min && playerLevel <= m.max);
     const headerInfo = currentMap
       ? `<span class="wm-header-loc">${currentMap.icon} ${currentMap.name} · Nv. ${currentMap.min}–${currentMap.max}</span>`
       : `<span class="wm-header-loc">Nível ${playerLevel}</span>`;

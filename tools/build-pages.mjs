@@ -67,7 +67,7 @@ const buildOptions = {
     'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
     'process.env.SUPABASE_URL': JSON.stringify(SUPABASE_URL),
     'process.env.SUPABASE_ANON_KEY': JSON.stringify(SUPABASE_ANON_KEY),
-    'process.env.GAME_MULTIPLAYER_URL': JSON.stringify(GAME_MULTIPLAYER_URL)
+    __TDC_MULTIPLAYER_URL__: JSON.stringify(GAME_MULTIPLAYER_URL)
   },
   loader: {
     '.png': 'file',

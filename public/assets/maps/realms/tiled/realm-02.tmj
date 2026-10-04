@@ -1,0 +1,318 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 60,
+  "height": 46,
+  "tilewidth": 32,
+  "tileheight": 32,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 16,
+  "properties": [
+    {
+      "name": "regionId",
+      "type": "string",
+      "value": "2"
+    },
+    {
+      "name": "regionName",
+      "type": "string",
+      "value": "Clareira dos Ecos"
+    },
+    {
+      "name": "recommendedLevel",
+      "type": "string",
+      "value": "11-20"
+    },
+    {
+      "name": "biome",
+      "type": "string",
+      "value": "forest"
+    },
+    {
+      "name": "layoutVersion",
+      "type": "string",
+      "value": "1"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Arte de terreno · Cloudflare AI",
+      "type": "imagelayer",
+      "image": "../realm-02.png",
+      "imagewidth": 1900,
+      "imageheight": 1450,
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "offsetx": 0,
+      "offsety": 0,
+      "repeatx": false,
+      "repeaty": false
+    },
+    {
+      "id": 2,
+      "name": "Gameplay · pontos e limites",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Entrada",
+          "class": "PlayerSpawn",
+          "x": 960,
+          "y": 1270,
+          "point": true,
+          "properties": [
+            {
+              "name": "regionId",
+              "type": "string",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Arena do chefe",
+          "class": "BossSpawn",
+          "x": 960,
+          "y": 205,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Eco da Raiz-Mãe"
+            },
+            {
+              "name": "level",
+              "type": "string",
+              "value": "20"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "NPC",
+          "class": "NPCSpawn",
+          "x": 700,
+          "y": 760,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Batedora de Clareira dos Ecos"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Grupo 1",
+          "class": "EnemySpawn",
+          "x": 983,
+          "y": 345,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Espectro de Raiz"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "11"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "13"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Grupo 2",
+          "class": "EnemySpawn",
+          "x": 1452,
+          "y": 592,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Espectro de Raiz"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "11"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "20"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Grupo 3",
+          "class": "EnemySpawn",
+          "x": 459,
+          "y": 847,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Espectro de Raiz"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "11"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "20"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Grupo 4",
+          "class": "EnemySpawn",
+          "x": 1007,
+          "y": 1102,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Espectro de Raiz"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "11"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "20"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "Marco 1",
+          "class": "Landmark",
+          "x": 234,
+          "y": 233,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_moss"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Marco 2",
+          "class": "Landmark",
+          "x": 1614,
+          "y": 280,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_small"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Marco 3",
+          "class": "Landmark",
+          "x": 319,
+          "y": 1172,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "stump"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Marco 4",
+          "class": "Landmark",
+          "x": 1586,
+          "y": 1126,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "log"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Limite Norte",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": -48,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 13,
+          "name": "Limite Sul",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": 1450,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 14,
+          "name": "Limite Oeste",
+          "class": "WorldBoundary",
+          "x": -48,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        },
+        {
+          "id": 15,
+          "name": "Limite Leste",
+          "class": "WorldBoundary",
+          "x": 1900,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        }
+      ]
+    }
+  ],
+  "tilesets": []
+}

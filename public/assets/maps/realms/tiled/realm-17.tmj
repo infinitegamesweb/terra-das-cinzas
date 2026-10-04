@@ -1,0 +1,318 @@
+{
+  "type": "map",
+  "version": "1.10",
+  "tiledversion": "1.11.2",
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "width": 60,
+  "height": 46,
+  "tilewidth": 32,
+  "tileheight": 32,
+  "infinite": false,
+  "nextlayerid": 3,
+  "nextobjectid": 16,
+  "properties": [
+    {
+      "name": "regionId",
+      "type": "string",
+      "value": "17"
+    },
+    {
+      "name": "regionName",
+      "type": "string",
+      "value": "Mar de Cinzas"
+    },
+    {
+      "name": "recommendedLevel",
+      "type": "string",
+      "value": "171-180"
+    },
+    {
+      "name": "biome",
+      "type": "string",
+      "value": "ash"
+    },
+    {
+      "name": "layoutVersion",
+      "type": "string",
+      "value": "1"
+    }
+  ],
+  "layers": [
+    {
+      "id": 1,
+      "name": "Arte de terreno · Cloudflare AI",
+      "type": "imagelayer",
+      "image": "../realm-17.png",
+      "imagewidth": 1900,
+      "imageheight": 1450,
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "offsetx": 0,
+      "offsety": 0,
+      "repeatx": false,
+      "repeaty": false
+    },
+    {
+      "id": 2,
+      "name": "Gameplay · pontos e limites",
+      "type": "objectgroup",
+      "draworder": "topdown",
+      "opacity": 1,
+      "visible": true,
+      "x": 0,
+      "y": 0,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Entrada",
+          "class": "PlayerSpawn",
+          "x": 960,
+          "y": 1270,
+          "point": true,
+          "properties": [
+            {
+              "name": "regionId",
+              "type": "string",
+              "value": "17"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Arena do chefe",
+          "class": "BossSpawn",
+          "x": 960,
+          "y": 205,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Leviatã das Cinzas"
+            },
+            {
+              "name": "level",
+              "type": "string",
+              "value": "180"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "NPC",
+          "class": "NPCSpawn",
+          "x": 700,
+          "y": 760,
+          "point": true,
+          "properties": [
+            {
+              "name": "name",
+              "type": "string",
+              "value": "Andarilha de Mar de Cinzas"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Grupo 1",
+          "class": "EnemySpawn",
+          "x": 920,
+          "y": 338,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Cinzas"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "171"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "173"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Grupo 2",
+          "class": "EnemySpawn",
+          "x": 1454,
+          "y": 614,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Cinzas"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "171"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "180"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Grupo 3",
+          "class": "EnemySpawn",
+          "x": 454,
+          "y": 807,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Cinzas"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "171"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "180"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "name": "Grupo 4",
+          "class": "EnemySpawn",
+          "x": 988,
+          "y": 1085,
+          "point": true,
+          "properties": [
+            {
+              "name": "enemy",
+              "type": "string",
+              "value": "Golem de Cinzas"
+            },
+            {
+              "name": "levelMin",
+              "type": "string",
+              "value": "171"
+            },
+            {
+              "name": "levelMax",
+              "type": "string",
+              "value": "180"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "Marco 1",
+          "class": "Landmark",
+          "x": 234,
+          "y": 243,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_large"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Marco 2",
+          "class": "Landmark",
+          "x": 1672,
+          "y": 308,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "rock_small"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "name": "Marco 3",
+          "class": "Landmark",
+          "x": 313,
+          "y": 1173,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "stone_gargoyle"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "name": "Marco 4",
+          "class": "Landmark",
+          "x": 1540,
+          "y": 1111,
+          "point": true,
+          "properties": [
+            {
+              "name": "kind",
+              "type": "string",
+              "value": "ruin_pillar"
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "name": "Limite Norte",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": -48,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 13,
+          "name": "Limite Sul",
+          "class": "WorldBoundary",
+          "x": 0,
+          "y": 1450,
+          "width": 1900,
+          "height": 48
+        },
+        {
+          "id": 14,
+          "name": "Limite Oeste",
+          "class": "WorldBoundary",
+          "x": -48,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        },
+        {
+          "id": 15,
+          "name": "Limite Leste",
+          "class": "WorldBoundary",
+          "x": 1900,
+          "y": 0,
+          "width": 48,
+          "height": 1450
+        }
+      ]
+    }
+  ],
+  "tilesets": []
+}

@@ -5,6 +5,7 @@ import { GAME_CLASSES, getClassById, getClassPortrait } from './data/classes.dat
 import { RARITY, DUNGEON_ITEMS } from './data/drops.data.js';
 import { ORE_TYPES, GOLD_CHESTS, MINING_DUNGEONS } from './data/mining.data.js';
 import { DUNGEON_CRAFTPIX_DATA } from './data/craftpix.data.js';
+import worldMapLayouts from './data/worldMapLayouts.json';
 
 import { soundSystem } from './systems/audio/SoundSystem.js';
 import { authManager } from './systems/auth/AuthManager.js';
@@ -37,7 +38,7 @@ const c = document.querySelector('#game');
   const world = document.querySelector('#world');
   const $ = (q) => document.querySelector(q);
 
-  const W = { w: 3800, h: 4350 };
+  const W = { w: 1900 * 6, h: 1450 * 5 };
   const ZONE_W = 1900;
   const ZONE_H = 1450;
   const MAX_POTIONS = 9;
@@ -73,6 +74,7 @@ const c = document.querySelector('#game');
   let regionStates = {};
   let questStates = {};
   let bossDefeats = {};
+  let legacyMapSave = false;
   let regionNpcRewards = {};
   let route = [];
   let autoTarget = null;
@@ -128,16 +130,57 @@ const c = document.querySelector('#game');
     ]
   };
 
+  const INITIAL_FOREST =
+    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 10, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#b9ae85', enemy: 'shade', hp: 78, sp: 74, ambientColor: '#95e86e', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] };
+
+  const MAP_REGIONS = (window.WorldMap?.WORLD_MAPS || [])
+    .filter((map) => map.id > 1)
+    .map((map) => {
+      const layout = worldMapLayouts[String(map.id)];
+      if (!layout) return null;
+      const palette = layout.palette;
+      const hp = Math.round(110 + map.min * 4.2);
+      const sp = Math.round(30 + map.min * 0.72);
+      const points = layout.areas.map((area) => [area.name, area.x, area.y]);
+      return {
+        id: map.id,
+        name: map.name,
+        subtitle: map.sub,
+        col: layout.col,
+        row: layout.row,
+        min: map.min,
+        max: map.max,
+        unlocks: map.min,
+        bg: palette.bg,
+        path: palette.path,
+        tree: palette.tree,
+        accent: palette.accent,
+        ambientColor: palette.ambientColor,
+        enemy: layout.enemySprite,
+        enemyName: map.enemy,
+        hp,
+        sp,
+        bossName: map.boss,
+        bossSprite: layout.bossSprite,
+        dungeonName: `Masmorras de ${map.name}`,
+        dungeonBossFive: map.boss,
+        dungeonBossTen: `Guardião Ancestral de ${map.name}`,
+        npcName: layout.npcName,
+        points,
+        areas: layout.areas,
+        biome: layout.biome,
+        generatedMap: true
+      };
+    })
+    .filter(Boolean);
+
   const REGIONS = [
     CASTLE_HUB,
-    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 20, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#b9ae85', enemy: 'shade', hp: 78, sp: 74, ambientColor: '#95e86e', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] },
-    { id: 2, name: 'Pântano Espectral', subtitle: 'Águas que sussurram', col: 1, row: 0, min: 21, max: 40, unlocks: 21, bg: '#183638', path: '#718681', tree: '#28534a', accent: '#79d3bd', enemy: 'wolf', hp: 95, sp: 82, ambientColor: '#6ee5e8', bossName: 'Serpente das Águas Mortas', bossSprite: 'monster_void_serpent', dungeonName: 'Cripta Submersa', dungeonBossFive: 'Velyss, a Náufraga-Mor', dungeonBossTen: 'O Rei sob as Águas', npcName: 'Barqueira Ysold', points: [['Margem Afogada', 340, 350], ['Juncal Nebuloso', 1510, 350], ['Vila Submersa', 340, 1080], ['Altar das Vozes', 1510, 1080], ['Olho do Pântano', 960, 1260]] },
-    { id: 3, name: 'Montanhas Rubras', subtitle: 'Cinzas sob a neve', col: 1, row: 1, min: 41, max: 60, unlocks: 41, bg: '#3a2925', path: '#a18b79', tree: '#704333', accent: '#ef9864', enemy: 'golem', hp: 145, sp: 92, ambientColor: '#e87e51', bossName: 'Colosso da Fornalha Rubra', bossSprite: 'boss_ashen_golem', dungeonName: 'Veias da Fornalha', dungeonBossFive: 'Lorde de Magma Ignis', dungeonBossTen: 'Viúva do Magma Antigo', npcName: 'Mineradora Brann', points: [['Trilha do Degelo', 340, 350], ['Pedreira Rubra', 1510, 350], ['Fendas de Brasa', 340, 1080], ['Ponte Partida', 1510, 1080], ['Cratera do Colosso', 960, 1260]] },
-    { id: 4, name: 'Cidadela das Cinzas', subtitle: 'O último reino', col: 0, row: 1, min: 61, max: 80, unlocks: 61, bg: '#30253b', path: '#8d819a', tree: '#503a61', accent: '#cd91df', enemy: 'golem', hp: 205, sp: 100, ambientColor: '#c577e8', bossName: 'Arquivista das Cinzas', bossSprite: 'monster_haunted_grimoire', dungeonName: 'Arquivo Sepultado', dungeonBossFive: 'Nhal, o Bibliophage', dungeonBossTen: 'A Palavra que Devora', npcName: 'Escriba Odran', points: [['Portão Partido', 340, 350], ['Pátio dos Exilados', 1510, 350], ['Galeria Silenciosa', 340, 1080], ['Torre das Brasas', 1510, 1080], ['Arquivo sem Nome', 960, 1260]] },
-    { id: 5, name: 'Trono do Eclipse', subtitle: 'O confronto eterno', col: 0, row: 2, min: 81, max: 100, unlocks: 81, bg: '#29202c', path: '#8b6d70', tree: '#56303b', accent: '#cb7970', enemy: 'golem', hp: 280, sp: 110, ambientColor: '#e86e8a', bossName: 'Vharok, Coração do Eclipse', bossSprite: 'monster_void_serpent', dungeonName: 'Abismo do Primeiro Fogo', dungeonBossFive: 'A Boca sob o Trono', dungeonBossTen: 'A Última Cinza', npcName: 'Última Oráculo Naeva', points: [['Campos Crepusculares', 340, 350], ['Coroa Fraturada', 1510, 350], ['Limiar do Vazio', 340, 1080], ['Escadaria do Eclipse', 1510, 1080], ['Trono do Primeiro Fogo', 960, 1260]] }
+    INITIAL_FOREST,
+    ...MAP_REGIONS
   ];
 
-  const WORLD_MAP_LAYOUT_VERSION = 3;
+  const WORLD_MAP_LAYOUT_VERSION = 5;
   const REGIONAL_LANDMARKS = {
     1: [
       { x: 555, y: 1005, kind: 'ruined_statue', s: 1.15 },
@@ -184,11 +227,15 @@ const c = document.querySelector('#game');
   function regionAreas(regionData) {
     return regionData.points.map(([name, x, y], index) => {
       if (index === 4) return { name, min: regionData.max, max: regionData.max, x, y, boss: true };
-      const min = regionData.min + index * 5;
-      return { name, min, max: Math.min(regionData.max - 1, min + 4), x, y, boss: false };
+      const combatSpan = Math.max(1, regionData.max - regionData.min);
+      const min = regionData.min + Math.floor(combatSpan * index / 4);
+      const max = Math.min(regionData.max - 1, Math.max(min, regionData.min + Math.floor(combatSpan * (index + 1) / 4) - 1));
+      return { name, min, max, x, y, boss: false };
     });
   }
-  REGIONS.forEach((r) => { r.areas = regionAreas(r); });
+  REGIONS.forEach((r) => {
+    if (!Array.isArray(r.areas)) r.areas = regionAreas(r);
+  });
 
   let regionIndex = 0;
   let region = REGIONS[regionIndex];
@@ -250,6 +297,7 @@ const c = document.querySelector('#game');
   const decor = [];
 
   const SAVE_KEY = 'terra-das-cinzas-save-v1';
+  let legacyBossProgress = {};
   if (window.GameAuth?.bootstrap) {
     try { await window.GameAuth.bootstrap(SAVE_KEY); } catch (e) { console.warn(e); }
   }
@@ -257,6 +305,7 @@ const c = document.querySelector('#game');
     const s = autoStart ? null : JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
     if (s) {
       Object.assign(p, s.player || {});
+      legacyMapSave = Number(s.worldMapLayoutVersion || 0) < WORLD_MAP_LAYOUT_VERSION;
       kills = s.kills || 0;
       ore = s.ore || 0;
       loot = s.loot || 0;
@@ -267,6 +316,16 @@ const c = document.querySelector('#game');
       questStates = s.quests && typeof s.quests === 'object' ? s.quests : {};
       bossDefeats = s.bossDefeats && typeof s.bossDefeats === 'object' ? s.bossDefeats : {};
       regionNpcRewards = s.regionNpcRewards && typeof s.regionNpcRewards === 'object' ? s.regionNpcRewards : {};
+      if (legacyMapSave) {
+        // Region IDs 2–5 used to describe different maps. Keep core character
+        // progress, but discard map-local state that cannot be safely migrated.
+        legacyBossProgress = { ...bossDefeats };
+        savedRegionId = 0;
+        regionStates = {};
+        questStates = {};
+        regionNpcRewards = {};
+        bossDefeats = {};
+      }
       dungeonProgress = s.dungeonProgress && typeof s.dungeonProgress === 'object' ? s.dungeonProgress : {};
       dungeonMissions = s.dungeonMissions && typeof s.dungeonMissions === 'object' ? s.dungeonMissions : {};
       dungeonInventory = Array.isArray(s.dungeonInventory) ? s.dungeonInventory : [];
@@ -282,14 +341,32 @@ const c = document.querySelector('#game');
   p.classId = window.GameClasses.get(p.classId).id;
 
   function regionForLevel(level) {
-    return 0; // Starting zone: Castelo em Cinzas
+    const candidate = REGIONS.find((entry) => entry.id > 0 && level >= entry.min && level <= entry.max);
+    const index = candidate ? REGIONS.indexOf(candidate) : -1;
+    return index < 0 ? 0 : index;
   }
 
   p.lvl = C(Math.floor(Number(p.lvl) || 1), 1, 300);
+  if (legacyMapSave) {
+    // Preserve only map milestones represented by cleared legacy bosses.
+    const legacyMilestones = { 1: 20, 2: 40, 3: 60, 4: 80, 5: 100 };
+    Object.entries(legacyMilestones).forEach(([oldId, oldMax]) => {
+      if (!legacyBossProgress[oldId]) return;
+      (window.WorldMap?.WORLD_MAPS || []).filter((map) => map.max <= oldMax && map.max <= p.lvl)
+        .forEach((map) => { bossDefeats[map.id] = true; });
+    });
+  }
+  const isRegionUnlocked = (id) => {
+    const candidate = REGIONS.find((entry) => entry.id === id);
+    if (!candidate || p.lvl < candidate.unlocks) return false;
+    if (id <= 1) return true;
+    const previous = REGIONS.find((entry) => entry.id === id - 1);
+    return !previous?.bossName || Boolean(bossDefeats[previous.id]);
+  };
   const positionRegion = regionAt(p.x, p.y);
-  regionIndex = positionRegion && p.lvl >= positionRegion.unlocks
+  regionIndex = !legacyMapSave && positionRegion && isRegionUnlocked(positionRegion.id)
     ? REGIONS.indexOf(positionRegion)
-    : savedRegionId !== undefined && REGIONS.some(r => r.id === savedRegionId)
+    : !legacyMapSave && savedRegionId !== undefined && REGIONS.some(r => r.id === savedRegionId) && isRegionUnlocked(savedRegionId)
       ? REGIONS.findIndex(r => r.id === savedRegionId)
       : 0;
   if (regionIndex < 0 || regionIndex >= REGIONS.length) regionIndex = 0;
@@ -308,9 +385,6 @@ const c = document.querySelector('#game');
   p.weaponTier = C(Math.floor(Number(p.weaponTier) || 0), 0, 5);
   p.need = progression.xpNeeded(p.lvl);
   p.xp = p.need ? C(Math.floor(Number(p.xp) || 0), 0, p.need - 1) : 0;
-  if (savedRegionId > 1) {
-    for (let id = 1; id < savedRegionId; id++) bossDefeats[id] = true;
-  }
 
   function captureCurrentRegion() {
     if (!region || dungeonMode) return;
@@ -332,7 +406,8 @@ const c = document.querySelector('#game');
     try {
       captureCurrentRegion();
       const serialized = JSON.stringify({
-          version: 4,
+          version: 5,
+          worldMapLayoutVersion: WORLD_MAP_LAYOUT_VERSION,
           savedAt: Date.now(),
           regionId: region.id,
           regions: regionStates,
@@ -628,10 +703,18 @@ const c = document.querySelector('#game');
   }
 
   function dungeonNpcPosition(targetRegion = region) {
+    const layout = worldMapLayouts[String(targetRegion.id)];
+    if (layout?.npcSpawn) {
+      return {
+        x: targetRegion.col * ZONE_W + layout.npcSpawn.x,
+        y: targetRegion.row * ZONE_H + layout.npcSpawn.y
+      };
+    }
     return { x: targetRegion.col * ZONE_W + 1010, y: targetRegion.row * ZONE_H + 690 };
   }
 
   function regionalGuidePosition(targetRegion = region) {
+    if (targetRegion.generatedMap) return null;
     const guide = REGIONAL_GUIDES[targetRegion.id];
     return guide ? { ...guide, x: targetRegion.col * ZONE_W + guide.x, y: targetRegion.row * ZONE_H + guide.y } : null;
   }
@@ -945,6 +1028,7 @@ const c = document.querySelector('#game');
     if (region.id === 0) return false;
     const saved = regionStates[region.id];
     if (!saved) return false;
+    if (region.id !== 1 && saved.mapLayoutVersion !== WORLD_MAP_LAYOUT_VERSION) return false;
     const now = performance.now();
     const offline = Math.max(0, Date.now() - (Number(saved.savedAt) || Date.now()));
     (saved.mobs || []).filter((m) => !m.isMinion).forEach((m, index) => {
@@ -994,6 +1078,15 @@ const c = document.querySelector('#game');
   }
 
   function populateRegionEnvironment(ox, oy) {
+    if (region.generatedMap) {
+      const layout = worldMapLayouts[String(region.id)];
+      (layout?.landmarks || []).forEach((item) => decor.push({
+        ...item,
+        x: ox + item.x,
+        y: oy + item.y
+      }));
+      return;
+    }
     const treeCountByRegion = { 1: 88, 2: 48, 3: 14, 4: 20, 5: 8 };
     const treeCount = treeCountByRegion[region.id] || 36;
     for (let i = 0; i < treeCount; i++) {
@@ -1135,7 +1228,9 @@ const c = document.querySelector('#game');
       4: ['monster_vampire_lord', 'monster_flying_demon', 'monster_haunted_grimoire', 'slime_dark_void'],
       5: ['monster_reaper_death', 'monster_vampire_lord', 'monster_void_serpent', 'slime_gold']
     };
-    const mobPool = regionMonsters[region.id] || regionMonsters[1];
+    const mobPool = region.generatedMap
+      ? [region.enemy, region.enemy, region.enemy, 'monster_shadow_spirit']
+      : regionMonsters[region.id] || regionMonsters[1];
 
     region.areas.slice(0, 4).forEach((area, areaIndex) => {
       for (let i = 0; i < 3; i++) {
@@ -1157,7 +1252,25 @@ const c = document.querySelector('#game');
       4: ['ore_amethyst_spire', 'ore_cyan_fissure', 'ore_white_quartz'],
       5: ['ore_magma_lava', 'ore_cyan_fissure', 'ore_amethyst_spire']
     };
-    const orePool = regionalOres[region.id] || regionalOres[1];
+    const biomeOres = {
+      swamp: ['ore_cyan_fissure', 'ore_amethyst_spire', 'ore_white_quartz'],
+      snow: ['ore_white_quartz', 'ore_iron_silver', 'ore_cyan_fissure'],
+      mountain: ['ore_magma_lava', 'ore_gold_vein', 'ore_iron_silver'],
+      fortress: ['ore_amethyst_spire', 'ore_iron_silver', 'ore_white_quartz'],
+      eclipse: ['ore_amethyst_spire', 'ore_cyan_fissure', 'ore_white_quartz'],
+      cavern: ['ore_cyan_fissure', 'ore_white_quartz', 'ore_iron_silver'],
+      iron: ['ore_iron_silver', 'ore_gold_vein', 'ore_cyan_fissure'],
+      lava: ['ore_magma_lava', 'ore_gold_vein', 'ore_iron_silver'],
+      abyss: ['ore_cyan_fissure', 'ore_amethyst_spire', 'ore_white_quartz'],
+      crypt: ['ore_white_quartz', 'ore_amethyst_spire', 'ore_iron_silver'],
+      tower: ['ore_amethyst_spire', 'ore_cyan_fissure', 'ore_white_quartz'],
+      ash: ['ore_iron_silver', 'ore_white_quartz', 'ore_gold_vein'],
+      chaos: ['ore_amethyst_spire', 'ore_cyan_fissure', 'ore_magma_lava'],
+      ghosttown: ['ore_iron_silver', 'ore_gold_vein', 'ore_white_quartz']
+    };
+    const orePool = region.generatedMap
+      ? biomeOres[region.biome] || regionalOres[1]
+      : regionalOres[region.id] || regionalOres[1];
 
     for (let i = 0; i < 10; i++) {
       const kind = orePool[i % orePool.length];
@@ -1179,7 +1292,7 @@ const c = document.querySelector('#game');
     }
 
     // Mountain Landmarks and Formations
-    const mountainFormations = [
+    const mountainFormations = region.generatedMap ? [] : [
       { x: ox + 220, y: oy + 260, kind: region.id === 3 ? 'mountain_mesa' : 'mountain_peak', s: 1.4 },
       { x: ox + 1680, y: oy + 260, kind: 'mountain_crag', s: 1.3 },
       { x: ox + 240, y: oy + 1240, kind: 'rock_plateau', s: 1.2 },
@@ -1188,7 +1301,21 @@ const c = document.querySelector('#game');
     mountainFormations.forEach((mf) => decor.push(mf));
 
     // Thematic Chests by Region
-    if (region.id === 1) {
+    if (region.generatedMap) {
+      const chestByBiome = {
+        swamp: 'chest_spectral_teal', snow: 'chest_stone_moss', mountain: 'chest_goblin_rusty',
+        fortress: 'chest_cursed_spiked', eclipse: 'chest_cursed_spiked', cavern: 'chest_spectral_teal',
+        iron: 'chest_goblin_rusty', lava: 'chest_cursed_spiked', abyss: 'chest_spectral_teal',
+        crypt: 'chest_stone_moss', tower: 'chest_spectral_teal', ash: 'chest_stone_moss',
+        chaos: 'chest_cursed_spiked', ghosttown: 'chest_goblin_rusty'
+      };
+      const chestType = chestByBiome[region.biome] || 'chest_stone_moss';
+      chests.push(
+        { x: ox + 760, y: oy + 540, open: false, type: chestType, name: `Baú de ${region.name}` },
+        { x: ox + 1240, y: oy + 520, open: false, type: chestType, name: `Relicário de ${region.name}` },
+        { x: ox + 1300, y: oy + 920, open: false, type: chestType, name: `Tesouro de ${region.name}` }
+      );
+    } else if (region.id === 1) {
       // Bosque das Ruínas: Baú de Pedra com Musgo e Baú Goblin
       chests.push(
         { x: ox + 760, y: oy + 540, open: false, type: 'chest_stone_moss', name: 'Baú de Pedra das Ruínas' },
@@ -1227,6 +1354,7 @@ const c = document.querySelector('#game');
 
   populateRegion();
   initAmbientParticles();
+  if (legacyMapSave) save();
 
   function regionAt(x, y) {
     const col = Math.floor(x / ZONE_W);
@@ -1273,7 +1401,7 @@ const c = document.querySelector('#game');
     }
     const previous = REGIONS.find((candidate) => candidate.id === next.id - 1);
     const bossGateLocked = Boolean(previous?.bossName && !bossDefeats[previous.id]);
-    if (p.lvl < next.unlocks || bossGateLocked) {
+    if (!isRegionUnlocked(next.id)) {
       p.x = C(p.x, region.col * ZONE_W + 30, (region.col + 1) * ZONE_W - 30);
       p.y = C(p.y, region.row * ZONE_H + 30, (region.row + 1) * ZONE_H - 30);
       goal = null;
@@ -1289,7 +1417,7 @@ const c = document.querySelector('#game');
     updateWorldRegion.locked = false;
     if (next.id !== region.id) {
       captureCurrentRegion();
-      regionIndex = next.id - 1;
+      regionIndex = REGIONS.findIndex((candidate) => candidate.id === next.id);
       region = next;
       enemy = null;
       object = null;
@@ -1313,8 +1441,8 @@ const c = document.querySelector('#game');
     for (let i = 0; i < steps; i++) {
       const ox = region.col * ZONE_W;
       const oy = region.row * ZONE_H;
-      const nextX = dungeonMode ? C(p.x + stepX, ox + 110, ox + ZONE_W - 110) : C(p.x + stepX, 30, W.w - 30);
-      const nextY = dungeonMode ? C(p.y + stepY, oy + 100, oy + ZONE_H - 100) : C(p.y + stepY, 30, W.h - 30);
+      const nextX = dungeonMode ? C(p.x + stepX, ox + 110, ox + ZONE_W - 110) : C(p.x + stepX, ox + 30, ox + ZONE_W - 30);
+      const nextY = dungeonMode ? C(p.y + stepY, oy + 100, oy + ZONE_H - 100) : C(p.y + stepY, oy + 30, oy + ZONE_H - 30);
       if (!terrain.blockedAt(nextX, p.y, 14, trees, decor)) p.x = nextX;
       if (!terrain.blockedAt(p.x, nextY, 14, trees, decor)) p.y = nextY;
     }
@@ -1580,9 +1708,9 @@ const c = document.querySelector('#game');
         drops.push({ x: m.x + 24, y: m.y, kind: 'crystal', amount: region.id + 1, dungeon: dungeonMode, phase: 0 });
         msg((dungeonMode
           ? 'Chefe do andar ' + dungeonSession.floor + ' derrotado · saque especial disponível!'
-          : region.id < REGIONS.length
-            ? 'Guardião derrotado · caminho para ' + REGIONS[region.id].name + ' aberto!'
-            : 'Vharok derrotado · você concluiu a jornada até o nível 100!') + (firstRegionClear ? ' · +2 Fragmentos de Brasa' : ''));
+          : REGIONS.some((candidate) => candidate.id === region.id + 1)
+            ? 'Guardião derrotado · caminho para ' + REGIONS.find((candidate) => candidate.id === region.id + 1).name + ' aberto!'
+            : 'Vharok derrotado · você concluiu a jornada até o nível 300!') + (firstRegionClear ? ' · +2 Fragmentos de Brasa' : ''));
       } else {
         msg('Inimigo Nv. ' + m.level + ' derrotado · +' + reward + ' XP');
       }
@@ -2278,10 +2406,10 @@ const c = document.querySelector('#game');
   const side = document.querySelector('.inside');
   const missionBase = side ? side.innerHTML : '';
   const missionView = () => {
-    const journey = `<div class="title">JORNADA ATÉ O NÍVEL 100</div><div class="region-track">${REGIONS.map(
+    const journey = `<div class="title">JORNADA ATÉ O NÍVEL 300</div><div class="region-track">${REGIONS.map(
       (r) => {
-        const locked = dungeonMode || p.lvl < r.unlocks || (r.id > 1 && !bossDefeats[r.id - 1]);
-        const status = bossDefeats[r.id] ? 'GUARDIÃO DERROTADO' : r.id < REGIONS.length ? 'CHEFE NV. ' + r.max : 'CHEFE FINAL NV. 100';
+        const locked = dungeonMode || !isRegionUnlocked(r.id);
+        const status = r.safeZone ? 'HUB SEGURO' : bossDefeats[r.id] ? 'GUARDIÃO DERROTADO' : r.id < 29 ? 'CHEFE NV. ' + r.max : 'CHEFE FINAL NV. 300';
         return `<button class="region-card ${region.id === r.id ? 'current' : ''} ${locked ? 'locked' : ''}" data-region="${r.id}" ${locked ? 'disabled' : ''}><b>0${r.id}</b><span>${r.name}</span><small>Nv. ${r.min}–${r.max}</small><i>${status}</i></button>`;
       }
     ).join('')}</div><div class="area-track">${region.areas.map((area, index) => {
@@ -2461,15 +2589,17 @@ const c = document.querySelector('#game');
     if (p.lvl < target.unlocks) {
       return msg('Alcance o nível ' + target.unlocks + ' para desbloquear esta região.');
     }
-    if (target.id > 1) {
-      const previous = REGIONS.find(r => r.id === target.id - 1);
-      if (previous && previous.bossName && !bossDefeats[previous.id]) return msg('Derrote ' + previous.bossName + ' antes de viajar para essa região.');
+    if (!isRegionUnlocked(target.id)) {
+      const previous = REGIONS.find((entry) => entry.id === target.id - 1);
+      if (p.lvl < target.unlocks) return msg('Alcance o nível ' + target.unlocks + ' para desbloquear esta região.');
+      return msg('Derrote ' + (previous?.bossName || 'o guardião anterior') + ' antes de viajar para essa região.');
     }
     captureCurrentRegion();
-    regionIndex = REGIONS.indexOf(target);
+      regionIndex = REGIONS.findIndex((candidate) => candidate.id === target.id);
     region = target;
-    p.x = target.col * ZONE_W + ZONE_W / 2;
-    p.y = target.row * ZONE_H + ZONE_H / 2;
+      const targetLayout = worldMapLayouts[String(target.id)];
+      p.x = target.col * ZONE_W + (targetLayout?.playerSpawn?.x ?? ZONE_W / 2);
+      p.y = target.row * ZONE_H + (targetLayout?.playerSpawn?.y ?? ZONE_H / 2);
     syncPetToPlayer();
     goal = null;
     route = [];
@@ -2485,11 +2615,21 @@ const c = document.querySelector('#game');
 
   // World Map overlay callbacks
   window._wmGetPlayerLevel = () => p.lvl;
+  window._wmGetCurrentMapId = () => region.id;
+  window._wmIsMapCleared = (mapId) => Boolean(bossDefeats[mapId]);
   window._wmCanNavigateTo = (mapId) => {
+    return Boolean(window.WorldMap?.WORLD_MAPS.some((entry) => entry.id === mapId)
+      && REGIONS.some((candidate) => candidate.id === mapId));
+  };
+  window._wmGateReason = (mapId) => {
     const map = window.WorldMap?.WORLD_MAPS.find((entry) => entry.id === mapId);
-    return Boolean(map && REGIONS.some((candidate) =>
-      candidate.id !== CASTLE_HUB.id && map.max >= candidate.min && map.min <= candidate.max
-    ));
+    if (!map) return 'Mapa não encontrado.';
+    if (p.lvl < map.min) return `Requer nível ${map.min}.`;
+    if (!isRegionUnlocked(map.id)) {
+      const previous = REGIONS.find((candidate) => candidate.id === map.id - 1);
+      if (previous?.bossName) return `Derrote ${previous.bossName} primeiro.`;
+    }
+    return '';
   };
   window._wmNavigateTo = (mapId) => {
     if (!window.WorldMap) return;
@@ -2499,16 +2639,7 @@ const c = document.querySelector('#game');
       msg('Nível ' + map.min + ' necessário para acessar ' + map.name + '.');
       return;
     }
-    // The castle spans the full progression range, but it is a hub, not a destination map.
-    // Only select playable regions with an actual level-range intersection.
-    const candidates = REGIONS.filter((candidate) =>
-      candidate.id !== CASTLE_HUB.id && map.max >= candidate.min && map.min <= candidate.max
-    );
-    const target = candidates.reduce((best, candidate) => {
-      const overlap = Math.min(candidate.max, map.max) - Math.max(candidate.min, map.min) + 1;
-      const bestOverlap = best ? Math.min(best.max, map.max) - Math.max(best.min, map.min) + 1 : -1;
-      return overlap > bestOverlap ? candidate : best;
-    }, null);
+    const target = REGIONS.find((candidate) => candidate.id === map.id && candidate.id !== CASTLE_HUB.id);
     if (target) travelRegion(target.id);
     else msg('O mapa ' + map.name + ' ainda não está conectado a uma região jogável.');
   };
@@ -4796,7 +4927,7 @@ const c = document.querySelector('#game');
       (r) =>
         r.id !== region.id &&
         p.lvl >= r.unlocks &&
-        (!REGIONS[r.id - 2] || bossDefeats[r.id - 2]) &&
+        isRegionUnlocked(r.id) &&
         Math.abs(r.col - region.col) + Math.abs(r.row - region.row) === 1
     ).forEach((r) => {
       const gx =
