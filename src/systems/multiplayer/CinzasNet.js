@@ -24,6 +24,7 @@ export class CinzasNet {
     // Callbacks de eventos
     this.onState = () => {};
     this.onChat = () => {};
+    this.onWhisper = () => {};
     this.onAction = () => {};
     this.onJoined = () => {};
     this.onDisconnect = () => {};
@@ -159,6 +160,8 @@ export class CinzasNet {
             this.handleServerState(m.players || []);
           } else if (m.t === 'chat') {
             this.handleChatMessage(m);
+          } else if (m.t === 'whisper') {
+            this.handleWhisperMessage(m);
           } else if (m.t === 'action') {
             this.handleActionMessage(m);
           } else if (m.t === 'pong') {
@@ -291,6 +294,18 @@ export class CinzasNet {
     const sanitized = String(text || '').trim().slice(0, 140);
     if (!sanitized) return;
     this.ws.send(JSON.stringify({ t: 'chat', text: sanitized }));
+  }
+
+  sendWhisper(to, text) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    const sanitized = String(text || '').trim().slice(0, 140);
+    const target = String(to || '').trim();
+    if (!sanitized || !target) return;
+    this.ws.send(JSON.stringify({ t: 'whisper', to: target, text: sanitized }));
+  }
+
+  handleWhisperMessage(m) {
+    this.onWhisper(m);
   }
 
   sendAction(action = {}) {

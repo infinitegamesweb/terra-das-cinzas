@@ -14,6 +14,7 @@ export class ChatUI {
     this.input = null;
     this.isOpen = false;
     this.localBubble = null; // { text, expiresAt }
+    this.lastWhisperSender = null;
   }
 
   init() {
@@ -32,11 +33,31 @@ export class ChatUI {
       });
     };
 
+    // Conecta sussurros privados
+    cinzasNet.onWhisper = (msg) => {
+      if (msg.incoming) {
+        this.lastWhisperSender = msg.from;
+        this.addMessage({
+          from: `[Sussurro de ${msg.from}]`,
+          text: msg.text,
+          type: 'whisper-in',
+          time: new Date()
+        });
+      } else {
+        this.addMessage({
+          from: `[Sussurro para ${msg.to}]`,
+          text: msg.text,
+          type: 'whisper-out',
+          time: new Date()
+        });
+      }
+    };
+
     // Mensagens de sistema
     cinzasNet.onJoined = (data) => {
       this.addMessage({
         from: 'SISTEMA',
-        text: `Você entrou no canal ${data.channel}.`,
+        text: `Você entrou no canal ${data.channel}. Digite /help para ver os comandos.`,
         type: 'system',
         time: new Date()
       });
@@ -108,6 +129,22 @@ export class ChatUI {
       }
       .cinzas-chat-msg.system .chat-author {
         color: #eab308;
+      }
+      .cinzas-chat-msg.whisper-in {
+        color: #f472b6;
+        font-style: italic;
+      }
+      .cinzas-chat-msg.whisper-in .chat-author {
+        color: #ec4899;
+        font-weight: 700;
+      }
+      .cinzas-chat-msg.whisper-out {
+        color: #d8b4fe;
+        font-style: italic;
+      }
+      .cinzas-chat-msg.whisper-out .chat-author {
+        color: #c084fc;
+        font-weight: 700;
       }
       .cinzas-chat-form {
         display: flex;
@@ -245,12 +282,93 @@ export class ChatUI {
       return;
     }
 
-    // Envia ao servidor autoritativo
+    if (this.input) {
+      this.input.value = '';
+      this.input.blur();
+    }
+
+    // 1. Comando de Ajuda (/help ou /ajuda)
+    if (text === '/help' || text === '/ajuda' || text === '/?') {
+      this.addMessage({
+        from: 'COMANDOS',
+        text: '/w [nome] [msg] (sussurro) · /r [msg] (responder) · /roll (rolar 1–100) · [Tab] lista de jogadores',
+        type: 'system',
+        time: new Date()
+      });
+      return;
+    }
+
+    // 2. Comando de Rolagem de Dados (/roll ou /dado)
+    if (text === '/roll' || text === '/dado' || text.startsWith('/roll ') || text.startsWith('/dado ')) {
+      const roll = Math.floor(Math.random() * 100) + 1;
+      const rollMsg = `🎲 rolou ${roll} (1–100)`;
+      if (cinzasNet?.isConnected) {
+        cinzasNet.sendChat(rollMsg);
+      }
+      this.addMessage({
+        from: 'Você',
+        text: rollMsg,
+        type: 'local',
+        time: new Date()
+      });
+      this.localBubble = { text: rollMsg, expiresAt: performance.now() + 5000 };
+      return;
+    }
+
+    // 3. Comando de Sussurro (/w [nome] [mensagem])
+    if (text.startsWith('/w ') || text.startsWith('/whisper ')) {
+      const parts = text.split(' ');
+      const targetName = parts[1];
+      const whisperText = parts.slice(2).join(' ').trim();
+      if (!targetName || !whisperText) {
+        this.addMessage({
+          from: 'SISTEMA',
+          text: 'Uso incorreto. Exemplo: /w NomeDoJogador Olá companheiro!',
+          type: 'system',
+          time: new Date()
+        });
+        return;
+      }
+      if (cinzasNet?.isConnected) {
+        cinzasNet.sendWhisper(targetName, whisperText);
+      } else {
+        this.addMessage({ from: 'SISTEMA', text: 'Você precisa estar conectado a um canal para sussurrar.', type: 'system' });
+      }
+      return;
+    }
+
+    // 4. Comando de Resposta Rápida (/r [mensagem])
+    if (text.startsWith('/r ') || text.startsWith('/reply ')) {
+      if (!this.lastWhisperSender) {
+        this.addMessage({
+          from: 'SISTEMA',
+          text: 'Nenhum jogador sussurrou para você recentemente.',
+          type: 'system',
+          time: new Date()
+        });
+        return;
+      }
+      const whisperText = text.replace(/^\/(r|reply)\s+/, '').trim();
+      if (!whisperText) {
+        this.addMessage({
+          from: 'SISTEMA',
+          text: `Uso: /r [mensagem] (responder a ${this.lastWhisperSender})`,
+          type: 'system',
+          time: new Date()
+        });
+        return;
+      }
+      if (cinzasNet?.isConnected) {
+        cinzasNet.sendWhisper(this.lastWhisperSender, whisperText);
+      }
+      return;
+    }
+
+    // 5. Mensagem Normal de Chat
     if (cinzasNet?.isConnected) {
       cinzasNet.sendChat(text);
     }
 
-    // Exibe no histórico local
     this.addMessage({
       from: 'Você',
       text: text,
@@ -258,16 +376,10 @@ export class ChatUI {
       time: new Date()
     });
 
-    // Configura balão de fala local
     this.localBubble = {
       text,
       expiresAt: performance.now() + 5000
     };
-
-    if (this.input) {
-      this.input.value = '';
-      this.input.blur();
-    }
   }
 
   addMessage({ from, text, type = 'remote', time = new Date() }) {

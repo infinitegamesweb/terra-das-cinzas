@@ -127,8 +127,45 @@ export function start(port = CONFIG.PORT) {
         const text = String(m.text || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 140);
         if (!text) return;
         me.lastChat = now;
+
+        // Comando de sussurro no chat: /w [alvo] [mensagem]
+        if (text.startsWith("/w ") || text.startsWith("/whisper ")) {
+          const parts = text.split(" ");
+          const targetName = parts[1];
+          const whisperText = parts.slice(2).join(" ").trim();
+          if (!targetName || !whisperText) {
+            send({ t: "chat", from: "SISTEMA", text: "Uso: /w [jogador] [mensagem]" });
+            return;
+          }
+          const room = rooms.get(me.channel);
+          const target = Array.from(room ? room.values() : []).find(
+            (p) => p.id !== me.id && (p.name.toLowerCase() === targetName.toLowerCase() || p.name.toLowerCase().startsWith(targetName.toLowerCase()))
+          );
+          if (!target) {
+            send({ t: "chat", from: "SISTEMA", text: `Jogador '${targetName}' não encontrado no canal.` });
+            return;
+          }
+          target.ws.readyState === 1 && target.ws.send(JSON.stringify({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: true }));
+          send({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: false });
+          return;
+        }
+
         for (const p of rooms.get(me.channel).values()) p.ws.readyState === 1 &&
           p.ws.send(JSON.stringify({ t: "chat", from: me.name, text }));
+      } else if (m.t === "whisper" && me.channel) {
+        const targetName = String(m.to || "").trim();
+        const whisperText = String(m.text || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 140);
+        if (!targetName || !whisperText) return;
+        const room = rooms.get(me.channel);
+        const target = Array.from(room ? room.values() : []).find(
+          (p) => p.id !== me.id && (p.name.toLowerCase() === targetName.toLowerCase() || p.name.toLowerCase().startsWith(targetName.toLowerCase()))
+        );
+        if (!target) {
+          send({ t: "chat", from: "SISTEMA", text: `Jogador '${targetName}' não encontrado no canal.` });
+          return;
+        }
+        target.ws.readyState === 1 && target.ws.send(JSON.stringify({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: true }));
+        send({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: false });
       } else if (m.t === "ping") {
         send({ t: "pong", ctime: m.ctime, stime: Date.now() });
       } else if (m.t === "action" && me.channel) {

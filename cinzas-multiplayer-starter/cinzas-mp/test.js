@@ -17,13 +17,14 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [], actions: [], pongs: [] };
+    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
     ws.on("message", (d) => {
       const m = JSON.parse(d);
-      if (m.t === "joined") { c.id = m.id; resolve(c); }
+      if (m.t === "joined") { c.id = m.id; c.name = m.name; resolve(c); }
       if (m.t === "state") c.state = m.players;
       if (m.t === "chat") c.chat.push(m);
+      if (m.t === "whisper") c.whispers.push(m);
       if (m.t === "action") c.actions.push(m);
       if (m.t === "pong") c.pongs.push(m);
     });
@@ -92,7 +93,18 @@ assert.equal(ca.pongs[0].ctime, 123456);
 assert.ok(ca.pongs[0].stime > 0);
 console.log("ok  ping e resposta pong com timestamp de latencia");
 
-// 9. login duplicado derruba a conexao antiga
+// 9. sussurro privado entre jogadores (/w e t: whisper)
+ca.ws.send(JSON.stringify({ t: "whisper", to: cb.name, text: "segredo das cinzas" }));
+await wait(100);
+assert.equal(cb.whispers.length, 1);
+assert.equal(cb.whispers[0].text, "segredo das cinzas");
+assert.equal(cb.whispers[0].from, ca.name);
+assert.equal(cb.whispers[0].incoming, true);
+assert.equal(ca.whispers.length, 1);
+assert.equal(ca.whispers[0].incoming, false);
+console.log("ok  sussurro privado entregue com sucesso e isolado");
+
+// 10. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");
