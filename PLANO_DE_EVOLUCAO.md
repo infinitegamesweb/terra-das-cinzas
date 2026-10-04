@@ -17,13 +17,14 @@ Evoluir o protótipo com uma identidade visual 2D consistente, fluxos jogáveis 
 - `public/` contém cerca de 9 mil arquivos e 163 MB. O build copia toda essa pasta para `dist/`, inclusive previews e arquivos de referência. A auditoria seguinte deve identificar recursos realmente carregados antes de mover qualquer arquivo.
 - O build foi concluído com sucesso depois das alterações atuais do bazar. A prévia da saída `dist` confirmou menu, nova jornada e bazar; o fluxo de compra/venda ainda precisa ser percorrido com dados de inventário e saldo adequados.
 
-## Skills criadas
+## Skills instaladas no projeto
 
-As três skills ficam em `D:\Game\.agents\skills\` e devem orientar trabalho futuro neste projeto:
+As quatro skills do projeto estão em `.agents/skills/` e orientam o trabalho neste repositório:
 
-- [Direção de arte 2D pixel art](../.agents/skills/game-art-director-2d-pixel/SKILL.md)
-- [Engenharia de game web e Web3](../.agents/skills/web-game-engineer-web3/SKILL.md)
-- [Engenharia de ferramentas para games](../.agents/skills/game-tools-engineer/SKILL.md)
+- [Direção de arte 2D pixel art](.agents/skills/game-art-director-2d-pixel/SKILL.md)
+- [Engenharia de game web e Web3](.agents/skills/web-game-engineer-web3/SKILL.md)
+- [Engenharia de ferramentas para games](.agents/skills/game-tools-engineer/SKILL.md)
+- [API Spriterrific](.agents/skills/spriterrific-api/SKILL.md)
 
 ## Trabalho em andamento
 
@@ -83,9 +84,9 @@ As três skills ficam em `D:\Game\.agents\skills\` e devem orientar trabalho fut
 
 ## Próxima sequência
 
-1. Revisar as nove propostas da barqueira e escolher se alguma substitui/representa o NPC Tomas; manter a identidade do NPC e o atlas de animação coerentes.
+1. [Concluído] Revisar as nove propostas da barqueira e integrar a melhor candidata (opção 1 alinhada com pivô no chão Y=45) como sprite único do NPC Tomas (`fisher_tomas` no Pântano Espectral).
 2. Fazer uma amostra de um pack Foozle CC0 e comparar uma criatura, um efeito e a escala em jogo antes de qualquer importação em lote.
 3. Finalizar a revisão de compra, venda, cancelamento e bolsa cheia no bazar.
-4. Fazer inventário de carregamento e tamanhos para reduzir o pacote sem perder fontes úteis.
+4. [Concluído] Fazer inventário de carregamento e higienização de assets para reduzir o pacote servido (redução de 132 MB em `dist/`).
 5. Continuar a revisão jogável dos sistemas principais e priorizar UI/sprites com maior impacto visual.
 

@@ -44,9 +44,10 @@ const GAME_MULTIPLAYER_URL = process.env.GAME_MULTIPLAYER_URL || localEnv.GAME_M
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || localEnv.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYXhoc2l0d2tjc29pYmp2eG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MDMzNjMsImV4cCI6MjEwNjQ3OTM2M30.iNoLmFRycMhceTwIUQB09lRg7tOCOKnqbK4joQnxZGI';
 
 function syncPublicToDist() {
-  if (!fs.existsSync(DIST_DIR)) {
-    fs.mkdirSync(DIST_DIR, { recursive: true });
+  if (fs.existsSync(DIST_DIR)) {
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
   }
+  fs.mkdirSync(DIST_DIR, { recursive: true });
   if (fs.existsSync(PUBLIC_DIR)) {
     fs.cpSync(PUBLIC_DIR, DIST_DIR, { recursive: true, force: true });
   }

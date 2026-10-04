@@ -218,7 +218,7 @@ const c = document.querySelector('#game');
 
   const REGIONAL_GUIDES = {
     1: { id: 'herbalist_mira', name: 'Mira, Erveira', title: 'Ervas para a estrada', sprite: 'shop_maeve', color: '#77d78a', x: 720, y: 790, reward: '2 poções de cura', kind: 'potions' },
-    2: { id: 'fisher_tomas', name: 'Tomas, Barqueiro', title: 'Remédios das águas mortas', sprite: 'bard_dorian', color: '#67d9d2', x: 700, y: 820, reward: 'cura e 1 poção', kind: 'heal' },
+    2: { id: 'fisher_tomas', name: 'Tomas, Barqueiro', title: 'Remédios das águas mortas', sprite: 'marsh_ferryman', color: '#67d9d2', x: 700, y: 820, reward: 'cura e 1 poção', kind: 'heal' },
     3: { id: 'miner_vedra', name: 'Vedra, Mineradora', title: 'Achado da pedreira', sprite: 'forge_ignis', color: '#f2a06d', x: 730, y: 830, reward: 'ouro e cristais', kind: 'ore' },
     4: { id: 'scribe_lyra', name: 'Lyra, Copista', title: 'Fragmento de arquivo', sprite: 'lore_ether', color: '#c99af0', x: 690, y: 830, reward: 'cristais e experiência', kind: 'lore' },
     5: { id: 'scout_sera', name: 'Sera, Batedora', title: 'Último suprimento', sprite: 'sentinel_lyanna', color: '#f2c96d', x: 700, y: 830, reward: 'fragmento de brasa', kind: 'ember' }
@@ -459,7 +459,8 @@ const c = document.querySelector('#game');
   const npcSprites = {};
   [
     'forge_ignis', 'shop_maeve', 'portal_kaelen', 'quest_vane',
-    'market_silas', 'sentinel_lyanna', 'lore_ether', 'bard_dorian'
+    'market_silas', 'sentinel_lyanna', 'lore_ether', 'bard_dorian',
+    'marsh_ferryman'
   ].forEach((id) => {
     const im = new Image();
     im.src = `assets/characters/npcs/${id}_idle.png`;
