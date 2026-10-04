@@ -17,7 +17,7 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [], actions: [] };
+    const c = { ws, state: [], chat: [], actions: [], pongs: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
     ws.on("message", (d) => {
       const m = JSON.parse(d);
@@ -25,6 +25,7 @@ function client(token, channel) {
       if (m.t === "state") c.state = m.players;
       if (m.t === "chat") c.chat.push(m);
       if (m.t === "action") c.actions.push(m);
+      if (m.t === "pong") c.pongs.push(m);
     });
     ws.on("close", (code) => { c.closed = code; });
     ws.on("error", reject);
@@ -83,7 +84,15 @@ assert.equal(cb.actions[0].kind, "slash");
 assert.equal(cb.actions[0].fromId, ca.id);
 console.log("ok  acoes de combate e VFX replicadas em tempo real");
 
-// 8. login duplicado derruba a conexao antiga
+// 8. ping e medicao de latencia pong
+ca.ws.send(JSON.stringify({ t: "ping", ctime: 123456 }));
+await wait(50);
+assert.equal(ca.pongs.length, 1);
+assert.equal(ca.pongs[0].ctime, 123456);
+assert.ok(ca.pongs[0].stime > 0);
+console.log("ok  ping e resposta pong com timestamp de latencia");
+
+// 9. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");

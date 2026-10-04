@@ -15,6 +15,8 @@ export class CinzasNet {
     this.isConnected = false;
     this.joined = false;
     this.world = { w: 2000, h: 2000 };
+    this.ping = 0;
+    this.pingTimer = null;
 
     // Mapa de jogadores remotos: id -> { id, name, x, y, tx, ty, color, msg, msgAt }
     this.remotePlayers = new Map();
@@ -113,6 +115,7 @@ export class CinzasNet {
       const sx = Number.isFinite(initialX) ? initialX : (p && Number.isFinite(p.x) ? Math.round(p.x) : 1000);
       const sy = Number.isFinite(initialY) ? initialY : (p && Number.isFinite(p.y) ? Math.round(p.y) : 1000);
       const cls = classId || (p && p.classId) || 'guerreiro';
+      const lvl = (p && Number.isFinite(p.lvl)) ? Math.round(p.lvl) : 1;
 
       try {
         const ws = new WebSocket(this.getWsUrl());
@@ -120,7 +123,8 @@ export class CinzasNet {
 
         ws.onopen = () => {
           this.isConnected = true;
-          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls }));
+          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls, lvl }));
+          this.startPingLoop();
         };
 
         ws.onerror = (err) => {
@@ -132,6 +136,8 @@ export class CinzasNet {
           this.joined = false;
           const wasJoined = this.joined;
           this.remotePlayers.clear();
+          clearInterval(this.pingTimer);
+          this.pingTimer = null;
           this.onDisconnect(ev);
           if (!wasJoined && ev.code !== 1000) {
             reject(new Error(ev.reason || 'Conexão encerrada pelo servidor.'));
@@ -155,6 +161,8 @@ export class CinzasNet {
             this.handleChatMessage(m);
           } else if (m.t === 'action') {
             this.handleActionMessage(m);
+          } else if (m.t === 'pong') {
+            this.handlePong(m);
           } else if (m.t === 'error') {
             reject(new Error(m.error || 'Erro no canal'));
           }
@@ -180,6 +188,7 @@ export class CinzasNet {
           id: p.id,
           name: p.name || `Errante #${p.id}`,
           classId: p.classId || 'guerreiro',
+          lvl: p.lvl || 1,
           x: p.x,
           y: p.y,
           tx: p.x,
@@ -202,6 +211,7 @@ export class CinzasNet {
         existing.dx = p.dx || 0;
         existing.dy = p.dy || 0;
         if (p.classId) existing.classId = p.classId;
+        if (p.lvl) existing.lvl = p.lvl;
         if (p.name) existing.name = p.name;
       }
     }
@@ -295,11 +305,61 @@ export class CinzasNet {
     }));
   }
 
+  startPingLoop() {
+    clearInterval(this.pingTimer);
+    this.sendPing();
+    this.pingTimer = setInterval(() => {
+      if (this.isConnected && this.joined) this.sendPing();
+    }, 4000);
+  }
+
+  sendPing() {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+    this.ws.send(JSON.stringify({ t: 'ping', ctime: performance.now() }));
+  }
+
+  handlePong(m) {
+    if (m && typeof m.ctime === 'number') {
+      this.ping = Math.max(1, Math.round(performance.now() - m.ctime));
+    }
+  }
+
+  getAllChannelPlayers() {
+    const list = [];
+    const p = typeof window !== 'undefined' ? window._tdcPlayer : null;
+    if (this.joined) {
+      list.push({
+        id: this.myId,
+        name: this.me?.name || 'Você',
+        classId: (p && p.classId) || 'guerreiro',
+        lvl: (p && p.lvl) || 1,
+        ping: this.ping,
+        isLocal: true,
+        color: '#4ade80'
+      });
+    }
+    for (const r of this.remotePlayers.values()) {
+      list.push({
+        id: r.id,
+        name: r.name,
+        classId: r.classId || 'guerreiro',
+        lvl: r.lvl || 1,
+        ping: this.ping,
+        isLocal: false,
+        color: r.color
+      });
+    }
+    return list;
+  }
+
   disconnect() {
     this.isConnected = false;
     this.joined = false;
     this.myId = null;
     this.channel = null;
+    clearInterval(this.pingTimer);
+    this.pingTimer = null;
+    this.ping = 0;
     if (this.ws) {
       try { this.ws.close(1000, 'Desconexão do cliente'); } catch {}
       this.ws = null;

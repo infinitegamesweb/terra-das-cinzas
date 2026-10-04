@@ -20,6 +20,7 @@ import { inventoryUI } from './systems/ui/InventoryUI.js';
 import { channelManager } from './systems/multiplayer/ChannelManager.js';
 import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
 import { chatUI } from './systems/multiplayer/ChatUI.js';
+import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -2284,10 +2285,15 @@ const c = document.querySelector('#game');
       window.TalentTree.toggleTT(p.lvl, p.classId);
       e.preventDefault();
     }
+    if (k === 'tab') {
+      playerListUI.toggle();
+      e.preventDefault();
+    }
     if (k === 'escape') {
       if (window.GameItems?.closeInventoryModal) window.GameItems.closeInventoryModal();
       if (window.WorldMap) window.WorldMap.hide();
       if (window.TalentTree) window.TalentTree.hideTT();
+      if (playerListUI.isOpen) playerListUI.close();
       document.querySelectorAll('.hub-modal-overlay').forEach((el) => el.remove());
     }
   });
@@ -5227,6 +5233,7 @@ const c = document.querySelector('#game');
 
   channelManager.init();
   chatUI.init();
+  playerListUI.init();
 
   cinzasNet.onAction = (action) => {
     emitCombatEffect(action.kind || 'slash', action.x, action.y, action.color || '#f5d37b', {
