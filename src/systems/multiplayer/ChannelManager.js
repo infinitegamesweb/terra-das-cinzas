@@ -11,7 +11,8 @@ class ChannelManager {
   resolveServerBase() {
     const configured = (process.env.GAME_MULTIPLAYER_URL || '').trim();
     if (configured) return configured.replace(/\/$/, '');
-    return ['localhost', '127.0.0.1'].includes(location.hostname) ? 'http://127.0.0.1:8787' : '';
+    if (['localhost', '127.0.0.1'].includes(location.hostname)) return 'http://127.0.0.1:8787';
+    return 'https://terra-das-cinzas-multiplayer.infinited3signer.workers.dev';
   }
 
   init() {
