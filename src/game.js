@@ -1272,7 +1272,8 @@ const c = document.querySelector('#game');
       return;
     }
     const previous = REGIONS.find((candidate) => candidate.id === next.id - 1);
-    if (p.lvl < next.unlocks || (previous && !bossDefeats[previous.id])) {
+    const bossGateLocked = Boolean(previous?.bossName && !bossDefeats[previous.id]);
+    if (p.lvl < next.unlocks || bossGateLocked) {
       p.x = C(p.x, region.col * ZONE_W + 30, (region.col + 1) * ZONE_W - 30);
       p.y = C(p.y, region.row * ZONE_H + 30, (region.row + 1) * ZONE_H - 30);
       goal = null;

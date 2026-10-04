@@ -75,32 +75,35 @@
         
         <!-- HUD Principal -->
         <div class="hud">
-          <div class="line">
-            <b id="heroClassName">Guerreiro Errante</b>
-            <span id="level" class="level-badge">Nv. 3</span>
-          </div>
-          <div class="bar-group">
-            <div class="bar hp" title="Vida">
-              <i id="hp"></i>
-              <div class="bar-shine"></div>
-              <label id="hpt"></label>
+          <img class="hud-portrait" src="assets/ui/generated/errant-adventurer-portrait.png" alt="Retrato do Aventureiro Errante" />
+          <div class="hud-main">
+            <div class="line">
+              <b id="heroClassName">Guerreiro Errante</b>
+              <span id="level" class="level-badge">Nv. 3</span>
             </div>
-            <div class="bar xp" title="Experiência">
-              <i id="xp"></i>
-              <div class="bar-shine"></div>
-              <label id="xpt"></label>
+            <div class="bar-group">
+              <div class="bar hp" title="Vida">
+                <i id="hp"></i>
+                <div class="bar-shine"></div>
+                <label id="hpt"></label>
+              </div>
+              <div class="bar xp" title="Experiência">
+                <i id="xp"></i>
+                <div class="bar-shine"></div>
+                <label id="xpt"></label>
+              </div>
+              <div class="bar en" title="Energia">
+                <i id="energy"></i>
+                <div class="bar-shine"></div>
+                <label id="energyt"></label>
+              </div>
             </div>
-            <div class="bar en" title="Energia">
-              <i id="energy"></i>
-              <div class="bar-shine"></div>
-              <label id="energyt"></label>
+            <!-- Buff / Status Ativo -->
+            <div class="hud-status" id="hudStatus" hidden>
+              <span class="buff-icon"><img src="assets/items/ashen-shield.svg" width="16" height="16" alt="Escudo" /></span>
+              <span class="buff-label" id="buffLabel">Escudo de Cinzas</span>
+              <span class="buff-timer" id="buffTimer">5s</span>
             </div>
-          </div>
-          <!-- Buff / Status Ativo -->
-          <div class="hud-status" id="hudStatus" hidden>
-            <span class="buff-icon"><img src="assets/items/ashen-shield.svg" width="16" height="16" alt="Escudo" /></span>
-            <span class="buff-label" id="buffLabel">Escudo de Cinzas</span>
-            <span class="buff-timer" id="buffTimer">5s</span>
           </div>
         </div>
 
@@ -225,6 +228,6 @@
     </main>
   </div>
 
-  <script type="module" src="game.bundle.js?v=2.5"></script>
+  <script type="module" src="game.bundle.js?v=2.7"></script>
 </body>
 </html>

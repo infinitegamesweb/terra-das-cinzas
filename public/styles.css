@@ -313,17 +313,33 @@ button {
   position: absolute;
   left: 18px;
   top: 18px;
-  width: 250px;
-  padding: 14px;
-  border: 1px solid rgba(169, 139, 82, 0.62);
-  border-radius: 10px;
-  background: linear-gradient(145deg, rgba(20, 30, 20, 0.94), rgba(8, 15, 10, 0.92));
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  width: 330px;
+  min-height: 94px;
+  padding: 13px 14px;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border: 16px solid transparent;
+  border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 fill / 16px / 0 stretch;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.54), inset 0 1px 0 rgba(255, 235, 177, 0.12);
   pointer-events: none;
   z-index: 3;
 }
+
+.hud-portrait {
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 3px #000b);
+}
+
+.hud-main { min-width: 0; }
+.hud .line { gap: 6px; font-size: 11px; }
+.hud .line b { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.hud .level-badge { flex: 0 0 auto; }
 
 .line {
   display: flex;
@@ -749,8 +765,8 @@ button {
 /* Side Panel */
 .side {
   overflow-y: auto;
-  border-left: 1px solid #5a4425;
-  background: linear-gradient(135deg, #0d160e 0%, #152216 100%);
+  border: 15px solid transparent;
+  border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 fill / 15px / 0 stretch;
   display: flex;
   flex-direction: column;
 }
@@ -803,6 +819,8 @@ button {
 .inside::-webkit-scrollbar-track { background: #101810; }
 .inside::-webkit-scrollbar-thumb { background: #765a2f; border-radius: 3px; }
 
+.tabs { background: transparent; border-bottom-color: #7b6338; }
+
 .title {
   display: flex;
   justify-content: space-between;
@@ -823,9 +841,8 @@ button {
 
 .quest, .card {
   position: relative;
-  border: 1px solid #635337;
-  border-radius: 8px;
-  background: linear-gradient(145deg, rgba(27, 39, 25, 0.96) 0%, rgba(12, 19, 13, 0.98) 100%);
+  border: 10px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 54 fill / 9px / 0 stretch;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -1153,9 +1170,8 @@ button {
   justify-content: center;
   gap: 3px;
   text-align: left;
-  border: 1px solid #5a4a2b;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #1c2618, #0e160e);
+  border: 7px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 54 fill / 7px / 0 stretch;
   color: #ecdcae;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1182,8 +1198,8 @@ button {
 }
 
 .region-card.current {
-  border-color: #f7d268;
-  background: linear-gradient(135deg, #2b3d24, #152213);
+  filter: brightness(1.2) saturate(1.12);
+  background: linear-gradient(135deg, #2b2520, #161414);
   box-shadow: 0 0 14px rgba(247, 210, 104, 0.25);
 }
 
@@ -1201,7 +1217,7 @@ button {
 }
 
 .region-card:not(:disabled):hover {
-  border-color: #ffd464;
+  filter: brightness(1.2);
   transform: translateY(-1px);
 }
 
@@ -3608,6 +3624,139 @@ button {
     border-color: #fbbf24;
     transform: translateY(-1px);
   }
+}
+
+/* Asset-backed, ash-and-bronze UI skin: surfaces come from art; HTML keeps text live. */
+.top {
+  gap: 10px;
+  padding-right: 12px;
+  padding-left: 12px;
+  background: linear-gradient(180deg, #1d1b1b, #0d0d0f);
+}
+.main-menu { background-color: #09090b; }
+.main-menu::before { filter: grayscale(.92) brightness(.55); opacity: .22; }
+.guide-top { color: #e8c66c; }
+.guide-top:hover { color: #ffe5a3; }
+
+.online { flex: 0 0 auto; gap: 5px; padding-left: 8px; font-size: 10px; white-space: nowrap; }
+.online i { background: #c2a05f; box-shadow: 0 0 8px #c2a05f66; }
+.wallet { gap: 6px; }
+.currency-badge { padding-right: 8px; padding-left: 8px; background-color: #171719; }
+
+.hud {
+  border-width: 12px;
+  border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 / 12px / 0 stretch;
+  background: linear-gradient(145deg, rgba(28, 26, 26, .98), rgba(12, 12, 14, .98));
+}
+
+.hud .bar {
+  border: 4px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 4px 6px / 0 stretch;
+  border-radius: 0;
+}
+
+.action {
+  border: 8px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 8px / 0 stretch;
+  border-radius: 0;
+  background-color: #171719;
+}
+
+.side {
+  border: 10px solid transparent;
+  border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 / 10px / 0 stretch;
+  background: #101012;
+}
+
+.tabs { background: rgba(16, 16, 18, .98); border-bottom-color: #514638; }
+.tabs button { border: 0; background: #171719; }
+.tabs button:hover { background: #242221; color: #f7e1a0; }
+.tabs button.active { background: #25211d; color: #ffd464; box-shadow: inset 0 -2px #b6904c; }
+
+.account-top,
+.guide-top,
+.currency-badge {
+  border: 5px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 5px 9px / 0 stretch;
+  border-radius: 0;
+  background-color: #141416;
+  background-image: none;
+}
+
+.account-top:hover,
+.guide-top:hover { filter: brightness(1.2); }
+.account-top.connected { color: #e8c66c; filter: brightness(1.1); }
+
+.tabs button,
+.account-top,
+.guide-top,
+.currency-badge { image-rendering: pixelated; }
+
+.quest,
+.card {
+  border: 6px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 5px 8px / 0 stretch;
+  border-radius: 0;
+  background: linear-gradient(145deg, #1d1c1c, #101012);
+}
+
+.quest:hover { background: linear-gradient(135deg, #282421, #151414); }
+.card:hover { background-color: #201e1b; }
+
+.region-card {
+  border: 5px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 5px 8px / 0 stretch;
+  border-radius: 0;
+  background: #151517;
+}
+
+.region-card.current { background: #28221a; }
+.region-card.locked { filter: saturate(.45); }
+
+.card button,
+.menu-button,
+.dungeon-button,
+.inv-btn-gothic {
+  border: 5px solid transparent;
+  border-image: url('assets/ui/generated/ashes-button-frame.png') 20 38 / 5px 8px / 0 stretch;
+  border-radius: 0;
+  background-color: #151517;
+  background-image: none;
+}
+
+.card button:hover:not(:disabled),
+.menu-button:hover,
+.dungeon-button:hover:not(:disabled),
+.inv-btn-gothic:hover {
+  background-color: #24201a;
+  background-image: none;
+  filter: brightness(1.18);
+}
+
+.account-card,
+.channels-dialog,
+.wm-panel,
+.tt-panel,
+.hub-modal,
+.menu-frame {
+  border: 10px solid transparent;
+  border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 / 10px / 0 stretch;
+  border-radius: 0;
+  background: linear-gradient(145deg, #1a191a, #0d0d0f);
+}
+
+@media (max-width: 768px) {
+  .side {
+    border: 8px solid transparent;
+    border-image: url('assets/ui/generated/ashes-panel-frame.png') 68 / 8px / 0 stretch;
+  }
+
+  .hud {
+    width: 310px;
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .hud-portrait { width: 54px; height: 54px; }
 }
 
 
