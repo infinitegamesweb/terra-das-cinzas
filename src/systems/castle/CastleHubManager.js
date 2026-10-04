@@ -195,6 +195,7 @@
     // ─── ALA SUL: SAÍDA PARA EXPEDIÇÕES & FLORESTA (x: 960, y: 1160-1260) ───
     {
       id: 'gate_sentinel',
+      sprite: 'sentinel_lyanna',
       name: 'Vigia do Portão',
       title: 'Guarda da Saída para as Florestas',
       x: ZONE_OX + 960,

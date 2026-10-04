@@ -3908,8 +3908,9 @@ const c = document.querySelector('#game');
       }
     } else {
       // Mana Seed Animated Character Sprite (Harmonized size: ~58px tall, crisp 2x scale)
-      const animSprite = npcAnimSprites[n.id];
-      const idleSprite = npcSprites[n.id];
+      const spriteId = n.sprite || n.id;
+      const animSprite = npcAnimSprites[spriteId];
+      const idleSprite = npcSprites[spriteId];
       const spr = (animSprite?.complete && animSprite.naturalWidth) ? animSprite : ((idleSprite?.complete && idleSprite.naturalWidth) ? idleSprite : null);
 
       if (spr) {
