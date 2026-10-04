@@ -2163,6 +2163,17 @@ const c = document.querySelector('#game');
     if (autoPlay) setAutoPlay(false);
     route = [];
     let q = at(e);
+
+    // Menu de contexto ao clicar em outro jogador online no mundo
+    if (cinzasNet?.isConnected) {
+      const remotePlayers = cinzasNet.getRemotePlayers();
+      const hitPlayer = remotePlayers.find(op => Math.hypot(op.x - q.x, (op.y - 20) - q.y) < 38 || Math.hypot(op.x - q.x, op.y - q.y) < 32);
+      if (hitPlayer) {
+        window.CinzasContextMenu?.showForPlayer(hitPlayer, e);
+        return;
+      }
+    }
+    window.CinzasContextMenu?.close();
     if (!dungeonMode) {
       if (region.id === 0 && window.GameCastleHub?.CASTLE_NPCS) {
         const castleNpc = window.GameCastleHub.CASTLE_NPCS.find(n => D(q, n) < 80);
@@ -2247,6 +2258,18 @@ const c = document.querySelector('#game');
       setDestination(q);
     }
   };
+
+  c.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    let q = at(e);
+    if (cinzasNet?.isConnected) {
+      const remotePlayers = cinzasNet.getRemotePlayers();
+      const hitPlayer = remotePlayers.find(op => Math.hypot(op.x - q.x, (op.y - 20) - q.y) < 45 || Math.hypot(op.x - q.x, op.y - q.y) < 36);
+      if (hitPlayer) {
+        window.CinzasContextMenu?.showForPlayer(hitPlayer, e);
+      }
+    }
+  });
 
   addEventListener('keydown', (e) => {
     if (menuOpen) return;

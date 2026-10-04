@@ -244,6 +244,15 @@ export class CinzasNet {
       p.attackAt = performance.now();
       if (m.dir) p.dir = m.dir;
     }
+    if (m.kind === 'party_invite' && (m.toId === this.myId || (this.me?.name && m.to === this.me.name))) {
+      const inviter = m.fromName || (p && p.name) || 'Um aventureiro';
+      window.CinzasChat?.addMessage({
+        from: 'GRUPO',
+        text: `🛡️ ${inviter} convidou você para o grupo!`,
+        type: 'system',
+        time: new Date()
+      });
+    }
     this.onAction(m);
   }
 

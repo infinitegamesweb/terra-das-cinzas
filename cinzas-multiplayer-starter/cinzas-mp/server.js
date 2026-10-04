@@ -174,11 +174,14 @@ export function start(port = CONFIG.PORT) {
         const actionMsg = JSON.stringify({
           t: "action",
           fromId: me.id,
+          fromName: me.name,
           kind: String(m.kind || "slash").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30),
           x: Math.round(Number(m.x) || me.x),
           y: Math.round(Number(m.y) || me.y),
           color: String(m.color || "#f5d37b").slice(0, 16),
-          dir: String(m.dir || "south").slice(0, 12)
+          dir: String(m.dir || "south").slice(0, 12),
+          to: m.to ? String(m.to).slice(0, 40) : undefined,
+          toId: m.toId ? Number(m.toId) : undefined
         });
         for (const o of room.values()) {
           if (o.id !== me.id && o.ws.readyState === 1 && Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS) {

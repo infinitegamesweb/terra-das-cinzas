@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cinzasNet } from './CinzasNet.js';
+import { playerContextMenu } from './PlayerContextMenu.js';
 
 export class PlayerListUI {
   constructor() {
@@ -19,6 +20,7 @@ export class PlayerListUI {
 
   init() {
     if (this.overlay) return;
+    playerContextMenu.init();
     this.injectStyles();
     this.createDOM();
     this.bindEvents();
@@ -193,6 +195,22 @@ export class PlayerListUI {
       .player-btn-whisper:hover {
         background: rgba(245, 158, 11, 0.3);
       }
+      .player-btn-actions {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #e2e8f0;
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+      }
+      .player-btn-actions:hover {
+        background: rgba(245, 158, 11, 0.22);
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #fef08a;
+      }
       .playerlist-footer {
         padding: 10px 18px;
         background: rgba(10, 13, 20, 0.9);
@@ -356,21 +374,28 @@ export class PlayerListUI {
           </div>
         </div>
         <div class="player-actions">
-          ${!p.isLocal ? `<button type="button" class="player-btn-whisper" data-whisper="${p.name}">Sussurrar</button>` : ''}
+          ${!p.isLocal ? `
+            <button type="button" class="player-btn-whisper" data-whisper="${p.name}">Sussurrar</button>
+            <button type="button" class="player-btn-actions" data-actions="${p.name}">Ações ▾</button>
+          ` : ''}
         </div>
       `;
 
       if (!p.isLocal) {
-        card.querySelector('[data-whisper]')?.addEventListener('click', () => {
+        card.querySelector('[data-whisper]')?.addEventListener('click', (e) => {
+          e.stopPropagation();
           this.close();
-          const chat = window.CinzasChat;
-          if (chat) {
-            chat.focusChat();
-            if (chat.input) {
-              chat.input.value = `/w ${p.name} `;
-              chat.input.focus();
-            }
-          }
+          playerContextMenu.triggerWhisper(p.name);
+        });
+
+        card.querySelector('[data-actions]')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          playerContextMenu.showForPlayer(p, e);
+        });
+
+        card.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          playerContextMenu.showForPlayer(p, e);
         });
       }
 
