@@ -305,12 +305,18 @@ export class PartyManager {
   }
 
   handlePartyUpdate(party) {
+    const prevCount = this.currentParty?.members?.length || 0;
+    const newCount = party?.members?.length || 0;
+    if (party && newCount > prevCount && prevCount > 0) {
+      window.GameAudio?.playPartyJoin?.();
+    }
     this.currentParty = party;
     this.render();
   }
 
   handlePartyInvite(invite) {
     this.pendingInvite = invite;
+    window.GameAudio?.playPartyInvite?.();
     const bodyNode = this.inviteToastNode.querySelector('#cinzasPartyInviteBody');
     if (bodyNode) {
       bodyNode.innerHTML = `<strong>${invite.fromName || 'Um aventureiro'}</strong> convidou você para caçar e explorar em grupo!`;
@@ -336,6 +342,7 @@ export class PartyManager {
 
   acceptPendingInvite() {
     if (!this.pendingInvite) return;
+    window.GameAudio?.playPartyJoin?.();
     cinzasNet.sendPartyAccept(this.pendingInvite.fromId);
     this.closeInviteToast();
   }
@@ -353,6 +360,7 @@ export class PartyManager {
 
   leaveParty() {
     if (!this.currentParty) return;
+    window.GameAudio?.playPartyLeave?.();
     cinzasNet.sendPartyLeave();
     this.currentParty = null;
     this.render();

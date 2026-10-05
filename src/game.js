@@ -68,6 +68,8 @@ const c = document.querySelector('#game');
   let goal = null;
   let enemy = null;
   let object = null;
+  let selectedPlayer = null;
+  window._tdcSelectedTarget = () => ({ enemy, object, selectedPlayer });
   let toast = 0;
   let kills = 0;
   let ore = 0;
@@ -2173,6 +2175,9 @@ const c = document.querySelector('#game');
       const remotePlayers = cinzasNet.getRemotePlayers();
       const hitPlayer = remotePlayers.find(op => Math.hypot(op.x - q.x, (op.y - 20) - q.y) < 38 || Math.hypot(op.x - q.x, op.y - q.y) < 32);
       if (hitPlayer) {
+        selectedPlayer = hitPlayer;
+        enemy = object = null;
+        audio.playTargetSelect?.();
         window.CinzasContextMenu?.showForPlayer(hitPlayer, e);
         return;
       }
@@ -2242,6 +2247,8 @@ const c = document.querySelector('#game');
     )[0];
 
     if (n && Math.hypot(n.x - q.x, n.y - q.y) < 56) {
+      selectedPlayer = null;
+      audio.playTargetSelect?.();
       if ('hp' in n) {
         enemy = n;
         object = null;
@@ -2258,7 +2265,7 @@ const c = document.querySelector('#game');
         setDestination({ x: n.x + (dx / length) * stopAt, y: n.y + (dy / length) * stopAt });
       } else setDestination({ x: n.x - p.face * 28, y: n.y });
     } else {
-      enemy = object = null;
+      enemy = object = selectedPlayer = null;
       setDestination(q);
     }
   };
@@ -2270,6 +2277,9 @@ const c = document.querySelector('#game');
       const remotePlayers = cinzasNet.getRemotePlayers();
       const hitPlayer = remotePlayers.find(op => Math.hypot(op.x - q.x, (op.y - 20) - q.y) < 45 || Math.hypot(op.x - q.x, op.y - q.y) < 36);
       if (hitPlayer) {
+        selectedPlayer = hitPlayer;
+        enemy = object = null;
+        audio.playTargetSelect?.();
         window.CinzasContextMenu?.showForPlayer(hitPlayer, e);
       }
     }
@@ -4173,6 +4183,39 @@ const c = document.querySelector('#game');
     g.save();
     groundShadow(x, y + 2, 16, 6, 0.35);
 
+    // Aura rúnica no chão para aliados de grupo
+    const isPartyMember = Boolean(cinzasNet?.party?.members?.some(m => m.id === op.id || m.name === op.name));
+    const isLeader = Boolean(cinzasNet?.party && (cinzasNet.party.leaderId === op.id || cinzasNet.party.leader === op.name));
+    if (isPartyMember) {
+      g.save();
+      const pulse = 1 + Math.sin(t / 220) * 0.08;
+      const rot = (t / 750) % (Math.PI * 2);
+      g.translate(x, y + 2);
+      g.scale(1, 0.52);
+
+      g.fillStyle = 'rgba(45, 212, 191, 0.09)';
+      g.beginPath();
+      g.arc(0, 0, 26 * pulse, 0, Math.PI * 2);
+      g.fill();
+
+      g.rotate(rot);
+      g.strokeStyle = 'rgba(45, 212, 191, 0.75)';
+      g.shadowColor = '#2dd4bf';
+      g.shadowBlur = 8;
+      g.lineWidth = 1.8;
+      g.setLineDash([6, 5]);
+      g.beginPath();
+      g.arc(0, 0, 24 * pulse, 0, Math.PI * 2);
+      g.stroke();
+
+      g.fillStyle = '#2dd4bf';
+      for (let i = 0; i < 4; i++) {
+        const a = (i * Math.PI) / 2;
+        g.fillRect(Math.cos(a) * 24 * pulse - 1.5, Math.sin(a) * 24 * pulse - 1.5, 3, 3);
+      }
+      g.restore();
+    }
+
     const classId = op.classId || 'guerreiro';
     const fakeP = {
       x: op.x,
@@ -4204,22 +4247,28 @@ const c = document.querySelector('#game');
       g.fillRect(x - 6, y - 16, 12, 14);
     }
 
-    // Nameplate
-    g.fillStyle = 'rgba(10, 10, 15, 0.85)';
+    // Nameplate com indicação de grupo e líder
+    g.fillStyle = isPartyMember ? 'rgba(12, 26, 28, 0.94)' : 'rgba(10, 10, 15, 0.85)';
+    if (isPartyMember) {
+      g.strokeStyle = 'rgba(45, 212, 191, 0.6)';
+      g.lineWidth = 1;
+    }
     g.beginPath();
-    g.roundRect(x - 55, y - 50, 110, 16, 4);
+    g.roundRect(x - 58, y - 50, 116, 16, 4);
+    g.fill();
+    if (isPartyMember) g.stroke();
+
+    // Online indicator dot: Ciano se for do grupo, verde normal caso contrário
+    g.fillStyle = isPartyMember ? '#2dd4bf' : '#22c55e';
+    g.beginPath();
+    g.arc(x - 49, y - 42, 3, 0, Math.PI * 2);
     g.fill();
 
-    // Online green indicator dot
-    g.fillStyle = '#22c55e';
-    g.beginPath();
-    g.arc(x - 46, y - 42, 3, 0, Math.PI * 2);
-    g.fill();
-
-    g.fillStyle = '#e2e8f0';
+    const displayName = (isLeader ? '👑 ' : '') + op.name;
+    g.fillStyle = isPartyMember ? '#ccfbf1' : '#e2e8f0';
     g.font = '700 9px "Outfit", sans-serif';
     g.textAlign = 'center';
-    g.fillText(op.name, x + 3, y - 39);
+    g.fillText(displayName, x + 3, y - 39);
 
     // Chat speech bubble
     if (op.msg) {
@@ -4838,22 +4887,99 @@ const c = document.querySelector('#game');
   }
 
   function drawTargetReticle(t, now) {
-    const rot = (now / 300) % (Math.PI * 2);
-    g.save();
-    g.translate(t.x, t.y - 8);
-    g.rotate(rot);
-    g.strokeStyle = '#ffd700';
-    g.shadowColor = '#ffd700';
-    g.shadowBlur = 8;
-    g.lineWidth = 2;
+    if (!t) return;
+    const isEnemy = (t === enemy) || ('hp' in t && t.alive);
+    const isPlayer = (t === selectedPlayer) || Boolean(t.classId);
+    const isPartyMember = isPlayer && Boolean(cinzasNet?.party?.members?.some(m => m.id === t.id || m.name === t.name));
+    const isChest = t.open !== undefined;
+    const isBoss = Boolean(t.boss);
 
-    const rad = t === enemy ? (t.boss ? 54 : 34) : 28;
+    let primaryColor = '#ffd700';
+    let glowColor = '#ffd700';
+    let rad = 30;
+
+    if (isEnemy) {
+      if (isBoss) {
+        primaryColor = '#ef4444';
+        glowColor = '#dc2626';
+        rad = 54;
+      } else {
+        primaryColor = '#f87171';
+        glowColor = '#ef4444';
+        rad = 34;
+      }
+    } else if (isPartyMember) {
+      primaryColor = '#2dd4bf';
+      glowColor = '#14b8a6';
+      rad = 32;
+    } else if (isPlayer) {
+      primaryColor = '#38bdf8';
+      glowColor = '#0284c7';
+      rad = 32;
+    } else if (isChest) {
+      primaryColor = '#fbbf24';
+      glowColor = '#d97706';
+      rad = 28;
+    } else {
+      primaryColor = '#a3e635';
+      glowColor = '#65a30d';
+      rad = 28;
+    }
+
+    const rot = (now / 350) % (Math.PI * 2);
+    const pulse = 1 + Math.sin(now / 180) * 0.06;
+
+    g.save();
+    g.translate(t.x, t.y + 1);
+    g.scale(1, 0.52);
+
+    // 1. Brilho suave sob o solo
+    g.fillStyle = glowColor + '18';
+    g.beginPath();
+    g.arc(0, 0, (rad + 6) * pulse, 0, Math.PI * 2);
+    g.fill();
+
+    // 2. Anel rúnico rotativo com 4 arcos
+    g.rotate(rot);
+    g.strokeStyle = primaryColor;
+    g.shadowColor = glowColor;
+    g.shadowBlur = 9;
+    g.lineWidth = 2.2;
+
     for (let i = 0; i < 4; i++) {
       const a = (i * Math.PI) / 2;
       g.beginPath();
-      g.arc(0, 0, rad, a - 0.25, a + 0.25);
+      g.arc(0, 0, rad * pulse, a - 0.28, a + 0.28);
       g.stroke();
     }
+
+    // 3. Quatro ponteiros de mira angulares
+    g.fillStyle = primaryColor;
+    for (let i = 0; i < 4; i++) {
+      const a = (i * Math.PI) / 2;
+      const cosA = Math.cos(a);
+      const sinA = Math.sin(a);
+      const tipDist = (rad + 6) * pulse;
+      g.beginPath();
+      g.moveTo(cosA * tipDist, sinA * tipDist);
+      g.lineTo(Math.cos(a - 0.15) * (tipDist + 5), Math.sin(a - 0.15) * (tipDist + 5));
+      g.lineTo(Math.cos(a + 0.15) * (tipDist + 5), Math.sin(a + 0.15) * (tipDist + 5));
+      g.closePath();
+      g.fill();
+    }
+
+    // 4. Anel interno contra-rotativo para chefes
+    if (isBoss) {
+      g.rotate(-rot * 2);
+      g.strokeStyle = '#dc2626';
+      g.lineWidth = 1.6;
+      g.setLineDash([4, 6]);
+      g.beginPath();
+      g.arc(0, 0, (rad - 14) * pulse, 0, Math.PI * 2);
+      g.stroke();
+      g.setLineDash([]);
+    }
+
     g.restore();
   }
 
@@ -5091,6 +5217,27 @@ const c = document.querySelector('#game');
       else if (type === 'castle_npc') drawCastleNpc(item, t);
       else if (type === 'online_player') drawOnlinePlayer(item, t);
       else {
+        if (cinzasNet?.party?.members?.length > 1) {
+          g.save();
+          const pulse = 1 + Math.sin(t / 220) * 0.08;
+          const rot = (t / 750) % (Math.PI * 2);
+          g.translate(p.x, p.y + 2);
+          g.scale(1, 0.52);
+          g.fillStyle = 'rgba(45, 212, 191, 0.08)';
+          g.beginPath();
+          g.arc(0, 0, 26 * pulse, 0, Math.PI * 2);
+          g.fill();
+          g.rotate(rot);
+          g.strokeStyle = 'rgba(45, 212, 191, 0.7)';
+          g.shadowColor = '#2dd4bf';
+          g.shadowBlur = 7;
+          g.lineWidth = 1.6;
+          g.setLineDash([6, 5]);
+          g.beginPath();
+          g.arc(0, 0, 24 * pulse, 0, Math.PI * 2);
+          g.stroke();
+          g.restore();
+        }
         drawHero(g, p, last, heroSprites, box);
         const localBubble = window.CinzasChat?.getLocalBubble?.();
         if (localBubble) {
@@ -5140,6 +5287,9 @@ const c = document.querySelector('#game');
       drawTargetReticle(enemy, t);
     }
     else if (object && (object.alive || !object.open)) drawTargetReticle(object, t);
+    else if (selectedPlayer && (cinzasNet?.isConnected ? cinzasNet.getRemotePlayers().some(op => op.id === selectedPlayer.id) : true)) {
+      drawTargetReticle(selectedPlayer, t);
+    }
 
     // Lightning Arcs
     lightningArcs.forEach(drawLightning);

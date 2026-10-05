@@ -37,6 +37,7 @@ export class ChatUI {
     cinzasNet.onWhisper = (msg) => {
       if (msg.incoming) {
         this.lastWhisperSender = msg.from;
+        window.GameAudio?.playWhisper?.();
         this.addMessage({
           from: `[Sussurro de ${msg.from}]`,
           text: msg.text,
@@ -55,6 +56,7 @@ export class ChatUI {
 
     // Conecta chat de grupo
     cinzasNet.onPartyChat = (msg) => {
+      window.GameAudio?.playPartyChat?.();
       this.addMessage({
         from: `[Grupo] ${msg.from}`,
         text: msg.text,

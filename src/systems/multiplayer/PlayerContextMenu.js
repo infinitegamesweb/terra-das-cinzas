@@ -426,6 +426,7 @@ export class PlayerContextMenu {
     if (!player) return;
     this.activePlayer = player;
     this.isOpen = true;
+    window.GameAudio?.playTargetSelect?.();
 
     // Atualiza cabeçalho do menu
     const nameNode = this.menuNode.querySelector('#cinzasCtxName');
