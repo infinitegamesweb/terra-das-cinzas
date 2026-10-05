@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cinzasNet } from './CinzasNet.js';
+import { onboardingManager } from './OnboardingManager.js';
 
 class ChannelManager {
   constructor() {
@@ -50,15 +51,21 @@ class ChannelManager {
         <p class="channels-status" role="status" aria-live="polite"></p>
         <div class="channels-list" aria-label="Lista de canais"></div>
         <footer>
-          <button class="channels-disconnect" type="button" hidden>Desconectar</button>
-          <span>Conexão rápida como convidado ou por assinatura Solana.</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="channels-edit-avatar" type="button" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; border-radius: 4px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">👤 Meu Avatar / Nick</button>
+            <button class="channels-disconnect" type="button" hidden>Desconectar</button>
+          </div>
+          <span>Guerra das Cinzas · Aventureiro com avatar e chat online.</span>
         </footer>
       </section>`;
-    overlay.addEventListener('click', (event) => {
+    overlay.addEventListener('click', async (event) => {
       if (event.target === overlay || event.target.closest('.channels-close')) this.close();
       const button = event.target.closest('[data-channel-id]');
       if (button) this.join(button.dataset.channelId);
       if (event.target.closest('.channels-disconnect')) this.disconnect();
+      if (event.target.closest('.channels-edit-avatar')) {
+        await onboardingManager.ensureProfile(true);
+      }
     });
     document.querySelector('#app')?.append(overlay);
     this.overlay = overlay;
@@ -163,24 +170,35 @@ class ChannelManager {
   async join(channelId) {
     const button = this.listNode?.querySelector(`[data-channel-id="${channelId}"]`);
     if (button) button.disabled = true;
+
+    // 0. Garante avatar e nickname na primeira conexão multijogador
+    let profile = null;
+    try {
+      profile = await onboardingManager.ensureProfile();
+    } catch (cancelErr) {
+      if (button) button.disabled = false;
+      this.setStatus('Criação de avatar cancelada.', 'info');
+      return;
+    }
+
     this.setStatus(`Conectando ao Canal ${channelId}…`);
 
     // 1. Tenta conectar via CinzasNet
     try {
       if (!cinzasNet.token) {
-        // Tenta carteira se conectada, senão convidado
+        // Tenta carteira se conectada, senão convidado com o nickname escolhido
         try {
           if (window.solana && window.solana.isPhantom) {
             await cinzasNet.loginWithWallet();
           } else {
-            await cinzasNet.loginAsGuest();
+            await cinzasNet.loginAsGuest(profile?.name);
           }
         } catch {
-          await cinzasNet.loginAsGuest();
+          await cinzasNet.loginAsGuest(profile?.name);
         }
       }
 
-      await cinzasNet.connect(channelId);
+      await cinzasNet.connect(channelId, null, null, profile?.classId, profile?.name);
       this.activeChannelId = channelId;
       this.setStatus(`Conectado com sucesso ao Canal ${channelId}!`, 'success');
       this.setHeaderStatus(`Canal ${channelId} · Online`);

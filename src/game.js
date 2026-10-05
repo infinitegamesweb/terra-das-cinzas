@@ -23,6 +23,7 @@ import { chatUI } from './systems/multiplayer/ChatUI.js';
 import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
 import { partyManager } from './systems/multiplayer/PartyManager.js';
 import { tradeManager } from './systems/multiplayer/TradeManager.js';
+import { onboardingManager } from './systems/multiplayer/OnboardingManager.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -385,6 +386,13 @@ const c = document.querySelector('#game');
   }
   syncPetToPlayer();
   window._tdcPlayer = p;
+  const savedProfile = onboardingManager.getSavedProfile();
+  if (savedProfile) {
+    p.name = savedProfile.name;
+    if (savedProfile.classId && window.GameClasses?.get) {
+      p.classId = window.GameClasses.get(savedProfile.classId).id;
+    }
+  }
   window._tdcRegions = REGIONS;
   p.potions = Number.isFinite(p.potions) ? C(Math.floor(p.potions), 0, MAX_POTIONS) : 3;
   p.emberShards = C(Math.floor(Number(p.emberShards) || 0), 0, 999999);
@@ -5261,6 +5269,28 @@ const c = document.querySelector('#game');
           g.restore();
         }
         drawHero(g, p, last, heroSprites, box);
+        if (cinzasNet?.isConnected && (cinzasNet.me?.name || p.name)) {
+          g.save();
+          const localName = cinzasNet.me?.name || p.name || 'Você';
+          const isLeader = Boolean(cinzasNet?.party && (cinzasNet.party.leaderId === cinzasNet.myId || cinzasNet.party.leader === localName));
+          const displayName = (isLeader ? '👑 ' : '') + localName;
+          g.fillStyle = 'rgba(12, 26, 28, 0.88)';
+          g.strokeStyle = 'rgba(74, 222, 128, 0.55)';
+          g.lineWidth = 1;
+          g.beginPath();
+          g.roundRect(p.x - 54, p.y - 50, 108, 16, 4);
+          g.fill();
+          g.stroke();
+          g.fillStyle = '#4ade80';
+          g.beginPath();
+          g.arc(p.x - 45, p.y - 42, 3, 0, Math.PI * 2);
+          g.fill();
+          g.fillStyle = '#f0fdf4';
+          g.font = '700 9px "Outfit", sans-serif';
+          g.textAlign = 'center';
+          g.fillText(displayName, p.x + 4, p.y - 39);
+          g.restore();
+        }
         const localBubble = window.CinzasChat?.getLocalBubble?.();
         if (localBubble) {
           g.save();

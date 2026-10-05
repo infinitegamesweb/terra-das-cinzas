@@ -112,12 +112,15 @@ export function createApp() {
     res.json({ token, publicKey, name: shortName(publicKey) });
   });
 
-  app.post("/auth/guest", (_req, res) => {
+  app.post("/auth/guest", (req, res) => {
     if (!CONFIG.ALLOW_GUEST) return res.status(403).json({ error: "modo convidado desligado" });
-    const id = "guest" + crypto.randomBytes(3).toString("hex");
+    const requestedName = typeof req.body?.name === "string" ? req.body.name.trim().slice(0, 24) : null;
+    const cleanName = requestedName && /^[a-zA-Z0-9_\- áàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]{2,20}$/i.test(requestedName)
+      ? requestedName
+      : ("guest" + crypto.randomBytes(3).toString("hex"));
     const token = crypto.randomBytes(32).toString("hex");
-    sessions.set(token, { pubkey: id, guest: true });
-    res.json({ token, publicKey: id, name: id });
+    sessions.set(token, { pubkey: cleanName, guest: true, name: cleanName });
+    res.json({ token, publicKey: cleanName, name: cleanName });
   });
 
   app.get("/channels", (_req, res) =>
@@ -141,7 +144,7 @@ export function start(port = CONFIG.PORT) {
       for (const p of room.values())
         if (p.pubkey === sess.pubkey) { p.ws.close(4002, "login em outro lugar"); room.delete(p.id); }
 
-    const me = { id: nextId++, pubkey: sess.pubkey, name: shortName(sess.pubkey), ws,
+    const me = { id: nextId++, pubkey: sess.pubkey, name: sess.name || shortName(sess.pubkey), ws,
       channel: null, classId: "guerreiro", lvl: 1, x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0,
       partyId: null, hp: 100, maxHp: 100 };
     const send = (o) => ws.readyState === 1 && ws.send(JSON.stringify(o));
@@ -196,6 +199,7 @@ export function start(port = CONFIG.PORT) {
         const room = rooms.get(m.channel);
         if (!room) return send({ t: "error", error: "canal invalido" });
         if (room.size >= CONFIG.MAX_PER_CHANNEL) return send({ t: "error", error: "canal cheio" });
+        if (typeof m.name === "string" && m.name.trim()) me.name = m.name.trim().slice(0, 24);
         if (typeof m.classId === "string" && m.classId.trim()) me.classId = m.classId.trim().slice(0, 20);
         if (Number.isFinite(m.lvl)) me.lvl = Math.max(1, Math.min(300, Math.round(Number(m.lvl))));
         if (Number.isFinite(m.x)) me.x = Math.max(0, Math.min(CONFIG.WORLD.w, Number(m.x)));

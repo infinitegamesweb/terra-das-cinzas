@@ -118,7 +118,7 @@ export class CinzasNet {
   }
 
   // ─── Conexão WebSocket ───────────────────────────────────────
-  connect(channel = 'bosque-1', initialX = null, initialY = null, classId = null) {
+  connect(channel = 'bosque-1', initialX = null, initialY = null, classId = null, playerName = null) {
     return new Promise((resolve, reject) => {
       if (!this.token) {
         return reject(new Error('Autentique-se antes de conectar ao canal.'));
@@ -130,6 +130,7 @@ export class CinzasNet {
       const sy = Number.isFinite(initialY) ? initialY : (p && Number.isFinite(p.y) ? Math.round(p.y) : 1000);
       const cls = classId || (p && p.classId) || 'guerreiro';
       const lvl = (p && Number.isFinite(p.lvl)) ? Math.round(p.lvl) : 1;
+      const nick = playerName || this.me?.name || (p && p.name) || null;
 
       try {
         const ws = new WebSocket(this.getWsUrl());
@@ -137,7 +138,7 @@ export class CinzasNet {
 
         ws.onopen = () => {
           this.isConnected = true;
-          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls, lvl }));
+          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls, lvl, name: nick }));
           this.startPingLoop();
         };
 
@@ -479,7 +480,7 @@ export class CinzasNet {
     if (this.joined) {
       list.push({
         id: this.myId,
-        name: this.me?.name || 'Você',
+        name: this.me?.name || (p && p.name) || 'Você',
         classId: (p && p.classId) || 'guerreiro',
         lvl: (p && p.lvl) || 1,
         ping: this.ping,
