@@ -118,7 +118,7 @@ export class CinzasNet {
   }
 
   // ─── Conexão WebSocket ───────────────────────────────────────
-  connect(channel = 'bosque-1', initialX = null, initialY = null, classId = null, playerName = null) {
+  connect(channel = 'bosque-1', initialX = null, initialY = null, classId = null, playerName = null, auraColor = null) {
     return new Promise((resolve, reject) => {
       if (!this.token) {
         return reject(new Error('Autentique-se antes de conectar ao canal.'));
@@ -131,6 +131,7 @@ export class CinzasNet {
       const cls = classId || (p && p.classId) || 'guerreiro';
       const lvl = (p && Number.isFinite(p.lvl)) ? Math.round(p.lvl) : 1;
       const nick = playerName || this.me?.name || (p && p.name) || null;
+      const clr = auraColor || (p && p.auraColor) || '#f59e0b';
 
       try {
         const ws = new WebSocket(this.getWsUrl());
@@ -138,7 +139,7 @@ export class CinzasNet {
 
         ws.onopen = () => {
           this.isConnected = true;
-          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls, lvl, name: nick }));
+          ws.send(JSON.stringify({ t: 'join', channel, x: sx, y: sy, classId: cls, lvl, name: nick, color: clr }));
           this.startPingLoop();
         };
 
@@ -253,6 +254,7 @@ export class CinzasNet {
         if (p.classId) existing.classId = p.classId;
         if (p.lvl) existing.lvl = p.lvl;
         if (p.name) existing.name = p.name;
+        if (p.color) existing.color = p.color;
       }
     }
 
@@ -485,7 +487,7 @@ export class CinzasNet {
         lvl: (p && p.lvl) || 1,
         ping: this.ping,
         isLocal: true,
-        color: '#4ade80'
+        color: (p && p.auraColor) || this.me?.color || '#4ade80'
       });
     }
     for (const r of this.remotePlayers.values()) {
@@ -518,21 +520,24 @@ export class CinzasNet {
     this.party = null;
   }
 
-  updateProfile(name, classId) {
+  updateProfile(name, classId, auraColor) {
     if (this.me) {
       if (name) this.me.name = name;
       if (classId) this.me.classId = classId;
+      if (auraColor) this.me.color = auraColor;
     }
     const p = typeof window !== 'undefined' ? window._tdcPlayer : null;
     if (p) {
       if (name) p.name = name;
       if (classId) p.classId = classId;
+      if (auraColor) p.auraColor = auraColor;
     }
     if (this.ws && this.ws.readyState === 1) {
       this.ws.send(JSON.stringify({
         t: 'update_profile',
         name: name || this.me?.name,
-        classId: classId || this.me?.classId
+        classId: classId || this.me?.classId,
+        color: auraColor || (p && p.auraColor) || this.me?.color
       }));
     }
   }

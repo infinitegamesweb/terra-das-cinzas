@@ -198,7 +198,7 @@ class ChannelManager {
         }
       }
 
-      await cinzasNet.connect(channelId, null, null, profile?.classId, profile?.name);
+      await cinzasNet.connect(channelId, null, null, profile?.classId, profile?.name, profile?.auraColor);
       this.activeChannelId = channelId;
       this.setStatus(`Conectado com sucesso ao Canal ${channelId}!`, 'success');
       this.setHeaderStatus(`Canal ${channelId} · Online`);

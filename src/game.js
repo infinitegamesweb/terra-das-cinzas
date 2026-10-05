@@ -392,6 +392,9 @@ const c = document.querySelector('#game');
     if (savedProfile.classId && window.GameClasses?.get) {
       p.classId = window.GameClasses.get(savedProfile.classId).id;
     }
+    if (savedProfile.auraColor) {
+      p.auraColor = savedProfile.auraColor;
+    }
   }
   window._tdcRegions = REGIONS;
   p.potions = Number.isFinite(p.potions) ? C(Math.floor(p.potions), 0, MAX_POTIONS) : 3;
@@ -4216,6 +4219,22 @@ const c = document.querySelector('#game');
     const y = op.y;
     g.save();
     groundShadow(x, y + 2, 16, 6, 0.35);
+    if (op.color) {
+      g.save();
+      const aPulse = 1 + Math.sin((t + ((op.id || 1) * 130)) / 280) * 0.08;
+      g.translate(x, y + 2);
+      g.scale(1, 0.5);
+      g.fillStyle = op.color + '22';
+      g.beginPath();
+      g.arc(0, 0, 18 * aPulse, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = op.color + '77';
+      g.lineWidth = 1.2;
+      g.beginPath();
+      g.arc(0, 0, 16 * aPulse, 0, Math.PI * 2);
+      g.stroke();
+      g.restore();
+    }
 
     // Aura rúnica no chão para aliados de grupo
     const isPartyMember = Boolean(cinzasNet?.party?.members?.some(m => m.id === op.id || m.name === op.name));
@@ -5269,6 +5288,22 @@ const c = document.querySelector('#game');
           g.setLineDash([6, 5]);
           g.beginPath();
           g.arc(0, 0, 24 * pulse, 0, Math.PI * 2);
+          g.stroke();
+          g.restore();
+        }
+        if (p.auraColor) {
+          g.save();
+          const hPulse = 1 + Math.sin(t / 280) * 0.08;
+          g.translate(p.x, p.y + 2);
+          g.scale(1, 0.5);
+          g.fillStyle = p.auraColor + '25';
+          g.beginPath();
+          g.arc(0, 0, 18 * hPulse, 0, Math.PI * 2);
+          g.fill();
+          g.strokeStyle = p.auraColor + '88';
+          g.lineWidth = 1.4;
+          g.beginPath();
+          g.arc(0, 0, 16 * hPulse, 0, Math.PI * 2);
           g.stroke();
           g.restore();
         }

@@ -145,7 +145,7 @@ export function start(port = CONFIG.PORT) {
         if (p.pubkey === sess.pubkey) { p.ws.close(4002, "login em outro lugar"); room.delete(p.id); }
 
     const me = { id: nextId++, pubkey: sess.pubkey, name: sess.name || shortName(sess.pubkey), ws,
-      channel: null, classId: "guerreiro", lvl: 1, x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0,
+      channel: null, classId: "guerreiro", lvl: 1, color: "#f59e0b", x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0,
       partyId: null, hp: 100, maxHp: 100 };
     const send = (o) => ws.readyState === 1 && ws.send(JSON.stringify(o));
     const leave = () => {
@@ -201,13 +201,14 @@ export function start(port = CONFIG.PORT) {
         if (room.size >= CONFIG.MAX_PER_CHANNEL) return send({ t: "error", error: "canal cheio" });
         if (typeof m.name === "string" && m.name.trim()) me.name = m.name.trim().slice(0, 24);
         if (typeof m.classId === "string" && m.classId.trim()) me.classId = m.classId.trim().slice(0, 20);
+        if (typeof m.color === "string" && /^#[0-9a-fA-F]{6}$/.test(m.color)) me.color = m.color;
         if (Number.isFinite(m.lvl)) me.lvl = Math.max(1, Math.min(300, Math.round(Number(m.lvl))));
         if (Number.isFinite(m.x)) me.x = Math.max(0, Math.min(CONFIG.WORLD.w, Number(m.x)));
         if (Number.isFinite(m.y)) me.y = Math.max(0, Math.min(CONFIG.WORLD.h, Number(m.y)));
         if (Number.isFinite(m.hp)) me.hp = Math.max(0, Math.round(Number(m.hp)));
         if (Number.isFinite(m.maxHp)) me.maxHp = Math.max(1, Math.round(Number(m.maxHp)));
         leave(); me.channel = m.channel; room.set(me.id, me);
-        send({ t: "joined", id: me.id, channel: m.channel, name: me.name, classId: me.classId, lvl: me.lvl, world: CONFIG.WORLD });
+        send({ t: "joined", id: me.id, channel: m.channel, name: me.name, classId: me.classId, color: me.color, lvl: me.lvl, world: CONFIG.WORLD });
       } else if (m.t === "input" && me.channel) {
         // so intencao: -1, 0 ou 1. O servidor decide o resto.
         me.dx = Math.max(-1, Math.min(1, Math.sign(Number(m.dx) || 0)));
@@ -280,7 +281,8 @@ export function start(port = CONFIG.PORT) {
       } else if (m.t === "update_profile") {
         if (typeof m.name === "string" && m.name.trim()) me.name = m.name.trim().slice(0, 24);
         if (typeof m.classId === "string" && m.classId.trim()) me.classId = m.classId.trim().slice(0, 20);
-        send({ t: "profile_updated", name: me.name, classId: me.classId });
+        if (typeof m.color === "string" && /^#[0-9a-fA-F]{6}$/.test(m.color)) me.color = m.color;
+        send({ t: "profile_updated", name: me.name, classId: me.classId, color: me.color });
       } else if (m.t === "party_invite" && me.channel) {
         const room = rooms.get(me.channel);
         if (!room) return;
@@ -672,7 +674,7 @@ export function start(port = CONFIG.PORT) {
         const near = [];
         for (const o of room.values())
           if (Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS)
-            near.push({ id: o.id, name: o.name, classId: o.classId, lvl: o.lvl || 1, x: Math.round(o.x), y: Math.round(o.y), dx: o.dx, dy: o.dy });
+            near.push({ id: o.id, name: o.name, classId: o.classId, lvl: o.lvl || 1, color: o.color, x: Math.round(o.x), y: Math.round(o.y), dx: o.dx, dy: o.dy });
         me.ws.readyState === 1 && me.ws.send(JSON.stringify({ t: "state", players: near }));
       }
     }

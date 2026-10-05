@@ -1,8 +1,17 @@
 // src/systems/multiplayer/OnboardingManager.js
-// Modal Dark Fantasy de Onboarding e Criação de Avatar / Nickname para Guerra das Cinzas
+// Modal Dark Fantasy de Onboarding e Criação de Avatar / Nickname / Aura para Guerra das Cinzas
 
 const STORAGE_KEY = 'guerra-cinzas-profile';
 const LEGACY_KEY = 'tdc-mp-profile';
+
+export const AURA_PALETTES = [
+  { id: 'ember', name: 'Brasa Carmesim', hex: '#ef4444', desc: 'Fogo primordial forjado no calor das cinzas' },
+  { id: 'gold', name: 'Ouro de Miraluz', hex: '#f59e0b', desc: 'Luz dourada sagrada dos paladinos da alvorada' },
+  { id: 'emerald', name: 'Esmeralda dos Ermos', hex: '#10b981', desc: 'Vigor vital e cura das florestas sussurrantes' },
+  { id: 'cyan', name: 'Gelo Celestial', hex: '#06b6d4', desc: 'Ar gélido e ventos rúnicos das montanhas' },
+  { id: 'void', name: 'Vazio Espectral', hex: '#a855f7', desc: 'Mistérios arcanos e energia das sombras cósmicas' },
+  { id: 'ash', name: 'Cinza Vulcânica', hex: '#94a3b8', desc: 'Poeira das batalhas antigas e sobriedade de ferro' }
+];
 
 const RANDOM_NAMES = [
   'Alden', 'Thorgar', 'Kaelen', 'Vaelor', 'Naeva',
@@ -18,6 +27,7 @@ export class OnboardingManager {
     this.rejectPromise = null;
     this.selectedClassId = 'guerreiro';
     this.selectedNick = '';
+    this.selectedAuraColor = '#f59e0b';
 
     if (typeof window !== 'undefined') {
       window.CinzasOnboarding = this;
@@ -32,7 +42,8 @@ export class OnboardingManager {
       if (data && typeof data.name === 'string' && data.name.trim().length >= 2) {
         return {
           name: data.name.trim().slice(0, 20),
-          classId: data.classId || 'guerreiro'
+          classId: data.classId || 'guerreiro',
+          auraColor: data.auraColor || '#f59e0b'
         };
       }
     } catch (e) {
@@ -41,10 +52,11 @@ export class OnboardingManager {
     return null;
   }
 
-  saveProfile(name, classId) {
+  saveProfile(name, classId, auraColor) {
     const profile = {
       name: name.trim().slice(0, 20),
       classId: classId || 'guerreiro',
+      auraColor: auraColor || this.selectedAuraColor || '#f59e0b',
       updatedAt: Date.now()
     };
     try {
@@ -56,9 +68,10 @@ export class OnboardingManager {
     if (typeof window !== 'undefined' && window._tdcPlayer) {
       window._tdcPlayer.name = profile.name;
       window._tdcPlayer.classId = profile.classId;
+      window._tdcPlayer.auraColor = profile.auraColor;
     }
     if (typeof window !== 'undefined' && window.CinzasNet) {
-      window.CinzasNet.updateProfile(profile.name, profile.classId);
+      window.CinzasNet.updateProfile(profile.name, profile.classId, profile.auraColor);
     }
     if (typeof window !== 'undefined') {
       const hudPortrait = document.querySelector('#hudPortrait') || document.querySelector('.hud-portrait');
@@ -86,10 +99,10 @@ export class OnboardingManager {
   async ensureProfile(forceModal = false) {
     const existing = this.getSavedProfile();
     if (existing && !forceModal) {
-      // Sincroniza com o jogador local
       if (typeof window !== 'undefined' && window._tdcPlayer) {
         window._tdcPlayer.name = existing.name;
         if (existing.classId) window._tdcPlayer.classId = existing.classId;
+        if (existing.auraColor) window._tdcPlayer.auraColor = existing.auraColor;
       }
       return existing;
     }
@@ -144,6 +157,7 @@ export class OnboardingManager {
     const currentPlayer = typeof window !== 'undefined' ? window._tdcPlayer : null;
     this.selectedClassId = initialProfile?.classId || currentPlayer?.classId || 'guerreiro';
     this.selectedNick = initialProfile?.name || currentPlayer?.name || this.getRandomName();
+    this.selectedAuraColor = initialProfile?.auraColor || currentPlayer?.auraColor || '#f59e0b';
 
     const overlay = document.createElement('div');
     overlay.className = 'cinzas-onboarding-overlay';
@@ -152,11 +166,11 @@ export class OnboardingManager {
         <div class="cinzas-onboarding-header">
           <div class="cinzas-onboarding-badges">
             <span class="cinzas-onboarding-tag">GUERRA DAS CINZAS</span>
-            <span class="cinzas-onboarding-tag sub">PRIMEIRA CONEXÃO</span>
+            <span class="cinzas-onboarding-tag sub">${initialProfile ? 'PERSONALIZAÇÃO' : 'PRIMEIRA CONEXÃO'}</span>
           </div>
           <h2 class="cinzas-onboarding-title">Criar Seu Avatar & Alcunha</h2>
           <p class="cinzas-onboarding-subtitle">
-            Escolha como você será conhecido entre os errantes nos canais multijogador.
+            Defina sua alcunha, vocação e o matiz da sua aura rúnica entre os errantes.
           </p>
         </div>
 
@@ -193,7 +207,16 @@ export class OnboardingManager {
             <div class="cinzas-class-grid" id="cinzas-class-grid"></div>
           </div>
 
-          <!-- Destaque da Classe Selecionada -->
+          <!-- Seção de Aura / Matiz Rúnico Cosmético -->
+          <div class="cinzas-onboarding-section">
+            <label class="cinzas-field-label">
+              <span>Aura Rúnica & Matiz Cosmético</span>
+              <span id="cinzas-aura-name" class="cinzas-field-counter" style="color: ${this.selectedAuraColor}; font-weight: 700;"></span>
+            </label>
+            <div class="cinzas-aura-grid" id="cinzas-aura-grid"></div>
+          </div>
+
+          <!-- Destaque da Classe e Aura Selecionadas -->
           <div class="cinzas-class-preview" id="cinzas-class-preview"></div>
         </div>
 
@@ -213,6 +236,7 @@ export class OnboardingManager {
 
     this.injectStyles();
     this.renderClassesGrid();
+    this.renderAurasGrid();
     this.updatePreview();
     this.bindEvents();
 
@@ -254,7 +278,7 @@ export class OnboardingManager {
         border: 1px solid rgba(245, 158, 11, 0.35);
         border-radius: 12px;
         width: 100%;
-        max-width: 620px;
+        max-width: 640px;
         max-height: 94vh;
         overflow-y: auto;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(245, 158, 11, 0.12);
@@ -312,7 +336,7 @@ export class OnboardingManager {
         padding: 20px 24px;
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 16px;
       }
 
       .cinzas-onboarding-section {
@@ -478,6 +502,77 @@ export class OnboardingManager {
         color: #94a3b8;
       }
 
+      .cinzas-aura-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      }
+
+      @media (max-width: 520px) {
+        .cinzas-aura-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .cinzas-aura-btn {
+        background: rgba(18, 15, 26, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 8px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        user-select: none;
+      }
+
+      .cinzas-aura-btn:hover {
+        transform: translateY(-2px);
+        background: rgba(28, 23, 40, 0.95);
+      }
+
+      .cinzas-aura-btn.selected {
+        border-color: #f59e0b;
+        background: rgba(35, 28, 50, 0.95);
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+      }
+
+      .cinzas-aura-btn.selected::after {
+        content: '✓';
+        position: absolute;
+        top: 2px;
+        right: 4px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #f59e0b;
+      }
+
+      .cinzas-aura-dot {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .cinzas-aura-btn:hover .cinzas-aura-dot {
+        transform: scale(1.15);
+      }
+
+      .cinzas-aura-name {
+        font-size: 10px;
+        font-weight: 700;
+        color: #cbd5e1;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
       .cinzas-class-preview {
         background: rgba(10, 8, 14, 0.7);
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -486,6 +581,7 @@ export class OnboardingManager {
         display: flex;
         align-items: center;
         gap: 16px;
+        transition: all 0.25s;
       }
 
       .cinzas-preview-left {
@@ -495,9 +591,8 @@ export class OnboardingManager {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(0, 0, 0, 0.5) 80%);
-        border: 1px solid rgba(245, 158, 11, 0.4);
         border-radius: 8px;
+        transition: all 0.25s;
       }
 
       .cinzas-preview-avatar {
@@ -618,6 +713,44 @@ export class OnboardingManager {
     }
   }
 
+  renderAurasGrid() {
+    const grid = this.overlay?.querySelector('#cinzas-aura-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const auraLabel = this.overlay?.querySelector('#cinzas-aura-name');
+
+    for (const pal of AURA_PALETTES) {
+      const isSelected = pal.hex.toLowerCase() === this.selectedAuraColor.toLowerCase();
+      if (isSelected && auraLabel) {
+        auraLabel.textContent = pal.name;
+        auraLabel.style.color = pal.hex;
+      }
+
+      const btn = document.createElement('div');
+      btn.className = `cinzas-aura-btn ${isSelected ? 'selected' : ''}`;
+      btn.dataset.hex = pal.hex;
+      btn.title = `${pal.name} · ${pal.desc}`;
+      btn.innerHTML = `
+        <div class="cinzas-aura-dot" style="background: ${pal.hex}; box-shadow: 0 0 10px ${pal.hex}88;"></div>
+        <span class="cinzas-aura-name">${pal.name.split(' ')[0]}</span>
+      `;
+
+      btn.onclick = () => {
+        this.selectedAuraColor = pal.hex;
+        grid.querySelectorAll('.cinzas-aura-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (auraLabel) {
+          auraLabel.textContent = pal.name;
+          auraLabel.style.color = pal.hex;
+        }
+        this.updatePreview();
+      };
+
+      grid.appendChild(btn);
+    }
+  }
+
   updatePreview() {
     const preview = this.overlay?.querySelector('#cinzas-class-preview');
     if (!preview) return;
@@ -625,9 +758,10 @@ export class OnboardingManager {
     const classes = this.getClassesList();
     const cls = classes.find(c => c.id === this.selectedClassId) || classes[0];
     const portraitUrl = this.getClassPortraitUrl(cls);
+    const aura = AURA_PALETTES.find(a => a.hex.toLowerCase() === this.selectedAuraColor.toLowerCase()) || AURA_PALETTES[1];
 
     preview.innerHTML = `
-      <div class="cinzas-preview-left">
+      <div class="cinzas-preview-left" style="background: radial-gradient(circle, ${aura.hex}33 0%, rgba(0, 0, 0, 0.6) 80%); border: 1px solid ${aura.hex}77; box-shadow: 0 0 16px ${aura.hex}44;">
         <img src="${portraitUrl}" alt="${cls.name}" class="cinzas-preview-avatar" />
       </div>
       <div class="cinzas-preview-info">
@@ -635,7 +769,7 @@ export class OnboardingManager {
         <div class="cinzas-preview-desc">${cls.description || 'Guerreiro forjado nas cinzas da terra ancestral.'}</div>
         <div class="cinzas-preview-meta">
           <span>Arma: <strong>${cls.weapon || 'Espada'}</strong></span>
-          <span>Vida Base: <strong>${cls.hp || 100} HP</strong></span>
+          <span>Aura: <strong style="color: ${aura.hex};">${aura.name}</strong></span>
         </div>
       </div>
     `;
@@ -649,7 +783,6 @@ export class OnboardingManager {
     if (trimmed.length > 18) {
       return 'O nome deve ter no máximo 18 caracteres.';
     }
-    // Permite letras, números, sublinhado, hífen e acentos portugueses
     const valid = /^[a-zA-Z0-9_\- áàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]+$/i.test(trimmed);
     if (!valid) {
       return 'O nome contém caracteres inválidos. Use apenas letras, números ou _';
@@ -714,7 +847,7 @@ export class OnboardingManager {
       return;
     }
 
-    const profile = this.saveProfile(this.selectedNick, this.selectedClassId);
+    const profile = this.saveProfile(this.selectedNick, this.selectedClassId, this.selectedAuraColor);
     this.closeModal();
 
     if (this.resolvePromise) {
