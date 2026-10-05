@@ -65,7 +65,7 @@
         </button>
         <span class="currency-badge"><img src="assets/items/gold-coin.svg" alt="Ouro"> <b id="gold">125</b></span>
         <span class="currency-badge"><img src="assets/items/forest-crystal.svg" alt="Cristal"> <b id="crystal">8</b></span>
-        <div class="avatar" title="Personagem"><img src="assets/items/ashen-shield.svg" width="20" height="20" alt="Personagem" /></div>
+        <div class="avatar" id="avatarTop" role="button" tabindex="0" title="Perfil & Avatar do Aventureiro (Tecla P)" style="cursor: pointer;"><img id="headerAvatarImg" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" width="22" height="22" alt="Personagem" style="image-rendering: pixelated; border-radius: 4px;" /></div>
       </div>
     </header>
 
@@ -75,7 +75,7 @@
         
         <!-- HUD Principal -->
         <div class="hud">
-          <img class="hud-portrait" src="assets/ui/generated/errant-adventurer-portrait.png" alt="Retrato do Aventureiro Errante" />
+          <div class="hud-portrait-wrap" id="hudPortraitWrap" role="button" tabindex="0" title="Perfil & Avatar do Aventureiro (Tecla P)" style="pointer-events: auto; cursor: pointer; position: relative;"><img class="hud-portrait" id="hudPortrait" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" alt="Retrato do Aventureiro Errante" /><span class="hud-edit-badge" title="Editar Avatar / Nickname" style="position: absolute; bottom: 0; right: 0; background: rgba(15,12,20,0.85); border: 1px solid rgba(245,158,11,0.5); border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; pointer-events: none;">✏️</span></div>
           <div class="hud-main">
             <div class="line">
               <b id="heroClassName">Guerreiro Errante</b>

@@ -277,6 +277,10 @@ export function start(port = CONFIG.PORT) {
         }
         target.ws.readyState === 1 && target.ws.send(JSON.stringify({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: true }));
         send({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: false });
+      } else if (m.t === "update_profile") {
+        if (typeof m.name === "string" && m.name.trim()) me.name = m.name.trim().slice(0, 24);
+        if (typeof m.classId === "string" && m.classId.trim()) me.classId = m.classId.trim().slice(0, 20);
+        send({ t: "profile_updated", name: me.name, classId: me.classId });
       } else if (m.t === "party_invite" && me.channel) {
         const room = rooms.get(me.channel);
         if (!room) return;

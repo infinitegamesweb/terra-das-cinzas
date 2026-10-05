@@ -57,6 +57,29 @@ export class OnboardingManager {
       window._tdcPlayer.name = profile.name;
       window._tdcPlayer.classId = profile.classId;
     }
+    if (typeof window !== 'undefined' && window.CinzasNet) {
+      window.CinzasNet.updateProfile(profile.name, profile.classId);
+    }
+    if (typeof window !== 'undefined') {
+      const hudPortrait = document.querySelector('#hudPortrait') || document.querySelector('.hud-portrait');
+      if (hudPortrait && window.GameClasses?.get && window.GameClasses?.portrait) {
+        const cls = window.GameClasses.get(profile.classId);
+        if (cls) {
+          hudPortrait.src = window.GameClasses.portrait(cls);
+          hudPortrait.setAttribute('data-loaded-class', cls.id);
+        }
+      }
+      const headerAvatar = document.querySelector('#headerAvatarImg');
+      if (headerAvatar && window.GameClasses?.get && window.GameClasses?.portrait) {
+        const cls = window.GameClasses.get(profile.classId);
+        if (cls) headerAvatar.src = window.GameClasses.portrait(cls);
+      }
+      const heroClassName = document.querySelector('#heroClassName');
+      if (heroClassName && window.GameClasses?.get) {
+        const cls = window.GameClasses.get(profile.classId);
+        if (cls) heroClassName.textContent = `${profile.name} · ${cls.name}`;
+      }
+    }
     return profile;
   }
 

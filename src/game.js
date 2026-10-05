@@ -2352,6 +2352,10 @@ const c = document.querySelector('#game');
       window.TalentTree.toggleTT(p.lvl, p.classId);
       e.preventDefault();
     }
+    if (k === 'p') {
+      onboardingManager.ensureProfile(true);
+      e.preventDefault();
+    }
     if (k === 'tab') {
       playerListUI.toggle();
       e.preventDefault();
@@ -2557,9 +2561,9 @@ const c = document.querySelector('#game');
       ['4', '', 'Investida rápida', 'Avança para a direção do personagem', p.cd[4] <= 0]
     ];
     return `<section class="character-screen">
-      <header class="character-heading"><div><span class="character-kicker">FICHA DO AVENTUREIRO</span><h2>O ERRANTE</h2><p>${characterClass.name} · <span id="charLevelText">Nível ${p.lvl}</span></p></div><span class="character-level">NV.<b id="charLevel">${p.lvl}</b></span></header>
+      <header class="character-heading"><div><span class="character-kicker">FICHA DO AVENTUREIRO</span><h2>${p.name || 'O ERRANTE'}</h2><p>${characterClass.name} · <span id="charLevelText">Nível ${p.lvl}</span></p></div><span class="character-level">NV.<b id="charLevel">${p.lvl}</b></span></header>
       <div class="character-top-grid">
-        <div class="character-portrait"><div class="portrait-frame"><img src="${window.GameClasses.portrait(characterClass)}" alt="${characterClass.name}, retrato do personagem"></div><span>${characterClass.role.toLocaleUpperCase('pt-BR')}</span><div class="character-xp"><i id="charXpBar" style="width:${p.need ? Math.min(100, p.xp / p.need * 100) : 100}%"></i></div><small id="charXpText">${p.lvl >= (progression.MAX_LEVEL || 300) ? 'NÍVEL MÁXIMO' : `${p.xp} / ${p.need} XP`}</small></div>
+        <div class="character-portrait"><div class="portrait-frame"><img src="${window.GameClasses.portrait(characterClass)}" alt="${characterClass.name}, retrato do personagem"></div><span>${characterClass.role.toLocaleUpperCase('pt-BR')}</span><button type="button" id="editAvatarInSheet" style="margin:4px 0;background:rgba(245,158,11,0.18);border:1px solid rgba(245,158,11,0.45);color:#fbbf24;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:700;cursor:pointer;" onclick="window.CinzasOnboarding?.ensureProfile?.(true)">?? Personalizar</button><div class="character-xp"><i id="charXpBar" style="width:${p.need ? Math.min(100, p.xp / p.need * 100) : 100}%"></i></div><small id="charXpText">${p.lvl >= (progression.MAX_LEVEL || 300) ? 'NÍVEL MÁXIMO' : `${p.xp} / ${p.need} XP`}</small></div>
         <div class="character-stats"><div class="character-section-label">ATRIBUTOS DE COMBATE</div><div><span>Vida</span><b id="charHp">${Math.ceil(p.hp)} <small>/ ${p.max}</small></b></div><div><span>Dano Físico</span><b id="charMelee">${damage}</b></div><div><span>Defesa</span><b id="charDefense">${(p.shieldEquipped ? 4 : 0) + characterClass.armor}</b></div><div><span>Dano Arcano</span><b id="charArcane">${progression.arcaneDamage(p.lvl, p.classId)}</b></div><div><span>Poções</span><b id="charPotions">${p.potions} / ${MAX_POTIONS}</b></div></div>
       </div>
       <div class="character-section-heading"><span>EQUIPAMENTO</span><small>TOQUE EM ARMA OU ESCUDO PARA ALTERNAR</small></div>
@@ -5465,6 +5469,8 @@ const c = document.querySelector('#game');
   playerListUI.init();
   partyManager.init();
   tradeManager.init();
+  document.querySelector('#hudPortraitWrap')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
+  document.querySelector('#avatarTop')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
 
   cinzasNet.onAction = (action) => {
     emitCombatEffect(action.kind || 'slash', action.x, action.y, action.color || '#f5d37b', {

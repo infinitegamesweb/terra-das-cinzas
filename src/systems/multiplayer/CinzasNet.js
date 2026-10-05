@@ -518,6 +518,25 @@ export class CinzasNet {
     this.party = null;
   }
 
+  updateProfile(name, classId) {
+    if (this.me) {
+      if (name) this.me.name = name;
+      if (classId) this.me.classId = classId;
+    }
+    const p = typeof window !== 'undefined' ? window._tdcPlayer : null;
+    if (p) {
+      if (name) p.name = name;
+      if (classId) p.classId = classId;
+    }
+    if (this.ws && this.ws.readyState === 1) {
+      this.ws.send(JSON.stringify({
+        t: 'update_profile',
+        name: name || this.me?.name,
+        classId: classId || this.me?.classId
+      }));
+    }
+  }
+
   getRemotePlayers() {
     return Array.from(this.remotePlayers.values());
   }

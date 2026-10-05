@@ -23,7 +23,23 @@ export function renderUI({ p, kills, ore, loot, quest = { kills, ore, loot, clai
   if ($('#charHp')) $('#charHp').innerHTML = `${Math.ceil(p.hp)} <small>/ ${p.max}</small>`;
   const characterClass = getClassById(p.classId);
   const className = $('#heroClassName');
-  if (className && characterClass) className.textContent = characterClass.icon + ' ' + characterClass.name + ' Errante';
+  if (className && characterClass) {
+    const nickPrefix = p.name ? `${p.name} · ` : '';
+    className.textContent = `${nickPrefix}${characterClass.name} Errante`;
+  }
+  if (characterClass && window.GameClasses?.portrait) {
+    const pUrl = window.GameClasses.portrait(characterClass);
+    const hudPortrait = $('#hudPortrait');
+    if (hudPortrait && hudPortrait.getAttribute('data-cls') !== characterClass.id) {
+      hudPortrait.src = pUrl;
+      hudPortrait.setAttribute('data-cls', characterClass.id);
+    }
+    const headerAvatar = $('#headerAvatarImg');
+    if (headerAvatar && headerAvatar.getAttribute('data-cls') !== characterClass.id) {
+      headerAvatar.src = pUrl;
+      headerAvatar.setAttribute('data-cls', characterClass.id);
+    }
+  }
   const talents = new Set(p.talents || []);
   if ($('#charMelee')) $('#charMelee').textContent = Math.round(meleeDamage(p.lvl, p.swordEquipped, p.weaponTier, p.classId) * (talents.has('brutal') ? 1.08 : 1) * (talents.has('avatar') ? 1.12 : 1));
   if ($('#charDefense')) $('#charDefense').textContent = (p.shieldEquipped ? 4 : 0) + (characterClass ? characterClass.armor : 0) + (talents.has('iron') ? 2 : 0);
