@@ -30,6 +30,8 @@ const sessions = new Map(); // token -> { pubkey, guest }
 const parties = new Map();  // partyId -> { id, leaderId, members: Set(playerId) }
 const channelMobs = new Map(); // channel -> Map(mobId -> { id, hp, maxHp, alive, boss, name, killerId })
 let nextPartyId = 1;
+const tradeSessions = new Map(); // sessionId -> { id, channel, p1, p2 }
+let nextTradeId = 1;
 
 function getPartyData(partyId) {
   const party = parties.get(partyId);
@@ -166,6 +168,21 @@ export function start(port = CONFIG.PORT) {
           }
         }
         me.partyId = null;
+      }
+      if (me.tradeSessionId) {
+        const session = tradeSessions.get(me.tradeSessionId);
+        if (session) {
+          const partnerId = session.p1.id === me.id ? session.p2.id : session.p1.id;
+          for (const room of rooms.values()) {
+            const partner = room.get(partnerId);
+            if (partner && partner.ws.readyState === 1) {
+              partner.ws.send(JSON.stringify({ t: "trade_cancelled", reason: "O outro jogador desconectou-se." }));
+              partner.tradeSessionId = null;
+            }
+          }
+          tradeSessions.delete(session.id);
+        }
+        me.tradeSessionId = null;
       }
       if (me.channel) rooms.get(me.channel)?.delete(me.id);
       me.channel = null;
@@ -469,6 +486,164 @@ export function start(port = CONFIG.PORT) {
             }
           }
         }
+      } else if (m.t === "trade_request" && me.channel) {
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const targetId = Number(m.toId);
+        const targetName = String(m.to || "").trim();
+        const target = Array.from(room.values()).find(
+          (p) => p.id !== me.id && (p.id === targetId || p.name.toLowerCase() === targetName.toLowerCase() || p.name.toLowerCase().startsWith(targetName.toLowerCase()))
+        );
+        if (!target) return send({ t: "chat", from: "SISTEMA", text: "Jogador não encontrado no canal." });
+        if (target.tradeSessionId || me.tradeSessionId) return send({ t: "chat", from: "SISTEMA", text: "Um dos jogadores já está em negociação." });
+
+        target.ws.readyState === 1 && target.ws.send(JSON.stringify({
+          t: "trade_request",
+          fromId: me.id,
+          fromName: me.name,
+          classId: me.classId,
+          lvl: me.lvl
+        }));
+        send({ t: "chat", from: "SISTEMA", text: `Solicitação de negociação enviada para ${target.name}.` });
+      } else if (m.t === "trade_decline" && me.channel) {
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const fromId = Number(m.fromId);
+        const requester = room.get(fromId);
+        if (requester && requester.ws.readyState === 1) {
+          requester.ws.send(JSON.stringify({ t: "chat", from: "SISTEMA", text: `${me.name} recusou a negociação.` }));
+          requester.ws.send(JSON.stringify({ t: "trade_declined", byName: me.name }));
+        }
+      } else if (m.t === "trade_accept" && me.channel) {
+        if (me.tradeSessionId) return;
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const fromId = Number(m.fromId);
+        const requester = room.get(fromId);
+        if (!requester || requester.tradeSessionId) {
+          return send({ t: "chat", from: "SISTEMA", text: "A solicitação de negociação expirou ou o jogador está ocupado." });
+        }
+
+        const sessionId = nextTradeId++;
+        const session = {
+          id: sessionId,
+          channel: me.channel,
+          p1: { id: requester.id, name: requester.name, classId: requester.classId, lvl: requester.lvl, offer: { gold: 0, items: [] }, locked: false, confirmed: false },
+          p2: { id: me.id, name: me.name, classId: me.classId, lvl: me.lvl, offer: { gold: 0, items: [] }, locked: false, confirmed: false }
+        };
+        tradeSessions.set(sessionId, session);
+        requester.tradeSessionId = sessionId;
+        me.tradeSessionId = sessionId;
+
+        requester.ws.readyState === 1 && requester.ws.send(JSON.stringify({
+          t: "trade_start",
+          sessionId,
+          partner: { id: me.id, name: me.name, classId: me.classId, lvl: me.lvl }
+        }));
+        send({
+          t: "trade_start",
+          sessionId,
+          partner: { id: requester.id, name: requester.name, classId: requester.classId, lvl: requester.lvl }
+        });
+      } else if (m.t === "trade_offer" && me.tradeSessionId) {
+        const session = tradeSessions.get(me.tradeSessionId);
+        if (!session) return;
+        const isP1 = session.p1.id === me.id;
+        const myData = isP1 ? session.p1 : session.p2;
+        const partnerData = isP1 ? session.p2 : session.p1;
+        const room = rooms.get(session.channel);
+        if (!room) return;
+        const partner = room.get(partnerData.id);
+
+        const gold = Math.max(0, Math.min(10000000, Math.round(Number(m.gold) || 0)));
+        const items = Array.isArray(m.items) ? m.items.slice(0, 6).map(it => ({
+          id: String(it.id || "").slice(0, 40),
+          count: Math.max(1, Math.round(Number(it.count) || 1)),
+          enhanceLevel: Math.max(0, Math.round(Number(it.enhanceLevel) || 0)),
+          name: String(it.name || it.id || "").slice(0, 40)
+        })) : [];
+
+        myData.offer = { gold, items };
+        myData.locked = Boolean(m.locked);
+        myData.confirmed = false;
+        partnerData.confirmed = false;
+
+        const updateMsg = JSON.stringify({
+          t: "trade_update",
+          sessionId: session.id,
+          p1: { id: session.p1.id, offer: session.p1.offer, locked: session.p1.locked, confirmed: session.p1.confirmed },
+          p2: { id: session.p2.id, offer: session.p2.offer, locked: session.p2.locked, confirmed: session.p2.confirmed }
+        });
+
+        ws.readyState === 1 && ws.send(updateMsg);
+        if (partner && partner.ws.readyState === 1) partner.ws.send(updateMsg);
+      } else if (m.t === "trade_confirm" && me.tradeSessionId) {
+        const session = tradeSessions.get(me.tradeSessionId);
+        if (!session) return;
+        const isP1 = session.p1.id === me.id;
+        const myData = isP1 ? session.p1 : session.p2;
+        const partnerData = isP1 ? session.p2 : session.p1;
+        const room = rooms.get(session.channel);
+        if (!room) return;
+        const partner = room.get(partnerData.id);
+
+        if (!session.p1.locked || !session.p2.locked) return;
+
+        myData.confirmed = true;
+
+        if (session.p1.confirmed && session.p2.confirmed) {
+          const completeP1 = JSON.stringify({
+            t: "trade_complete",
+            sessionId: session.id,
+            partnerName: session.p2.name,
+            received: session.p2.offer,
+            given: session.p1.offer
+          });
+          const completeP2 = JSON.stringify({
+            t: "trade_complete",
+            sessionId: session.id,
+            partnerName: session.p1.name,
+            received: session.p1.offer,
+            given: session.p2.offer
+          });
+
+          const p1User = room.get(session.p1.id);
+          const p2User = room.get(session.p2.id);
+
+          if (p1User && p1User.ws.readyState === 1) {
+            p1User.ws.send(completeP1);
+            p1User.tradeSessionId = null;
+          }
+          if (p2User && p2User.ws.readyState === 1) {
+            p2User.ws.send(completeP2);
+            p2User.tradeSessionId = null;
+          }
+
+          tradeSessions.delete(session.id);
+        } else {
+          const updateMsg = JSON.stringify({
+            t: "trade_update",
+            sessionId: session.id,
+            p1: { id: session.p1.id, offer: session.p1.offer, locked: session.p1.locked, confirmed: session.p1.confirmed },
+            p2: { id: session.p2.id, offer: session.p2.offer, locked: session.p2.locked, confirmed: session.p2.confirmed }
+          });
+          ws.readyState === 1 && ws.send(updateMsg);
+          if (partner && partner.ws.readyState === 1) partner.ws.send(updateMsg);
+        }
+      } else if (m.t === "trade_cancel" && me.tradeSessionId) {
+        const session = tradeSessions.get(me.tradeSessionId);
+        if (session) {
+          const partnerId = session.p1.id === me.id ? session.p2.id : session.p1.id;
+          const room = rooms.get(session.channel);
+          const partner = room ? room.get(partnerId) : null;
+          if (partner && partner.ws.readyState === 1) {
+            partner.ws.send(JSON.stringify({ t: "trade_cancelled", reason: `${me.name} cancelou a negociação.` }));
+            partner.tradeSessionId = null;
+          }
+          tradeSessions.delete(session.id);
+        }
+        me.tradeSessionId = null;
+        send({ t: "trade_cancelled", reason: "Negociação cancelada." });
       }
     });
     ws.on("close", () => { clearInterval(rl); leave(); });

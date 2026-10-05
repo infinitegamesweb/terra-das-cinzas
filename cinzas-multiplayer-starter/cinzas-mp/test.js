@@ -17,7 +17,7 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [], partyInvites: [], partyUpdates: [], partyChats: [], mobSyncs: [], mobDefeats: [] };
+    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [], partyInvites: [], partyUpdates: [], partyChats: [], mobSyncs: [], mobDefeats: [], tradeRequests: [], tradeStarts: [], tradeUpdates: [], tradeCompletes: [], tradeCancelled: [], tradeDeclined: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
     ws.on("message", (d) => {
       const m = JSON.parse(d);
@@ -32,6 +32,12 @@ function client(token, channel) {
       if (m.t === "party_chat") c.partyChats.push(m);
       if (m.t === "mob_sync") c.mobSyncs.push(m);
       if (m.t === "mob_defeated") c.mobDefeats.push(m);
+      if (m.t === "trade_request") c.tradeRequests.push(m);
+      if (m.t === "trade_start") c.tradeStarts.push(m);
+      if (m.t === "trade_update") c.tradeUpdates.push(m);
+      if (m.t === "trade_complete") c.tradeCompletes.push(m);
+      if (m.t === "trade_cancelled") c.tradeCancelled.push(m);
+      if (m.t === "trade_declined") c.tradeDeclined.push(m);
     });
     ws.on("close", (code) => { c.closed = code; });
     ws.on("error", reject);
@@ -150,7 +156,51 @@ assert.equal(syncDead.alive, false);
 assert.equal(syncDead.hp, 0);
 console.log("ok  sincronizacao de combate cooperativo: dano e vida de monstros compartilhados");
 
-// 12. login duplicado derruba a conexao antiga
+// 12. sistema de negociacao e trocas (trade request, offer, lock, confirm e complete)
+ca.ws.send(JSON.stringify({ t: "trade_request", toId: cb.id, to: cb.name }));
+await wait(80);
+assert.equal(cb.tradeRequests.length, 1);
+assert.equal(cb.tradeRequests[0].fromId, ca.id);
+
+cb.ws.send(JSON.stringify({ t: "trade_accept", fromId: ca.id }));
+await wait(80);
+assert.equal(ca.tradeStarts.length, 1);
+assert.equal(cb.tradeStarts.length, 1);
+assert.equal(ca.tradeStarts[0].partner.id, cb.id);
+
+// Envio de ofertas com itens e ouro
+ca.ws.send(JSON.stringify({
+  t: "trade_offer",
+  gold: 250,
+  items: [{ id: "cinzas_pocao_cura", count: 3, enhanceLevel: 0, name: "Poção de Vida" }],
+  locked: true
+}));
+cb.ws.send(JSON.stringify({
+  t: "trade_offer",
+  gold: 50,
+  items: [{ id: "cinzas_espada_ferro", count: 1, enhanceLevel: 1, name: "Espada de Ferro +1" }],
+  locked: true
+}));
+await wait(80);
+assert.ok(ca.tradeUpdates.length >= 2);
+assert.ok(cb.tradeUpdates.length >= 2);
+
+// Confirmacao mutua
+ca.ws.send(JSON.stringify({ t: "trade_confirm" }));
+await wait(50);
+assert.equal(ca.tradeCompletes.length, 0); // cb ainda nao confirmou
+
+cb.ws.send(JSON.stringify({ t: "trade_confirm" }));
+await wait(80);
+assert.equal(ca.tradeCompletes.length, 1);
+assert.equal(cb.tradeCompletes.length, 1);
+assert.equal(ca.tradeCompletes[0].received.gold, 50);
+assert.equal(ca.tradeCompletes[0].received.items[0].id, "cinzas_espada_ferro");
+assert.equal(cb.tradeCompletes[0].received.gold, 250);
+assert.equal(cb.tradeCompletes[0].received.items[0].id, "cinzas_pocao_cura");
+console.log("ok  sistema de trocas: oferta, bloqueio, confirmacao mutua e entrega atomica");
+
+// 13. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");

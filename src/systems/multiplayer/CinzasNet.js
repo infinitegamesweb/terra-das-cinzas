@@ -33,6 +33,12 @@ export class CinzasNet {
     this.onPartyChat = () => {};
     this.onMobSync = () => {};
     this.onMobDefeated = () => {};
+    this.onTradeRequest = () => {};
+    this.onTradeStart = () => {};
+    this.onTradeUpdate = () => {};
+    this.onTradeComplete = () => {};
+    this.onTradeCancelled = () => {};
+    this.onTradeDeclined = () => {};
 
     this.party = null;
 
@@ -182,6 +188,18 @@ export class CinzasNet {
             this.onMobSync(m);
           } else if (m.t === 'mob_defeated') {
             this.onMobDefeated(m);
+          } else if (m.t === 'trade_request') {
+            this.onTradeRequest(m);
+          } else if (m.t === 'trade_start') {
+            this.onTradeStart(m);
+          } else if (m.t === 'trade_update') {
+            this.onTradeUpdate(m);
+          } else if (m.t === 'trade_complete') {
+            this.onTradeComplete(m);
+          } else if (m.t === 'trade_cancelled') {
+            this.onTradeCancelled(m);
+          } else if (m.t === 'trade_declined') {
+            this.onTradeDeclined(m);
           } else if (m.t === 'pong') {
             this.handlePong(m);
           } else if (m.t === 'error') {
@@ -370,6 +388,42 @@ export class CinzasNet {
       maxHp: Number.isFinite(maxHp) ? Math.round(maxHp) : undefined,
       lvl: Number.isFinite(lvl) ? Math.round(lvl) : undefined
     }));
+  }
+
+  // ─── Sistema de Trocas (Trade) ───────────────────────────────
+  sendTradeRequest(to, toId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'trade_request', to: String(to || ''), toId: Number(toId) || undefined }));
+  }
+
+  sendTradeAccept(fromId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'trade_accept', fromId: Number(fromId) }));
+  }
+
+  sendTradeDecline(fromId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'trade_decline', fromId: Number(fromId) }));
+  }
+
+  sendTradeOffer(gold, items = [], locked = false) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({
+      t: 'trade_offer',
+      gold: Math.max(0, Math.round(Number(gold) || 0)),
+      items: Array.isArray(items) ? items : [],
+      locked: Boolean(locked)
+    }));
+  }
+
+  sendTradeConfirm() {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'trade_confirm' }));
+  }
+
+  sendTradeCancel() {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'trade_cancel' }));
   }
 
   sendAction(action = {}) {

@@ -22,6 +22,7 @@ import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
 import { chatUI } from './systems/multiplayer/ChatUI.js';
 import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
 import { partyManager } from './systems/multiplayer/PartyManager.js';
+import { tradeManager } from './systems/multiplayer/TradeManager.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -5433,6 +5434,7 @@ const c = document.querySelector('#game');
   chatUI.init();
   playerListUI.init();
   partyManager.init();
+  tradeManager.init();
 
   cinzasNet.onAction = (action) => {
     emitCombatEffect(action.kind || 'slash', action.x, action.y, action.color || '#f5d37b', {

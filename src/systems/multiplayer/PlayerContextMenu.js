@@ -317,6 +317,9 @@ export class PlayerContextMenu {
       <button type="button" class="cinzas-context-item" data-action="party">
         <span class="icon">🛡️</span> Convidar para Grupo
       </button>
+      <button type="button" class="cinzas-context-item" data-action="trade">
+        <span class="icon">⚖️</span> Negociar / Trocar
+      </button>
       <button type="button" class="cinzas-context-item" data-action="copy">
         <span class="icon">📋</span> Copiar Nome
       </button>
@@ -489,6 +492,8 @@ export class PlayerContextMenu {
       this.openInspectModal(player);
     } else if (action === 'party') {
       this.triggerPartyInvite(player);
+    } else if (action === 'trade') {
+      this.triggerTradeRequest(player);
     } else if (action === 'copy') {
       this.copyPlayerName(player.name);
     }
@@ -510,6 +515,19 @@ export class PlayerContextMenu {
   triggerPartyInvite(player) {
     if (cinzasNet?.isConnected) {
       cinzasNet.sendPartyInvite(player.name, player.id);
+    }
+  }
+
+  triggerTradeRequest(player) {
+    if (cinzasNet?.isConnected) {
+      cinzasNet.sendTradeRequest(player.name, player.id);
+    } else {
+      window.CinzasChat?.addMessage({
+        from: 'SISTEMA',
+        text: 'Você precisa estar conectado ao servidor multiplayer para negociar.',
+        type: 'system',
+        time: new Date()
+      });
     }
   }
 
