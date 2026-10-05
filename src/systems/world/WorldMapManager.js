@@ -5,50 +5,50 @@
   // ═══════════════════════════════════════════════════════════════
 
   const MODES = [
-    { id: 'normal',    label: 'Normal',   icon: '', color: '#4ade80', range: [1,   60],  tag: 'NORMAL'   },
-    { id: 'dificil',   label: 'Difícil',  icon: '', color: '#60a5fa', range: [61,  140], tag: 'DIFÍCIL'  },
-    { id: 'pesadelo',  label: 'Pesadelo', icon: '', color: '#a78bfa', range: [141, 200], tag: 'PESADELO' },
-    { id: 'brasa',     label: 'Brasa',    icon: '', color: '#fb923c', range: [201, 260], tag: 'BRASA'    },
-    { id: 'cinzas',    label: 'Cinzas',   icon: '', color: '#94a3b8', range: [261, 300], tag: 'CINZAS'   },
-    { id: 'dungeons',  label: 'Dungeons', icon: '', color: '#f43f5e', range: [10,  300], tag: 'DUNGEONS', special: true },
-    { id: 'mining',   label: 'Mineração', icon: '', color: '#78716c', range: [5, 300], tag: 'MINERAÇÃO', special: true }
+    { id: 'normal',    label: 'Normal',   icon: '🌲', color: '#4ade80', range: [1,   60],  tag: 'NORMAL'   },
+    { id: 'dificil',   label: 'Difícil',  icon: '⚔️', color: '#60a5fa', range: [61,  140], tag: 'DIFÍCIL'  },
+    { id: 'pesadelo',  label: 'Pesadelo', icon: '💀', color: '#a78bfa', range: [141, 200], tag: 'PESADELO' },
+    { id: 'brasa',     label: 'Brasa',    icon: '🔥', color: '#fb923c', range: [201, 260], tag: 'BRASA'    },
+    { id: 'cinzas',    label: 'Cinzas',   icon: '🌑', color: '#94a3b8', range: [261, 300], tag: 'CINZAS'   },
+    { id: 'dungeons',  label: 'Dungeons', icon: '🗝️', color: '#f43f5e', range: [10,  300], tag: 'DUNGEONS', special: true },
+    { id: 'mining',   label: 'Mineração', icon: '⛏️', color: '#78716c', range: [5, 300], tag: 'MINERAÇÃO', special: true }
   ];
 
   const WORLD_MAPS = [
     // ─── NORMAL (1–60) ──────────────────────────────────────────
-    { id:  1, mode: 'normal',   name: 'Bosque das Ruínas',       sub: 'Ruínas de Miraluz',         min:  1,  max: 10,  enemy: 'Shade',             boss: 'Guardião da Raiz',      color: '#18351f', icon: '' },
-    { id:  2, mode: 'normal',   name: 'Clareira dos Ecos',       sub: 'Fragmentos do primeiro dia',min: 11,  max: 20,  enemy: 'Espectro de Raiz',  boss: 'Eco da Raiz-Mãe',       color: '#1a3822', icon: '' },
-    { id:  3, mode: 'normal',   name: 'Margem Afogada',          sub: 'Águas que sussurram',       min: 21,  max: 30,  enemy: 'Lobo Espectral',    boss: 'Alfa das Névoas',       color: '#183638', icon: '' },
-    { id:  4, mode: 'normal',   name: 'Pântano Espectral',       sub: 'Brumas sem retorno',        min: 31,  max: 40,  enemy: 'Cobra do Vazio',    boss: 'Serpente Náufraga',     color: '#1a3c3a', icon: '' },
-    { id:  5, mode: 'normal',   name: 'Trilha do Degelo',        sub: 'Neve e cinzas misturadas',  min: 41,  max: 50,  enemy: 'Golem de Pedra',    boss: 'Sentinela de Basalto',  color: '#2e2820', icon: '' },
-    { id:  6, mode: 'normal',   name: 'Montanhas Rubras',        sub: 'Cinzas sob a neve',         min: 51,  max: 60,  enemy: 'Golem da Fornalha', boss: 'Colosso Rubrum',        color: '#3a2925', icon: '' },
+    { id:  1, mode: 'normal',   name: 'Bosque das Ruínas',       sub: 'Ruínas de Miraluz',         min:  1,  max: 10,  enemy: 'Shade',             boss: 'Guardião da Raiz',      color: '#d4a234', icon: '🍃' },
+    { id:  2, mode: 'normal',   name: 'Clareira dos Ecos',       sub: 'Fragmentos do primeiro dia',min: 11,  max: 20,  enemy: 'Espectro de Raiz',  boss: 'Eco da Raiz-Mãe',       color: '#8b4513', icon: '🪵' },
+    { id:  3, mode: 'normal',   name: 'Margem Afogada',          sub: 'Águas que sussurram',       min: 21,  max: 30,  enemy: 'Lobo Espectral',    boss: 'Alfa das Névoas',       color: '#14b8a6', icon: '🌊' },
+    { id:  4, mode: 'normal',   name: 'Pântano Espectral',       sub: 'Brumas sem retorno',        min: 31,  max: 40,  enemy: 'Cobra do Vazio',    boss: 'Serpente Náufraga',     color: '#10b981', icon: '🌿' },
+    { id:  5, mode: 'normal',   name: 'Trilha do Degelo',        sub: 'Neve e cinzas misturadas',  min: 41,  max: 50,  enemy: 'Golem de Pedra',    boss: 'Sentinela de Basalto',  color: '#38bdf8', icon: '❄️' },
+    { id:  6, mode: 'normal',   name: 'Montanhas Rubras',        sub: 'Cinzas sob a neve',         min: 51,  max: 60,  enemy: 'Golem da Fornalha', boss: 'Colosso Rubrum',        color: '#ea580c', icon: '⛰️' },
     // ─── DIFÍCIL (61–140) ────────────────────────────────────────
-    { id:  7, mode: 'dificil',  name: 'Portão Partido',          sub: 'Cidadela das Cinzas',       min: 61,  max: 75,  enemy: 'Escriturário Sombrio', boss: 'Arquivista das Cinzas', color: '#30253b', icon: '' },
-    { id:  8, mode: 'dificil',  name: 'Torre das Brasas',        sub: 'O último farol',            min: 76,  max: 90,  enemy: 'Guardião Arcano',   boss: 'Vigília da Torre',      color: '#2c2038', icon: '' },
-    { id:  9, mode: 'dificil',  name: 'Campos Crepusculares',    sub: 'O confronto eterno',        min: 91,  max: 100, enemy: 'Entidade do Eclipse', boss: 'Vharok (1ª Forma)',    color: '#29202c', icon: '' },
-    { id: 10, mode: 'dificil',  name: 'Cavernas do Vazio',       sub: 'Sombras sem nome',          min: 101, max: 110, enemy: 'Larva do Abismo',   boss: 'Rainha das Larvas',     color: '#1a1520', icon: '' },
-    { id: 11, mode: 'dificil',  name: 'Labirinto de Ferro',      sub: 'Engrenagens da ruína',      min: 111, max: 120, enemy: 'Autômato Ferrugento', boss: 'Núcleo Central',       color: '#201e24', icon: '' },
-    { id: 12, mode: 'dificil',  name: 'Forjas Malditas',         sub: 'O calor que queima a alma', min: 121, max: 130, enemy: 'Demônio de Magma',  boss: 'Mestre das Forjas',     color: '#2a1810', icon: '' },
-    { id: 13, mode: 'dificil',  name: 'Abismo Sombrio',          sub: 'Sem fundo nem retorno',     min: 131, max: 140, enemy: 'Corruptor Sombrio', boss: 'O Sem-Nome do Abismo',  color: '#160f1e', icon: '' },
+    { id:  7, mode: 'dificil',  name: 'Portão Partido',          sub: 'Cidadela das Cinzas',       min: 61,  max: 75,  enemy: 'Escriturário Sombrio', boss: 'Arquivista das Cinzas', color: '#818cf8', icon: '🏰' },
+    { id:  8, mode: 'dificil',  name: 'Torre das Brasas',        sub: 'O último farol',            min: 76,  max: 90,  enemy: 'Guardião Arcano',   boss: 'Vigília da Torre',      color: '#f59e0b', icon: '🗼' },
+    { id:  9, mode: 'dificil',  name: 'Campos Crepusculares',    sub: 'O confronto eterno',        min: 91,  max: 100, enemy: 'Entidade do Eclipse', boss: 'Vharok (1ª Forma)',    color: '#c084fc', icon: '🌌' },
+    { id: 10, mode: 'dificil',  name: 'Cavernas do Vazio',       sub: 'Sombras sem nome',          min: 101, max: 110, enemy: 'Larva do Abismo',   boss: 'Rainha das Larvas',     color: '#06b6d4', icon: '🕳️' },
+    { id: 11, mode: 'dificil',  name: 'Labirinto de Ferro',      sub: 'Engrenagens da ruína',      min: 111, max: 120, enemy: 'Autômato Ferrugento', boss: 'Núcleo Central',       color: '#ca8a04', icon: '⚙️' },
+    { id: 12, mode: 'dificil',  name: 'Forjas Malditas',         sub: 'O calor que queima a alma', min: 121, max: 130, enemy: 'Demônio de Magma',  boss: 'Mestre das Forjas',     color: '#f97316', icon: '🔥' },
+    { id: 13, mode: 'dificil',  name: 'Abismo Sombrio',          sub: 'Sem fundo nem retorno',     min: 131, max: 140, enemy: 'Corruptor Sombrio', boss: 'O Sem-Nome do Abismo',  color: '#4f46e5', icon: '👁️' },
     // ─── PESADELO (141–200) ──────────────────────────────────────
-    { id: 14, mode: 'pesadelo', name: 'Cripta Eterna',           sub: 'Os mortos não descansam',   min: 141, max: 150, enemy: 'Lich Menor',        boss: 'Senhor das Criptas',    color: '#1c1030', icon: '' },
-    { id: 15, mode: 'pesadelo', name: 'Floresta Amaldiçoada',    sub: 'Raízes que drenam vida',    min: 151, max: 160, enemy: 'Árvore Corrompida', boss: 'Espírito da Floresta',   color: '#0e1a10', icon: '' },
-    { id: 16, mode: 'pesadelo', name: 'Torres do Esquecimento',  sub: 'Memórias apagadas',         min: 161, max: 170, enemy: 'Fantasma Ancião',   boss: 'O Esquecedor',          color: '#1a1428', icon: '' },
-    { id: 17, mode: 'pesadelo', name: 'Mar de Cinzas',           sub: 'Um oceano de pó e sombra',  min: 171, max: 180, enemy: 'Golem de Cinzas',   boss: 'Leviatã das Cinzas',    color: '#201e20', icon: '' },
-    { id: 18, mode: 'pesadelo', name: 'Núcleo do Vulcão',        sub: 'O coração que nunca esfria',min: 181, max: 190, enemy: 'Elemental de Fogo', boss: 'Coração do Vulcão',     color: '#2a1000', icon: '' },
-    { id: 19, mode: 'pesadelo', name: 'Altar do Caos',           sub: 'Onde as leis se quebram',   min: 191, max: 200, enemy: 'Entidade do Caos',  boss: 'Arauto do Fim',         color: '#20101e', icon: '' },
+    { id: 14, mode: 'pesadelo', name: 'Cripta Eterna',           sub: 'Os mortos não descansam',   min: 141, max: 150, enemy: 'Lich Menor',        boss: 'Senhor das Criptas',    color: '#9333ea', icon: '⚰️' },
+    { id: 15, mode: 'pesadelo', name: 'Floresta Amaldiçoada',    sub: 'Raízes que drenam vida',    min: 151, max: 160, enemy: 'Árvore Corrompida', boss: 'Espírito da Floresta',   color: '#22c55e', icon: '🥀' },
+    { id: 16, mode: 'pesadelo', name: 'Torres do Esquecimento',  sub: 'Memórias apagadas',         min: 161, max: 170, enemy: 'Fantasma Ancião',   boss: 'O Esquecedor',          color: '#2563eb', icon: '🏛️' },
+    { id: 17, mode: 'pesadelo', name: 'Mar de Cinzas',           sub: 'Um oceano de pó e sombra',  min: 171, max: 180, enemy: 'Golem de Cinzas',   boss: 'Leviatã das Cinzas',    color: '#a8a29e', icon: '🌫️' },
+    { id: 18, mode: 'pesadelo', name: 'Núcleo do Vulcão',        sub: 'O coração que nunca esfria',min: 181, max: 190, enemy: 'Elemental de Fogo', boss: 'Coração do Vulcão',     color: '#dc2626', icon: '🌋' },
+    { id: 19, mode: 'pesadelo', name: 'Altar do Caos',           sub: 'Onde as leis se quebram',   min: 191, max: 200, enemy: 'Entidade do Caos',  boss: 'Arauto do Fim',         color: '#e11d48', icon: '🔮' },
     // ─── BRASA (201–260) ─────────────────────────────────────────
-    { id: 20, mode: 'brasa',    name: 'Planalto Incandescente',  sub: 'A terra brilha de dentro',  min: 201, max: 215, enemy: 'Salamandra Rubra',  boss: 'Grande Salamandra',     color: '#2a1200', icon: '' },
-    { id: 21, mode: 'brasa',    name: 'Rio de Magma',            sub: 'Correntes que não se cruzam',min: 216, max: 225, enemy: 'Elemental de Lava', boss: 'Senhor do Rio de Fogo', color: '#300e00', icon: '' },
-    { id: 22, mode: 'brasa',    name: 'Cidade Fantasma',         sub: 'Construída sobre as brasas', min: 226, max: 235, enemy: 'Habitante Espectral', boss: 'Prefeito das Sombras', color: '#1e1418', icon: '' },
-    { id: 23, mode: 'brasa',    name: 'Pico dos Condenados',     sub: 'Ninguém desce vivo',        min: 236, max: 245, enemy: 'Demônio Alado',     boss: 'Rei dos Condenados',    color: '#251020', icon: '' },
-    { id: 24, mode: 'brasa',    name: 'Domínio de Vharok',       sub: 'O senhor do eclipse',       min: 246, max: 255, enemy: 'Servo de Vharok',   boss: 'Vharok (Forma Oculta)', color: '#1e0a24', icon: '' },
-    { id: 25, mode: 'brasa',    name: 'Câmara do Primeiro Fogo', sub: 'Onde tudo começou',         min: 256, max: 260, enemy: 'Guardião Primordial', boss: 'O Primeiro Cinzeiro',  color: '#2a1408', icon: '' },
+    { id: 20, mode: 'brasa',    name: 'Planalto Incandescente',  sub: 'A terra brilha de dentro',  min: 201, max: 215, enemy: 'Salamandra Rubra',  boss: 'Grande Salamandra',     color: '#fbbf24', icon: '✨' },
+    { id: 21, mode: 'brasa',    name: 'Rio de Magma',            sub: 'Correntes que não se cruzam',min: 216, max: 225, enemy: 'Elemental de Lava', boss: 'Senhor do Rio de Fogo', color: '#ef4444', icon: '🌊' },
+    { id: 22, mode: 'brasa',    name: 'Cidade Fantasma',         sub: 'Construída sobre as brasas', min: 226, max: 235, enemy: 'Habitante Espectral', boss: 'Prefeito das Sombras', color: '#38bdf8', icon: '🏚️' },
+    { id: 23, mode: 'brasa',    name: 'Pico dos Condenados',     sub: 'Ninguém desce vivo',        min: 236, max: 245, enemy: 'Demônio Alado',     boss: 'Rei dos Condenados',    color: '#7c3aed', icon: '🏔️' },
+    { id: 24, mode: 'brasa',    name: 'Domínio de Vharok',       sub: 'O senhor do eclipse',       min: 246, max: 255, enemy: 'Servo de Vharok',   boss: 'Vharok (Forma Oculta)', color: '#9f1239', icon: '👑' },
+    { id: 25, mode: 'brasa',    name: 'Câmara do Primeiro Fogo', sub: 'Onde tudo começou',         min: 256, max: 260, enemy: 'Guardião Primordial', boss: 'O Primeiro Cinzeiro',  color: '#f59e0b', icon: '🕯️' },
     // ─── CINZAS (261–300) ────────────────────────────────────────
-    { id: 26, mode: 'cinzas',   name: 'Véu do Eclipse Final',    sub: 'Luz que não aquece',        min: 261, max: 270, enemy: 'Sombra do Eclipse', boss: 'Juiz do Véu',           color: '#181624', icon: '' },
-    { id: 27, mode: 'cinzas',   name: 'Dimensão das Sombras',    sub: 'Além da percepção',         min: 271, max: 280, enemy: 'Entidade Sem Forma', boss: 'O Sem-Forma',           color: '#0e0e18', icon: '' },
-    { id: 28, mode: 'cinzas',   name: 'Coração do Vazio',        sub: 'O silêncio absoluto',       min: 281, max: 290, enemy: 'Fragmento do Vazio', boss: 'Coração Pulsante',      color: '#0a0a10', icon: '' },
-    { id: 29, mode: 'cinzas',   name: 'Terra das Cinzas Eternas',sub: 'O fim de tudo',             min: 291, max: 300, enemy: 'Vharok Eterno',     boss: 'Vharok, A Última Cinza', color: '#050508', icon: '' }
+    { id: 26, mode: 'cinzas',   name: 'Véu do Eclipse Final',    sub: 'Luz que não aquece',        min: 261, max: 270, enemy: 'Sombra do Eclipse', boss: 'Juiz do Véu',           color: '#475569', icon: '🌒' },
+    { id: 27, mode: 'cinzas',   name: 'Dimensão das Sombras',    sub: 'Além da percepção',         min: 271, max: 280, enemy: 'Entidade Sem Forma', boss: 'O Sem-Forma',           color: '#52525b', icon: '🌘' },
+    { id: 28, mode: 'cinzas',   name: 'Coração do Vazio',        sub: 'O silêncio absoluto',       min: 281, max: 290, enemy: 'Fragmento do Vazio', boss: 'Coração Pulsante',      color: '#64748b', icon: '🖤' },
+    { id: 29, mode: 'cinzas',   name: 'Terra das Cinzas Eternas',sub: 'O fim de tudo',             min: 291, max: 300, enemy: 'Vharok Eterno',     boss: 'Vharok, A Última Cinza', color: '#94a3b8', icon: '💀' }
   ];
 
   // ─── DUNGEONS DATA ─────────────────────────────────────────────
@@ -213,12 +213,12 @@
       const isLocked = playerLevel < m.range[0];
       return `
         <button class="wm-tab ${isCurrent ? 'active' : ''} ${isLocked ? 'locked' : ''}"
-                data-wm-mode="${m.id}" ${isLocked ? 'disabled' : ''} title="Nv. ${m.range[0]}–${m.range[1]}">
+                data-wm-mode="${m.id}" title="Nv. ${m.range[0]}–${m.range[1]}">
           <span class="wm-tab-icon">${m.icon}</span>
           <span class="wm-tab-label">${m.label}</span>
           <span class="wm-tab-range">Nv. ${m.range[0]}–${m.range[1]}</span>
           ${isPlayerMode ? '<span class="wm-tab-you">▶ VOCÊ</span>' : ''}
-          ${isLocked ? '<span class="wm-lock-badge"></span>' : `<span class="wm-tab-prog">${m.unlocked}/${m.total}</span>`}
+          ${isLocked ? '<span class="wm-lock-badge">🔒</span>' : `<span class="wm-tab-prog">${m.unlocked}/${m.total}</span>`}
         </button>`;
     }).join('');
 

@@ -1,0 +1,159 @@
+{
+  "tileSize": 32,
+  "sheetCols": 6,
+  "sheetRows": 5,
+  "sheetWidth": 192,
+  "sheetHeight": 160,
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "name": "center_full"
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "name": "cut_sw"
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "name": "edge_s"
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "name": "cut_se"
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "name": "t_south"
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "name": "edge_e"
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "name": "edge_s_long"
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "name": "corner_inner_se"
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "name": "cut_ne"
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "name": "corner_inner_sw"
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "name": "corridor_h"
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "name": "corner_outer_se"
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "name": "edge_w"
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "name": "corner_outer_nw"
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "name": "center_empty"
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "name": "hole_island"
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "name": "corner_outer_ne"
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "name": "corner_outer_sw"
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "name": "cross_4way"
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "name": "cross_3way_v"
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "name": "corner_inner_nw"
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "name": "edge_n"
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "name": "corner_inner_ne"
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "name": "turn_sw"
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "name": "corridor_v"
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "name": "turn_nw"
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "name": "turn_se"
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "name": "turn_ne"
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "name": "dead_end_s"
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "name": "single_island"
+    }
+  ]
+}

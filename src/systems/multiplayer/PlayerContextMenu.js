@@ -347,7 +347,7 @@ export class PlayerContextMenu {
         <div class="cinzas-inspect-body">
           <div class="cinzas-inspect-hero">
             <div class="cinzas-inspect-avatar-box">
-              <img id="inspectAvatarImg" src="assets/sprites/barbaro/south.png" alt="Avatar da Classe" />
+              <img id="inspectAvatarImg" src="assets/characters/barbaro/animations/walk/south/frame_000.png" alt="Avatar da Classe" />
             </div>
             <div class="cinzas-inspect-hero-info">
               <div class="cinzas-inspect-name" id="inspectPlayerName">Nome</div>
@@ -585,7 +585,7 @@ export class PlayerContextMenu {
       try {
         avatarImg.src = window.GameClasses.portrait(cls);
       } catch {
-        avatarImg.src = 'assets/sprites/barbaro/south.png';
+        avatarImg.src = 'assets/characters/barbaro/animations/walk/south/frame_000.png';
       }
     }
 

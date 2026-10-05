@@ -400,7 +400,7 @@ export class PartyManager {
       card.className = 'party-member-card';
 
       const cls = window.GameClasses?.get ? window.GameClasses.get(ally.classId) : null;
-      let portraitUrl = 'assets/sprites/barbaro/south.png';
+      let portraitUrl = 'assets/characters/barbaro/animations/walk/south/frame_000.png';
       if (cls && window.GameClasses?.portrait) {
         try { portraitUrl = window.GameClasses.portrait(cls); } catch {}
       }

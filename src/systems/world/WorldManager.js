@@ -1,4 +1,6 @@
 // src/systems/world/WorldManager.js
+import { tileMapManager } from './TileMapManager.js';
+import { getRegionTheme } from '../../data/regionHighlightThemes.js';
   const TILE_SOURCES = {
     grass: ['grass-forest', 'grass-leaves', 'grass-flowers']
   };
@@ -72,18 +74,8 @@
   });
 
   const realmArt = {};
-  const requestedRealmArt = new Set();
   function requestRealmArt(id) {
-    if (id < 2 || id > 29 || requestedRealmArt.has(id)) return realmArt[id] || null;
-    requestedRealmArt.add(id);
-    const image = new Image();
-    image.onload = () => {
-      if (terrainRegionId === id) terrainCanvas = null;
-    };
-    image.onerror = () => { realmArt[id] = null; };
-    realmArt[id] = image;
-    image.src = `assets/maps/realms/realm-${String(id).padStart(2, '0')}.png`;
-    return image;
+    return null;
   }
 
   function hash(x, y, seed = 0) {
@@ -1250,7 +1242,23 @@
     return terrainCanvas;
   }
 
-  function drawFloor(ctx, region, width, height) {
+  function drawFloor(ctx, region, width, height, camera = null, viewport = null) {
+    const tileMap = tileMapManager.getMapForRegion(region);
+    if (tileMap && tileMap.tilesetLoaded) {
+      const ox = region.col * width;
+      const oy = region.row * height;
+      ctx.save();
+      ctx.translate(ox, oy);
+      const camRelX = camera ? camera.x - ox : 0;
+      const camRelY = camera ? camera.y - oy : 0;
+      const viewW = viewport?.w || width;
+      const viewH = viewport?.h || height;
+      const theme = getRegionTheme(region.id);
+      tileMap.render(ctx, camRelX, camRelY, viewW, viewH, theme);
+      ctx.restore();
+      return true;
+    }
+
     const terrain = getTerrain(region, width, height);
     if (!terrain) return false;
     const x = region.col * width;
@@ -1278,6 +1286,7 @@
   }
 
   function blockedAt(x, y, radius, trees, decor) {
+    if (tileMapManager.isBlocked(x, y)) return true;
     // Tree canopies are visual scenery. Keep their trunks permeable so they
     // cannot trap manual movement or the auto-pilot; solid props still block.
     for (const item of decor) {

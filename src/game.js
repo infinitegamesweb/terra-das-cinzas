@@ -25,6 +25,8 @@ import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
 import { partyManager } from './systems/multiplayer/PartyManager.js';
 import { tradeManager } from './systems/multiplayer/TradeManager.js';
 import { onboardingManager } from './systems/multiplayer/OnboardingManager.js';
+import { questManager } from './systems/quests/QuestManager.js';
+import { questUI } from './systems/quests/QuestUI.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -141,7 +143,7 @@ const c = document.querySelector('#game');
   };
 
   const INITIAL_FOREST =
-    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 10, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#b9ae85', enemy: 'shade', hp: 78, sp: 74, ambientColor: '#95e86e', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] };
+    { id: 1, name: 'Bosque das Ruínas', subtitle: 'Ruínas de Miraluz', col: 0, row: 0, min: 1, max: 10, unlocks: 1, bg: '#18351f', path: '#a69b75', tree: '#42763a', accent: '#d4a234', enemy: 'shade', hp: 78, sp: 74, ambientColor: '#facc15', bossName: 'Guardião da Raiz Cinzenta', bossSprite: 'boss_ashroot_guardian', dungeonName: 'Catacumbas de Miraluz', dungeonBossFive: 'Lorde de Magma Ignis (Colosso de Obsidiana)', dungeonBossTen: 'Raiz-Mãe do Subsolo', npcName: 'Vigia Maerin', points: [['Margens de Miraluz', 340, 350], ['Bosque Velado', 1510, 350], ['Clareira dos Ecos', 340, 1080], ['Ruínas Afundadas', 1510, 1080], ['Selo da Raiz', 960, 1260]] };
 
   const MAP_REGIONS = (window.WorldMap?.WORLD_MAPS || [])
     .filter((map) => map.id > 1)
@@ -754,41 +756,100 @@ const c = document.querySelector('#game');
 
   function speakWithRegionalGuide(guide = regionalGuidePosition()) {
     if (!guide) return false;
-    if (regionNpcRewards[guide.id]) {
-      msg(guide.name + ': "Já entreguei o que podia. Boa sorte na estrada."');
-      return true;
+
+    const activeList = questManager.getActiveQuestsList();
+    const readyQuest = activeList.find(q => (q.giverId === guide.id || (guide.id === 'herbalist_mira' && q.regionId === 1)) && q.isReady);
+    const ongoingQuest = activeList.find(q => (q.giverId === guide.id || (guide.id === 'herbalist_mira' && q.regionId === 1)) && !q.isReady);
+    const available = questManager.getAvailableQuestsForRegion(region.id, p.lvl).filter(q => q.giverId === guide.id || (guide.id === 'herbalist_mira' && q.regionId === 1));
+
+    const actions = [];
+    let speech = `Saudações, errante. Que os ventos das cinzas guiem seus passos pelo bosque.`;
+
+    if (readyQuest) {
+      speech = readyQuest.dialogComplete || `Excelente trabalho! Sabia que podia confiar em sua lâmina.`;
+      actions.push({
+        label: `📜 Entregar Missão: ${readyQuest.title}`,
+        primary: true,
+        onClick: () => {
+          const rewards = questManager.turnInQuest(readyQuest.id);
+          if (rewards) {
+            if (rewards.xp) xp(rewards.xp);
+            if (rewards.gold) p.gold += rewards.gold;
+            if (rewards.crystals) p.crystal += rewards.crystals;
+            if (rewards.emberShards) p.emberShards += rewards.emberShards;
+            if (rewards.potions) p.potions = Math.min(MAX_POTIONS, p.potions + rewards.potions);
+            audio.playLevelUp?.();
+            sparks(guide.x, guide.y - 20, '#f59e0b', 30);
+            addFloatingText(p.x, p.y - 45, `MISSÃO CONCLUÍDA! +${rewards.xp} XP`, '#f59e0b', 16);
+            renderUI({ p, kills, ore, loot, quest: currentQuest() });
+            save();
+          }
+        }
+      });
+    } else if (available.length > 0) {
+      const q = available[0];
+      speech = q.dialogIntro || `Preciso de sua ajuda urgente em uma tarefa crucial para nosso acampamento.`;
+      actions.push({
+        label: `📜 Aceitar Missão: ${q.title}`,
+        primary: true,
+        onClick: () => {
+          questManager.acceptQuest(q.id);
+          addFloatingText(p.x, p.y - 40, `MISSÃO ACEITA: ${q.title}`, '#38bdf8', 15);
+          audio.playSave?.();
+        }
+      });
+    } else if (ongoingQuest) {
+      speech = ongoingQuest.dialogProgress || `Continue em sua missão, errante. O destino de nosso povo repousa em suas mãos.`;
     }
-    regionNpcRewards[guide.id] = true;
-    if (guide.kind === 'potions') {
-      const gained = Math.min(2, MAX_POTIONS - p.potions);
-      p.potions += gained;
-      if (gained < 2) p.gold += (2 - gained) * 35;
-      msg(guide.name + ' entregou ' + gained + ' poções' + (gained < 2 ? ' e ouro pelo estoque cheio' : '') + '.');
-    } else if (guide.kind === 'heal') {
-      const healed = Math.min(p.max - p.hp, Math.round(p.max * 0.35));
-      p.hp += healed;
-      const gained = Math.min(1, MAX_POTIONS - p.potions);
-      p.potions += gained;
-      msg(guide.name + ' restaurou ' + healed + ' de vida e entregou uma poção.');
-    } else if (guide.kind === 'ore') {
-      const gold = 120 + region.id * 35;
-      p.gold += gold;
-      p.crystal += 2;
-      msg(guide.name + ' dividiu o achado: +' + gold + ' ouro e +2 cristais.');
-    } else if (guide.kind === 'lore') {
-      p.crystal += 3;
-      const rewardXp = Math.max(25, Math.round((progression.xpNeeded(p.lvl) || 0) * 0.12));
-      xp(rewardXp);
-      msg(guide.name + ' compartilhou um fragmento: +3 cristais e +' + rewardXp + ' XP.');
-    } else {
-      p.emberShards = Math.min(999999, p.emberShards + 1);
-      p.potions = Math.min(MAX_POTIONS, p.potions + 1);
-      msg(guide.name + ' entregou +1 Fragmento de Brasa e uma poção.');
+
+    if (!regionNpcRewards[guide.id]) {
+      actions.push({
+        label: `🎁 Suprimento Regional (${guide.reward || 'Ajuda'})`,
+        primary: !readyQuest && available.length === 0,
+        onClick: () => {
+          regionNpcRewards[guide.id] = true;
+          if (guide.kind === 'potions') {
+            const gained = Math.min(2, MAX_POTIONS - p.potions);
+            p.potions += gained;
+            if (gained < 2) p.gold += (2 - gained) * 35;
+            msg(guide.name + ' entregou ' + gained + ' poções' + (gained < 2 ? ' e ouro pelo estoque cheio' : '') + '.');
+          } else if (guide.kind === 'heal') {
+            const healed = Math.min(p.max - p.hp, Math.round(p.max * 0.35));
+            p.hp += healed;
+            const gained = Math.min(1, MAX_POTIONS - p.potions);
+            p.potions += gained;
+            msg(guide.name + ' restaurou ' + healed + ' de vida e entregou uma poção.');
+          } else if (guide.kind === 'ore') {
+            const gold = 120 + region.id * 35;
+            p.gold += gold;
+            p.crystal += 2;
+            msg(guide.name + ' dividiu o achado: +' + gold + ' ouro e +2 cristais.');
+          } else if (guide.kind === 'lore') {
+            p.crystal += 3;
+            const rewardXp = Math.max(25, Math.round((progression.xpNeeded(p.lvl) || 0) * 0.12));
+            xp(rewardXp);
+            msg(guide.name + ' compartilhou um fragmento: +3 cristais e +' + rewardXp + ' XP.');
+          } else {
+            p.emberShards = Math.min(999999, p.emberShards + 1);
+            p.potions = Math.min(MAX_POTIONS, p.potions + 1);
+            msg(guide.name + ' entregou +1 Fragmento de Brasa e uma poção.');
+          }
+          sparks(guide.x, guide.y - 22, guide.color, 22);
+          audio.playLevelUp?.();
+          renderUI({ p, kills, ore, loot, quest: currentQuest() });
+          save();
+        }
+      });
     }
-    sparks(guide.x, guide.y - 22, guide.color, 22);
-    audio.playLevelUp();
-    renderUI({ p, kills, ore, loot, quest: currentQuest() });
-    save();
+
+    questUI.openNpcDialog({
+      name: guide.name,
+      title: guide.title,
+      speech: speech,
+      icon: '🌿',
+      actions: actions
+    });
+
     return true;
   }
 
@@ -958,7 +1019,11 @@ const c = document.querySelector('#game');
       return leaveDungeon();
     }
     const nextFloor = dungeonSession.floor + 1;
-    if (dungeonSession.floor === 5) currentDungeonMission().boss = true;
+    if (dungeonSession.floor === 5) {
+      currentDungeonMission().boss = true;
+      questManager.onProgress('dungeon_floor', 1, { floor: 5 });
+    }
+    questManager.onProgress('dungeon_floor', 1, { floor: nextFloor });
     dungeonProgress[region.id] = nextFloor;
     p.x = region.col * ZONE_W + 960;
     p.y = region.row * ZONE_H + 230;
@@ -1027,14 +1092,19 @@ const c = document.querySelector('#game');
 
   function initAmbientParticles() {
     ambientParticles.length = 0;
-    for (let i = 0; i < 45; i++) {
+    const isAshBiome = region.id === 29 || region.theme === 'ash' || region.id >= 26;
+    const isLavaBiome = region.theme === 'lava' || region.theme === 'chaos';
+    const isSnowBiome = region.theme === 'snow';
+    const count = isAshBiome ? 65 : 45;
+
+    for (let i = 0; i < count; i++) {
       ambientParticles.push({
         x: R(0, c.width || 800),
         y: R(0, c.height || 600),
-        vx: R(-12, 12),
-        vy: R(-16, -4),
-        size: R(1.5, 3.5),
-        alpha: R(0.3, 0.8),
+        vx: R(-14, 14),
+        vy: (isAshBiome || isSnowBiome) ? R(12, 32) : (isLavaBiome ? R(-28, -12) : R(-14, -4)),
+        size: isAshBiome ? R(1.8, 3.8) : R(1.5, 3.2),
+        alpha: R(0.25, 0.75),
         phase: R(0, Math.PI * 2)
       });
     }
@@ -1042,12 +1112,15 @@ const c = document.querySelector('#game');
 
   function addRegionLights(ox, oy) {
     if (region.id === 0) return;
+    const isAsh = region.id === 29 || region.theme === 'ash' || region.id >= 26;
+    const isLava = region.theme === 'lava' || region.theme === 'chaos';
+    const lightColor = isAsh ? '#94a3b8' : (isLava ? '#ff5722' : (region.accent || '#fca311'));
     lightSources.push(
-      { x: ox + 960, y: oy + 750, type: 'campfire', rad: 130, color: '#fca311' },
-      { x: ox + 430, y: oy + 410, type: 'lamp_post', rad: 110, color: '#ffb703' },
-      { x: ox + 1470, y: oy + 410, type: 'lamp_post', rad: 110, color: '#ffb703' },
-      { x: ox + 430, y: oy + 1080, type: 'lamp_post', rad: 110, color: '#ffb703' },
-      { x: ox + 1470, y: oy + 1080, type: 'lamp_post', rad: 110, color: '#ffb703' }
+      { x: ox + 960, y: oy + 750, type: isAsh ? 'arcane_brazier' : 'campfire', rad: isAsh ? 145 : 130, color: lightColor },
+      { x: ox + 430, y: oy + 410, type: isAsh ? 'arcane_brazier' : 'lamp_post', rad: 110, color: lightColor },
+      { x: ox + 1470, y: oy + 410, type: isAsh ? 'arcane_brazier' : 'lamp_post', rad: 110, color: lightColor },
+      { x: ox + 430, y: oy + 1080, type: isAsh ? 'arcane_brazier' : 'lamp_post', rad: 110, color: lightColor },
+      { x: ox + 1470, y: oy + 1080, type: isAsh ? 'arcane_brazier' : 'lamp_post', rad: 110, color: lightColor }
     );
   }
 
@@ -1412,6 +1485,9 @@ const c = document.querySelector('#game');
     const quest = currentQuest();
     const limit = kind === 'kills' ? 4 : kind === 'ore' ? 5 : 4;
     quest[kind] = Math.min(limit, quest[kind] + amount);
+    if (kind === 'kills') questManager.onProgress('kill', amount);
+    if (kind === 'ore') questManager.onProgress('mine', amount);
+    if (kind === 'loot') questManager.onProgress('chest', amount);
   }
 
   function onTrail(lx, ly, margin = 72) {
@@ -2739,6 +2815,7 @@ const c = document.querySelector('#game');
     route = [];
     populateRegion();
     updateRegionUI();
+    initAmbientParticles();
     audio.startAmbientMusic(region.id);
     save();
     msg('Você viajou até ' + region.name);
@@ -2746,6 +2823,25 @@ const c = document.querySelector('#game');
   }
 
   window._tdcSetRegion = travelRegion;
+  window._tdcForceTravel = (id) => {
+    const target = REGIONS.find((r) => r.id === id);
+    if (!target) return;
+    captureCurrentRegion();
+    regionIndex = REGIONS.findIndex((candidate) => candidate.id === target.id);
+    region = target;
+    const targetLayout = worldMapLayouts[String(target.id)];
+    p.x = target.col * ZONE_W + (targetLayout?.playerSpawn?.x ?? ZONE_W / 2);
+    p.y = target.row * ZONE_H + (targetLayout?.playerSpawn?.y ?? ZONE_H / 2);
+    syncPetToPlayer();
+    goal = null;
+    route = [];
+    populateRegion();
+    updateRegionUI();
+    initAmbientParticles();
+    audio.startAmbientMusic(region.id);
+    msg('Teleporte de teste: ' + region.name);
+    showTab(0);
+  };
 
   // World Map overlay callbacks
   window._wmGetPlayerLevel = () => p.lvl;
@@ -3658,11 +3754,14 @@ const c = document.querySelector('#game');
 
     // Update Ambient particles
     ambientParticles.forEach((ap) => {
-      ap.x += ap.vx * dt;
+      ap.x += ap.vx * dt + Math.sin(ap.phase) * (dt * 12);
       ap.y += ap.vy * dt;
       ap.phase += dt * 2;
-      if (ap.y < -10) {
+      if (ap.vy < 0 && ap.y < -10) {
         ap.y = c.height + 10;
+        ap.x = R(0, c.width);
+      } else if (ap.vy > 0 && ap.y > c.height + 10) {
+        ap.y = -10;
         ap.x = R(0, c.width);
       }
       if (ap.x < -10) ap.x = c.width + 10;
@@ -3710,7 +3809,7 @@ const c = document.querySelector('#game');
       drawDungeonFloor();
       return;
     }
-    if (terrain.drawFloor(g, region, ZONE_W, ZONE_H)) return;
+    if (terrain.drawFloor(g, region, ZONE_W, ZONE_H, cam, { w: c.width, h: c.height })) return;
     const left = Math.max(0, cam.x - 80);
     const top = Math.max(0, cam.y - 80);
     const right = Math.min(W.w, cam.x + c.width + 80);
@@ -4592,8 +4691,54 @@ const c = document.querySelector('#game');
           const h = im.naturalHeight * 0.26;
           g.drawImage(im, light.x - w / 2, light.y - h + 10, w, h);
         }
+      } else if (light.type === 'arcane_brazier') {
+        const im = propSprites.arcane_brazier || propSprites.campfire;
+        if (im?.complete && im.naturalWidth) {
+          const w = im.naturalWidth * 0.28;
+          const h = im.naturalHeight * 0.28;
+          g.drawImage(im, light.x - w / 2, light.y - h + 8, w, h);
+        }
       }
     });
+  }
+
+  function drawGroundMist(t) {
+    if (dungeonMode) return;
+    const isAsh = region.id === 29 || region.theme === 'ash' || region.id >= 26;
+    const isSwamp = region.id === 2 || region.biome === 'swamp' || region.theme === 'swamp';
+    const isCrypt = region.biome === 'crypt' || region.biome === 'abyss' || region.biome === 'ghosttown';
+    if (!isAsh && !isSwamp && !isCrypt) return;
+
+    g.save();
+    const mistColor = isAsh ? '148, 163, 184' : isSwamp ? '45, 212, 191' : '168, 85, 247';
+    const baseAlpha = isAsh ? 0.055 : isSwamp ? 0.045 : 0.04;
+    const speed = 0.018;
+
+    const vw = c.width;
+    const vh = c.height;
+    const mistBands = [
+      { yRatio: 0.25, rx: 280, ry: 60, offset: 0, speedMult: 1.0 },
+      { yRatio: 0.55, rx: 340, ry: 75, offset: 500, speedMult: 0.8 },
+      { yRatio: 0.85, rx: 310, ry: 65, offset: 1100, speedMult: 1.2 }
+    ];
+
+    mistBands.forEach((b) => {
+      const cycle = vw + b.rx * 2;
+      const screenX = ((t * speed * b.speedMult + b.offset) % cycle) - b.rx;
+      const worldX = cam.x + screenX;
+      const worldY = cam.y + vh * b.yRatio;
+
+      let grad = g.createRadialGradient(worldX, worldY, 10, worldX, worldY, b.rx);
+      grad.addColorStop(0, `rgba(${mistColor}, ${baseAlpha})`);
+      grad.addColorStop(0.6, `rgba(${mistColor}, ${baseAlpha * 0.5})`);
+      grad.addColorStop(1, `rgba(${mistColor}, 0)`);
+
+      g.fillStyle = grad;
+      g.beginPath();
+      g.ellipse(worldX, worldY, b.rx, b.ry, 0, 0, Math.PI * 2);
+      g.fill();
+    });
+    g.restore();
   }
 
   function resource(n) {
@@ -5274,6 +5419,27 @@ const c = document.querySelector('#game');
       }
     });
 
+    chests.forEach((ch) => {
+      const rx = cx + ((ch.x - p.x) / radarRange) * (rw / 2);
+      const ry = cy + ((ch.y - p.y) / radarRange) * (rh / 2);
+      if (Math.hypot(rx - cx, ry - cy) < rw / 2 - 4) {
+        if (!ch.open) {
+          radarCtx.fillStyle = '#f59e0b';
+          radarCtx.strokeStyle = '#fffbeb';
+          radarCtx.lineWidth = 1;
+          radarCtx.beginPath();
+          radarCtx.rect(rx - 2.5, ry - 2.5, 5, 5);
+          radarCtx.fill();
+          radarCtx.stroke();
+        } else {
+          radarCtx.fillStyle = '#64748b66';
+          radarCtx.beginPath();
+          radarCtx.rect(rx - 1.5, ry - 1.5, 3, 3);
+          radarCtx.fill();
+        }
+      }
+    });
+
     radarCtx.fillStyle = '#52f582';
     radarCtx.shadowColor = '#52f582';
     radarCtx.shadowBlur = 6;
@@ -5335,6 +5501,9 @@ const c = document.querySelector('#game');
 
     // Multi-layered Dynamic Lighting
     drawDynamicLighting(t);
+
+    // Ground Mist for atmospheric biomes
+    drawGroundMist(t);
 
     // Regional Portal Gates
     REGIONS.filter(
@@ -5409,11 +5578,19 @@ const c = document.querySelector('#game');
       if (ix < cam.x - 140 || ix > cam.x + c.width + 140 || iy < cam.y - 140 || iy > cam.y + c.height + 140) return;
 
       if (type === 'foe') groundShadow(item.x, item.y + 1, 15, 5, 0.34);
-      else if (type === 'resource' || type === 'chest') groundShadow(item.x, item.y + 1, 17, 6, 0.32);
+      else if (type === 'resource' || type === 'chest') groundShadow(item.x, item.y + 1, 18, 7, 0.35);
       else if (type === 'drop') groundShadow(item.x, item.y + 1, 11, 4, 0.24);
       else if (type === 'decor') {
         const isWaterFlora = item.kind?.startsWith('water_lily') || item.kind?.startsWith('water_lotus') || item.kind?.startsWith('water_pads') || item.kind?.startsWith('duckweed');
-        if (!isWaterFlora) groundShadow(item.x, item.y, 16 * (item.s || 1), 5 * (item.s || 1), 0.28);
+        if (!isWaterFlora) {
+          const isMountain = item.kind?.startsWith('mountain_') || item.kind?.startsWith('rock_plateau');
+          const isRockCluster = item.kind?.startsWith('rock_moss_cluster') || item.kind?.startsWith('rock_pile_');
+          const isLargeProp = item.kind === 'ruined_statue' || item.kind === 'stone_dragon_statue' || item.kind === 'stone_gargoyle';
+          const shadowRx = (isMountain ? 54 : isRockCluster ? 32 : isLargeProp ? 26 : 16) * (item.s || 1);
+          const shadowRy = (isMountain ? 18 : isRockCluster ? 11 : isLargeProp ? 9 : 5) * (item.s || 1);
+          const shadowOpacity = isMountain ? 0.45 : isRockCluster ? 0.38 : 0.28;
+          groundShadow(item.x, item.y + (isMountain ? 4 : 1), shadowRx, shadowRy, shadowOpacity);
+        }
       }
       if (type === 'decor') drawDecor(item);
       else if (type === 'tree') tree(item);
@@ -5570,8 +5747,9 @@ const c = document.querySelector('#game');
 
     // Ambient screen particles (Spore / Embers)
     g.save();
+    const isEndgameAsh = region.id === 29;
     ambientParticles.forEach((ap) => {
-      g.fillStyle = region.ambientColor || '#95e86e';
+      g.fillStyle = isEndgameAsh ? '#cbd5e1' : (region.ambientColor || '#95e86e');
       g.globalAlpha = ap.alpha * (0.5 + Math.sin(ap.phase) * 0.3);
       g.beginPath();
       g.arc(ap.x, ap.y, ap.size, 0, Math.PI * 2);
@@ -5580,9 +5758,11 @@ const c = document.querySelector('#game');
     g.restore();
 
     // Dark Vignette
-    let v = g.createRadialGradient(c.width * 0.5, c.height * 0.5, 120, c.width * 0.5, c.height * 0.5, c.width * 0.72);
-    v.addColorStop(0, '#00100000');
-    v.addColorStop(1, '#020703b3');
+    const vigCenter = isEndgameAsh ? '#00000000' : '#00100000';
+    const vigEdge = isEndgameAsh ? '#050508e6' : '#020703b3';
+    let v = g.createRadialGradient(c.width * 0.5, c.height * 0.5, 120, c.width * 0.5, c.height * 0.5, c.width * (isEndgameAsh ? 0.65 : 0.72));
+    v.addColorStop(0, vigCenter);
+    v.addColorStop(1, vigEdge);
     g.fillStyle = v;
     g.fillRect(0, 0, c.width, c.height);
 
@@ -5664,8 +5844,10 @@ const c = document.querySelector('#game');
   playerListUI.init();
   partyManager.init();
   tradeManager.init();
+  questUI.init();
   document.querySelector('#hudPortraitWrap')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
   document.querySelector('#socialTop')?.addEventListener('click', () => playerListUI.toggle());
+  document.querySelector('#questsTop')?.addEventListener('click', () => questUI.toggleLogModal());
   document.querySelector('#avatarTop')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
 
   cinzasNet.onAction = (action) => {
