@@ -2367,7 +2367,7 @@ const c = document.querySelector('#game');
   });
 
   addEventListener('keydown', (e) => {
-    if (menuOpen) return;
+    if (menuOpen || p.isDying) return;
     const activeEl = document.activeElement;
     if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) return;
     let k = e.key.toLowerCase();
@@ -3498,6 +3498,7 @@ const c = document.querySelector('#game');
             if (p.ultimateBuffUntil && now < p.ultimateBuffUntil) incoming = 0; // Ultimate invulnerability!
             if (incoming > 0) {
               p.hp = Math.max(0, p.hp - incoming);
+              p.hurtAt = now;
               audio.playHit();
               sparks(p.x, p.y, '#ef6c5d', 12);
               addFloatingText(p.x, p.y - 15, '-' + incoming, '#ff3344', 16);
@@ -3520,6 +3521,7 @@ const c = document.querySelector('#game');
           if (p.shield) incoming = 2;
           if (!p.shield) incoming = Math.max(1, incoming - (p.shieldEquipped ? 4 : 0) - window.GameClasses.get(p.classId).armor - (p.talents.includes('iron') ? 2 : 0));
           p.hp = Math.max(0, p.hp - incoming);
+          p.hurtAt = now;
           audio.playHit();
           sparks(p.x, p.y, '#ef6c5d', 8);
           addFloatingText(p.x, p.y - 15, '-' + incoming, '#ff3344', 14);
@@ -3597,6 +3599,7 @@ const c = document.querySelector('#game');
             p.lastTrapHit = now;
             const trapDmg = Math.max(6, Math.round(p.max * 0.08));
             p.hp = Math.max(0, p.hp - trapDmg);
+            p.hurtAt = now;
             screenShake = Math.max(screenShake, 5);
             audio.playHit();
             sparks(p.x, p.y, '#ef4444', 20);
@@ -3939,14 +3942,28 @@ const c = document.querySelector('#game');
       save();
       return;
     }
-    const loss = Math.min(p.xp, progression.deathXp(p.lvl, fromBoss));
-    p.xp -= loss;
-    p.hp = p.max;
-    p.gold = Math.max(0, p.gold - 10);
-    p.shield = 0;
-    p.respawnGraceUntil = now + 2200;
-    p.x = region.col * ZONE_W + ZONE_W / 2;
-    p.y = region.row * ZONE_H + ZONE_H / 2;
+
+    // Inicia animação de morte do herói
+    p.deathStartedAt = now;
+    p.isDying = true;
+    key.clear();
+    route = [];
+    goal = null;
+    autoTarget = null;
+    addFloatingText(p.x, p.y - 25, 'VOCÊ SUCUMBIU ÀS CINZAS...', '#ef4444', 20);
+    msg('Você sucumbiu em batalha... Renascendo nas chamas ancestrais.');
+
+    setTimeout(() => {
+      const loss = Math.min(p.xp, progression.deathXp(p.lvl, fromBoss));
+      p.xp -= loss;
+      p.hp = p.max;
+      p.gold = Math.max(0, p.gold - 10);
+      p.shield = 0;
+      p.isDying = false;
+      p.deathStartedAt = null;
+      p.respawnGraceUntil = performance.now() + 2500;
+      p.x = region.col * ZONE_W + ZONE_W / 2;
+      p.y = region.row * ZONE_H + ZONE_H / 2;
     syncPetToPlayer();
     goal = null;
     route = [];
@@ -3963,8 +3980,9 @@ const c = document.querySelector('#game');
     msg(loss
       ? 'Você retornou ao acampamento · -' + loss + ' XP' + (fromBoss ? ' (chefe: perda dobrada)' : '') + ' · -10 ouro'
       : 'Você retornou ao acampamento · -10 ouro');
-    renderUI({ p, kills, ore, loot, quest: currentQuest() });
-    save();
+      renderUI({ p, kills, ore, loot, quest: currentQuest() });
+      save();
+    }, 900);
   }
 
   function groundShadow(x, y, rx = 15, ry = 5, opacity = 0.3) {

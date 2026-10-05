@@ -6,32 +6,38 @@ import { getClassById } from '../data/classes.data.js';
 export function createHeroSprites(classId = 'guerreiro') {
   const characterClass = getClassById(classId);
   const directions = ['south', 'south-west', 'west', 'north-west', 'north', 'north-east', 'east', 'south-east'];
-  const sprites = { idle: {}, walk: {}, attack: {}, pickup: {} };
+  const sprites = { idle: {}, walk: {}, attack: {}, hurt: {}, death: {}, pickup: {} };
 
   directions.forEach((d) => {
     const idle = new Image();
-    idle.src = characterClass.idleRoot
-      ? characterClass.idleRoot + '/rotations/' + d + '.png'
-      : characterClass.walkRoot + '/animations/walk/' + d + '/frame_000.png';
+    idle.src = `${characterClass.walkRoot}/Idle/rotations/${d}.png`;
     sprites.idle[d] = idle;
-
-    sprites.pickup[d] = characterClass.actionRoot ? Array.from({ length: 5 }, (_, i) => {
-      const frame = new Image();
-      frame.src = characterClass.actionRoot + '/Picking_Up/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
-      return frame;
-    }) : [];
-
-    sprites.attack[d] = characterClass.actionRoot ? Array.from({ length: 7 }, (_, i) => {
-      const frame = new Image();
-      frame.src = characterClass.actionRoot + '/Throw_Object/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
-      return frame;
-    }) : [];
 
     sprites.walk[d] = Array.from({ length: 6 }, (_, i) => {
       const frame = new Image();
-      frame.src = characterClass.walkRoot + '/animations/walk/' + d + '/frame_' + String(i).padStart(3, '0') + '.png';
+      frame.src = `${characterClass.walkRoot}/animations/walk/${d}/frame_${String(i).padStart(3, '0')}.png`;
       return frame;
     });
+
+    sprites.attack[d] = Array.from({ length: 6 }, (_, i) => {
+      const frame = new Image();
+      frame.src = `${characterClass.walkRoot}/animations/attack/${d}/frame_${String(i).padStart(3, '0')}.png`;
+      return frame;
+    });
+
+    sprites.hurt[d] = Array.from({ length: 3 }, (_, i) => {
+      const frame = new Image();
+      frame.src = `${characterClass.walkRoot}/animations/hurt/${d}/frame_${String(i).padStart(3, '0')}.png`;
+      return frame;
+    });
+
+    sprites.death[d] = Array.from({ length: 6 }, (_, i) => {
+      const frame = new Image();
+      frame.src = `${characterClass.walkRoot}/animations/death/${d}/frame_${String(i).padStart(3, '0')}.png`;
+      return frame;
+    });
+
+    sprites.pickup[d] = sprites.walk[d].slice(0, 4);
   });
 
   return sprites;
@@ -76,23 +82,35 @@ export function drawHero(g, p, last, heroSprites, box) {
   const drawScale = (isUltimate ? 1.65 : p.classId === 'guerreiro' ? 1.32 : 1.36);
   g.save();
   const dir = p.dir || 'south';
+
+  // 1. Estado de Morte (HP <= 0)
+  const isDying = (p.hp <= 0 || p.isDying) && p.deathStartedAt;
+  const deathAge = isDying ? last - p.deathStartedAt : -1;
+  const deathFrames = heroSprites.death?.[dir];
+  const deathFrame = isDying && deathFrames ? deathFrames[Math.min(deathFrames.length - 1, Math.floor(deathAge / 150))] : null;
+
+  // 2. Estado de Sofrer Dano (Hurt)
+  const hurtAge = last - (p.hurtAt || -Infinity);
+  const isHurting = !isDying && hurtAge >= 0 && hurtAge < 240;
+  const hurtFrames = heroSprites.hurt?.[dir];
+  const hurtFrame = isHurting && hurtFrames ? hurtFrames[Math.min(hurtFrames.length - 1, Math.floor(hurtAge / 80))] : null;
+
+  // 3. Estado de Ataque (Attack)
   const attackAge = last - (p.attackAt || -Infinity);
-  const isAttacking = attackAge >= 0 && attackAge < 630;
-  const attackFrames = heroSprites.attack[dir];
-  const attackFrame = isAttacking && attackFrames ? attackFrames[Math.min(attackFrames.length - 1, Math.floor(attackAge / 90))] : null;
+  const isAttacking = !isDying && attackAge >= 0 && attackAge < 480;
+  const attackFrames = heroSprites.attack?.[dir];
+  const attackFrame = isAttacking && attackFrames ? attackFrames[Math.min(attackFrames.length - 1, Math.floor(attackAge / 80))] : null;
 
   const pickupAge = last - (p.pickupAt || -Infinity);
-  const isPickingUp = pickupAge >= 0 && pickupAge < 500;
-  const pickupFrames = heroSprites.pickup[dir];
+  const isPickingUp = !isDying && !isAttacking && pickupAge >= 0 && pickupAge < 400;
+  const pickupFrames = heroSprites.pickup?.[dir];
   const pickupFrame = isPickingUp && pickupFrames ? pickupFrames[Math.min(pickupFrames.length - 1, Math.floor(pickupAge / 100))] : null;
 
-  const walkFrames = heroSprites.walk[dir];
-  const walkFrame = p.moving && walkFrames?.length ? walkFrames[Math.floor((p.walk % (Math.PI * 2)) / (Math.PI * 2) * walkFrames.length)] : null;
+  const walkFrames = heroSprites.walk?.[dir];
+  const walkFrame = !isDying && !isHurting && !isAttacking && p.moving && walkFrames?.length ? walkFrames[Math.floor((p.walk % (Math.PI * 2)) / (Math.PI * 2) * walkFrames.length)] : null;
 
-  const im = (attackFrame && attackFrame.complete && attackFrame.naturalWidth) ? attackFrame
-    : (pickupFrame && pickupFrame.complete && pickupFrame.naturalWidth) ? pickupFrame
-    : (walkFrame && walkFrame.complete && walkFrame.naturalWidth) ? walkFrame
-    : heroSprites.idle[dir];
+  const rawSprite = deathFrame || hurtFrame || attackFrame || pickupFrame || walkFrame || heroSprites.idle?.[dir];
+  const im = (rawSprite && rawSprite.complete && rawSprite.naturalWidth) ? rawSprite : heroSprites.idle?.[dir];
 
   const sprW = 48;
   const sprH = 48;
@@ -206,8 +224,9 @@ export function drawHero(g, p, last, heroSprites, box) {
     g.restore();
   }
 
-  // Attack slash wave arc effect
-  if (isAttacking && attackAge < 320 && p.classId !== 'arqueiro') {
+  // Attack slash wave arc effect (estritamente para corpo a corpo: NÃO Mago e NÃO Arqueiro)
+  const isMelee = p.classId !== 'arqueiro' && p.classId !== 'mago';
+  if (isAttacking && attackAge < 320 && isMelee) {
     const slashProg = attackAge / 320;
     const frameIdx = Math.min(2, Math.floor(slashProg * 3));
     let baseDir = 'south';
