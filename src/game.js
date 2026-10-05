@@ -70,6 +70,7 @@ const c = document.querySelector('#game');
   let object = null;
   let selectedPlayer = null;
   window._tdcSelectedTarget = () => ({ enemy, object, selectedPlayer });
+  window._tdcMobs = () => mobs;
   let toast = 0;
   let kills = 0;
   let ore = 0;
@@ -683,7 +684,9 @@ const c = document.querySelector('#game');
     const boss = !!options.boss;
     const levelScale = Math.pow(1.035, Math.max(0, level - region.min));
     const hp = Math.round(region.hp * levelScale * (options.hpScale || 1) * (boss ? 8 : t === 'golem' ? 1.15 : 1));
+    const mobId = options.id || (boss ? `boss_r${region.id}` : `mob_${region.id}_${Math.round(x)}_${Math.round(y)}`);
     mobs.push({
+      id: mobId,
       x,
       y,
       ox: x,
@@ -1045,7 +1048,9 @@ const c = document.querySelector('#game');
       const maxHp = region.id === 1 ? Math.max(savedMaxHp, tunedMaxHp) : savedMaxHp;
       const rawHp = Number(m.hp);
       const isAlive = Boolean(m.alive) && !isNaN(rawHp) && rawHp > 0;
+      const mobId = m.id || (m.boss ? `boss_r${region.id}` : `mob_${region.id}_${Math.round(m.ox || m.x)}_${Math.round(m.oy || m.y)}`);
       mobs.push({
+        id: mobId,
         boss: !!m.boss,
         bossName: m.bossName || '',
         windup: false,
@@ -1639,6 +1644,22 @@ const c = document.querySelector('#game');
       p.hp = Math.min(p.max, p.hp + Math.max(1, Math.round(finalDamage * lifesteal)));
     }
     m.hp = (Number(m.hp) || 0) - finalDamage;
+
+    // Sincronização de combate cooperativo em tempo real
+    if (cinzasNet?.isConnected && m.id) {
+      cinzasNet.sendMobHit({
+        mobId: m.id,
+        dmg: finalDamage,
+        hp: m.hp,
+        maxHp: m.max,
+        isCrit: critical,
+        boss: m.boss,
+        mobName: m.bossName || m.t,
+        x: m.x,
+        y: m.y
+      });
+    }
+
     if (m.boss && m.hp > 0 && m.hp <= m.max * 0.5 && !m.phase2Triggered) {
       m.phase2Triggered = true;
       m.sp = Math.round(m.sp * 1.25);
@@ -5420,6 +5441,58 @@ const c = document.querySelector('#game');
       dir: action.dir || 'south'
     });
     sparks(action.x, action.y, action.color || '#f5d37b', 14);
+  };
+
+  // Sincronização cooperativa de dano e status de monstros
+  cinzasNet.onMobSync = (syncData) => {
+    if (syncData.fromId === cinzasNet.playerId) return;
+
+    const targetMob = mobs.find((m) => m.id === syncData.mobId)
+      || mobs.find((m) => m.alive && Math.hypot(m.x - syncData.x, m.y - syncData.y) < 70);
+
+    if (targetMob) {
+      targetMob.hp = Math.max(0, Math.min(targetMob.hp, syncData.hp));
+      audio.playHit?.();
+      sparks(targetMob.x, targetMob.y, syncData.boss ? '#ef4444' : '#2dd4bf', 14);
+
+      const dmgColor = syncData.isCrit ? '#fde047' : '#38bdf8';
+      addFloatingText(
+        targetMob.x + (Math.random() * 20 - 10),
+        targetMob.y - 28,
+        `${syncData.fromName}: -${syncData.dmg}`,
+        dmgColor,
+        syncData.boss ? 16 : 13
+      );
+
+      if (targetMob.boss && targetMob.hp > 0 && targetMob.hp <= targetMob.max * 0.5 && !targetMob.phase2Triggered) {
+        targetMob.phase2Triggered = true;
+        targetMob.sp = Math.round(targetMob.sp * 1.25);
+        addFloatingText(targetMob.x, targetMob.y - 82, ' FASE 2: FÚRIA! ', '#ff3344', 16);
+        if (audio?.playLevelUp) audio.playLevelUp();
+        sparks(targetMob.x, targetMob.y, '#ff4d4d', 35);
+        msg((targetMob.bossName || 'O Guardião') + ' entrou na FASE 2 (FÚRIA) pelos golpes de ' + syncData.fromName + '!');
+      }
+
+      if (!syncData.alive && targetMob.alive) {
+        killMob(targetMob, performance.now());
+      }
+    }
+  };
+
+  // Recompensas e anúncio de vitória em grupo
+  cinzasNet.onMobDefeated = (defData) => {
+    const isPartyVictory = cinzasNet.party && defData.partyId === cinzasNet.party.id;
+    if (isPartyVictory) {
+      window.CinzasChat?.addMessage({
+        from: 'GRUPO',
+        text: `⚔️ Vitória em Grupo: ${defData.killerName} derrotou ${defData.mobName || 'o guardião'}! (+20% Bônus de XP)`,
+        type: 'party',
+        time: new Date()
+      });
+      addFloatingText(p.x, p.y - 55, 'VITÓRIA COOPERATIVA! +20% XP', '#2dd4bf', 17);
+      sparks(p.x, p.y, '#2dd4bf', 25);
+      audio.playPartyJoin?.();
+    }
   };
 
   if (autoStart) {

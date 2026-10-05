@@ -17,7 +17,7 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [], partyInvites: [], partyUpdates: [], partyChats: [] };
+    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [], partyInvites: [], partyUpdates: [], partyChats: [], mobSyncs: [], mobDefeats: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
     ws.on("message", (d) => {
       const m = JSON.parse(d);
@@ -30,6 +30,8 @@ function client(token, channel) {
       if (m.t === "party_invite") c.partyInvites.push(m);
       if (m.t === "party_update") c.partyUpdates.push(m.party);
       if (m.t === "party_chat") c.partyChats.push(m);
+      if (m.t === "mob_sync") c.mobSyncs.push(m);
+      if (m.t === "mob_defeated") c.mobDefeats.push(m);
     });
     ws.on("close", (code) => { c.closed = code; });
     ws.on("error", reject);
@@ -130,7 +132,25 @@ await wait(80);
 assert.equal(cb.partyUpdates[cb.partyUpdates.length - 1], null);
 console.log("ok  sistema de grupo: convite, aceite, chat e saída sincronizados");
 
-// 11. login duplicado derruba a conexao antiga
+// 11. sincronizacao de combate cooperativo: mob_hit e mob_sync
+ca.ws.send(JSON.stringify({ t: "mob_hit", mobId: "boss_r1", dmg: 40, maxHp: 200, hp: 160, boss: true }));
+await wait(80);
+assert.ok(cb.mobSyncs.length >= 1);
+const sync = cb.mobSyncs[cb.mobSyncs.length - 1];
+assert.equal(sync.mobId, "boss_r1");
+assert.equal(sync.dmg, 40);
+assert.equal(sync.hp, 160);
+assert.equal(sync.alive, true);
+
+// Dano letal no chefe
+ca.ws.send(JSON.stringify({ t: "mob_hit", mobId: "boss_r1", dmg: 200, maxHp: 200, hp: 0, boss: true }));
+await wait(80);
+const syncDead = cb.mobSyncs[cb.mobSyncs.length - 1];
+assert.equal(syncDead.alive, false);
+assert.equal(syncDead.hp, 0);
+console.log("ok  sincronizacao de combate cooperativo: dano e vida de monstros compartilhados");
+
+// 12. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");

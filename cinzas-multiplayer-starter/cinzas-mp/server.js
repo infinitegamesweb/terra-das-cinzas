@@ -28,6 +28,7 @@ export const CHANNELS = ["bosque-1", "bosque-2", "bosque-3"];
 const nonces = new Map();   // nonce -> expiraEm
 const sessions = new Map(); // token -> { pubkey, guest }
 const parties = new Map();  // partyId -> { id, leaderId, members: Set(playerId) }
+const channelMobs = new Map(); // channel -> Map(mobId -> { id, hp, maxHp, alive, boss, name, killerId })
 let nextPartyId = 1;
 
 function getPartyData(partyId) {
@@ -394,6 +395,78 @@ export function start(port = CONFIG.PORT) {
         for (const o of room.values()) {
           if (o.id !== me.id && o.ws.readyState === 1 && Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS) {
             o.ws.send(actionMsg);
+          }
+        }
+      } else if (m.t === "mob_hit" && me.channel) {
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const mobId = String(m.mobId || "").slice(0, 60);
+        if (!mobId) return;
+
+        let channelMobMap = channelMobs.get(me.channel);
+        if (!channelMobMap) {
+          channelMobMap = new Map();
+          channelMobs.set(me.channel, channelMobMap);
+        }
+
+        const dmg = Math.min(10000, Math.max(1, Math.round(Number(m.dmg) || 1)));
+        const maxHp = Math.max(1, Math.round(Number(m.maxHp) || 200));
+        let mobState = channelMobMap.get(mobId);
+
+        if (!mobState || (!mobState.alive && Number(m.hp) > 0)) {
+          mobState = {
+            id: mobId,
+            hp: Math.max(0, Math.min(maxHp, Math.round(Number(m.hp != null ? m.hp : maxHp)))),
+            maxHp,
+            alive: true,
+            boss: Boolean(m.boss),
+            name: String(m.mobName || "Criatura").slice(0, 40),
+            lastHitBy: me.id
+          };
+          channelMobMap.set(mobId, mobState);
+        } else {
+          mobState.hp = Math.max(0, mobState.hp - dmg);
+          mobState.alive = mobState.hp > 0;
+          mobState.lastHitBy = me.id;
+        }
+
+        const syncMsg = JSON.stringify({
+          t: "mob_sync",
+          mobId,
+          dmg,
+          hp: mobState.hp,
+          maxHp: mobState.maxHp,
+          alive: mobState.alive,
+          fromId: me.id,
+          fromName: me.name,
+          isCrit: Boolean(m.isCrit),
+          boss: mobState.boss,
+          x: Math.round(Number(m.x) || me.x),
+          y: Math.round(Number(m.y) || me.y)
+        });
+
+        for (const o of room.values()) {
+          if (o.ws.readyState === 1 && Math.hypot(o.x - me.x, o.y - me.y) <= CONFIG.INTEREST_RADIUS) {
+            o.ws.send(syncMsg);
+          }
+        }
+
+        if (!mobState.alive && me.partyId) {
+          const party = parties.get(me.partyId);
+          if (party) {
+            const defMsg = JSON.stringify({
+              t: "mob_defeated",
+              mobId,
+              boss: mobState.boss,
+              mobName: mobState.name,
+              killerId: me.id,
+              killerName: me.name,
+              partyId: me.partyId
+            });
+            for (const pid of party.members) {
+              const p = room.get(pid);
+              if (p && p.ws.readyState === 1) p.ws.send(defMsg);
+            }
           }
         }
       }

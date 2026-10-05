@@ -31,6 +31,8 @@ export class CinzasNet {
     this.onPartyUpdate = () => {};
     this.onPartyInvite = () => {};
     this.onPartyChat = () => {};
+    this.onMobSync = () => {};
+    this.onMobDefeated = () => {};
 
     this.party = null;
 
@@ -176,6 +178,10 @@ export class CinzasNet {
             this.onPartyInvite(m);
           } else if (m.t === 'party_chat') {
             this.onPartyChat(m);
+          } else if (m.t === 'mob_sync') {
+            this.onMobSync(m);
+          } else if (m.t === 'mob_defeated') {
+            this.onMobDefeated(m);
           } else if (m.t === 'pong') {
             this.handlePong(m);
           } else if (m.t === 'error') {
@@ -375,6 +381,22 @@ export class CinzasNet {
       y: Math.round(Number(action.y) || 0),
       color: action.color || '#f5d37b',
       dir: action.dir || 'south'
+    }));
+  }
+
+  sendMobHit({ mobId, dmg, hp, maxHp, isCrit = false, boss = false, mobName = '', x = 0, y = 0 }) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({
+      t: 'mob_hit',
+      mobId: String(mobId),
+      dmg: Math.max(1, Math.round(Number(dmg) || 1)),
+      hp: Math.max(0, Math.round(Number(hp) || 0)),
+      maxHp: Math.max(1, Math.round(Number(maxHp) || 200)),
+      isCrit: Boolean(isCrit),
+      boss: Boolean(boss),
+      mobName: String(mobName || ''),
+      x: Math.round(Number(x) || 0),
+      y: Math.round(Number(y) || 0)
     }));
   }
 
