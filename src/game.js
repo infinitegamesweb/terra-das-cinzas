@@ -1931,10 +1931,13 @@ const c = document.querySelector('#game');
         });
         if (!dungeonMode) {
           bossDefeats[region.id] = true;
+          questManager.onProgress('boss', 1, { regionId: region.id });
           if (firstRegionClear) {
             p.emberShards += 2;
             msg('Guardião vencido pela primeira vez · +2 Fragmentos de Brasa');
           }
+        } else {
+          questManager.onProgress('dungeon_boss', 1, { regionId: region.id, floor: dungeonSession?.floor });
         }
         drops.push({ x: m.x + 24, y: m.y, kind: 'crystal', amount: region.id + 1, dungeon: dungeonMode, phase: 0 });
         msg((dungeonMode

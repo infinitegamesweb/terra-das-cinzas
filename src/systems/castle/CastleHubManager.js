@@ -56,6 +56,7 @@
         if (p) {
           p.hp = p.max;
           p.energy = 100;
+          if (window.QuestManager?.onProgress) window.QuestManager.onProgress('interact', 1);
           if (window.GameAudio?.playLevelUp) window.GameAudio.playLevelUp();
           if (window.GameUI?.msg) window.GameUI.msg(' Chama Ancestral: Vida e Energia Plenamente Restauradas! Ponto de Retorno Salvo. ');
           if (window.renderUI) window.renderUI({ p });
