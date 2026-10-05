@@ -19,6 +19,7 @@ export const CONFIG = {
   TICK_HZ: 20,
   INTEREST_RADIUS: 1600, // so envia jogadores proximos
   MAX_PER_CHANNEL: 50,
+  MAX_PARTY_SIZE: 4,
   NONCE_TTL_MS: 5 * 60 * 1000,
   MSG_PER_SEC: 60,
 };
@@ -26,6 +27,45 @@ export const CHANNELS = ["bosque-1", "bosque-2", "bosque-3"];
 
 const nonces = new Map();   // nonce -> expiraEm
 const sessions = new Map(); // token -> { pubkey, guest }
+const parties = new Map();  // partyId -> { id, leaderId, members: Set(playerId) }
+let nextPartyId = 1;
+
+function getPartyData(partyId) {
+  const party = parties.get(partyId);
+  if (!party) return null;
+  const memberList = [];
+  for (const pid of party.members) {
+    for (const room of rooms.values()) {
+      const p = room.get(pid);
+      if (p) {
+        memberList.push({
+          id: p.id,
+          name: p.name,
+          classId: p.classId,
+          lvl: p.lvl || 1,
+          hp: p.hp || 100,
+          maxHp: p.maxHp || 100,
+          isLeader: p.id === party.leaderId
+        });
+        break;
+      }
+    }
+  }
+  return { id: party.id, leaderId: party.leaderId, members: memberList };
+}
+
+function broadcastParty(partyId) {
+  const party = parties.get(partyId);
+  if (!party) return;
+  const data = getPartyData(partyId);
+  const msg = JSON.stringify({ t: "party_update", party: data });
+  for (const pid of party.members) {
+    for (const room of rooms.values()) {
+      const p = room.get(pid);
+      if (p && p.ws.readyState === 1) p.ws.send(msg);
+    }
+  }
+}
 
 export function buildMessage(nonce) {
   return `${CONFIG.DOMAIN} quer que voce entre em Guerra das Cinzas com sua carteira Solana.\nNonce: ${nonce}`;
@@ -99,9 +139,36 @@ export function start(port = CONFIG.PORT) {
         if (p.pubkey === sess.pubkey) { p.ws.close(4002, "login em outro lugar"); room.delete(p.id); }
 
     const me = { id: nextId++, pubkey: sess.pubkey, name: shortName(sess.pubkey), ws,
-      channel: null, classId: "guerreiro", lvl: 1, x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0 };
+      channel: null, classId: "guerreiro", lvl: 1, x: 1000, y: 1000, dx: 0, dy: 0, msgs: 0, lastChat: 0,
+      partyId: null, hp: 100, maxHp: 100 };
     const send = (o) => ws.readyState === 1 && ws.send(JSON.stringify(o));
-    const leave = () => { if (me.channel) rooms.get(me.channel)?.delete(me.id); me.channel = null; };
+    const leave = () => {
+      if (me.partyId) {
+        const party = parties.get(me.partyId);
+        if (party) {
+          party.members.delete(me.id);
+          if (party.members.size === 0) {
+            parties.delete(party.id);
+          } else {
+            if (party.leaderId === me.id) {
+              party.leaderId = Array.from(party.members)[0];
+            }
+            broadcastParty(party.id);
+            for (const pid of party.members) {
+              for (const room of rooms.values()) {
+                const p = room.get(pid);
+                if (p && p.ws.readyState === 1) {
+                  p.ws.send(JSON.stringify({ t: "party_chat", from: "GRUPO", text: `${me.name} saiu do grupo.` }));
+                }
+              }
+            }
+          }
+        }
+        me.partyId = null;
+      }
+      if (me.channel) rooms.get(me.channel)?.delete(me.id);
+      me.channel = null;
+    };
     const rl = setInterval(() => (me.msgs = 0), 1000);
 
     ws.on("message", (raw) => {
@@ -115,6 +182,8 @@ export function start(port = CONFIG.PORT) {
         if (Number.isFinite(m.lvl)) me.lvl = Math.max(1, Math.min(300, Math.round(Number(m.lvl))));
         if (Number.isFinite(m.x)) me.x = Math.max(0, Math.min(CONFIG.WORLD.w, Number(m.x)));
         if (Number.isFinite(m.y)) me.y = Math.max(0, Math.min(CONFIG.WORLD.h, Number(m.y)));
+        if (Number.isFinite(m.hp)) me.hp = Math.max(0, Math.round(Number(m.hp)));
+        if (Number.isFinite(m.maxHp)) me.maxHp = Math.max(1, Math.round(Number(m.maxHp)));
         leave(); me.channel = m.channel; room.set(me.id, me);
         send({ t: "joined", id: me.id, channel: m.channel, name: me.name, classId: me.classId, lvl: me.lvl, world: CONFIG.WORLD });
       } else if (m.t === "input" && me.channel) {
@@ -127,6 +196,26 @@ export function start(port = CONFIG.PORT) {
         const text = String(m.text || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 140);
         if (!text) return;
         me.lastChat = now;
+
+        // Comando de grupo no chat: /p [mensagem] ou /party [mensagem]
+        if (text.startsWith("/p ") || text.startsWith("/party ")) {
+          if (!me.partyId) {
+            send({ t: "chat", from: "SISTEMA", text: "Você precisa estar em um grupo para falar no chat do grupo (/p)." });
+            return;
+          }
+          const pText = text.replace(/^\/(p|party)\s+/, "").trim();
+          if (!pText) return;
+          const party = parties.get(me.partyId);
+          if (!party) return;
+          const chatMsg = JSON.stringify({ t: "party_chat", from: me.name, fromId: me.id, text: pText });
+          for (const pid of party.members) {
+            for (const r of rooms.values()) {
+              const p = r.get(pid);
+              if (p && p.ws.readyState === 1) p.ws.send(chatMsg);
+            }
+          }
+          return;
+        }
 
         // Comando de sussurro no chat: /w [alvo] [mensagem]
         if (text.startsWith("/w ") || text.startsWith("/whisper ")) {
@@ -166,6 +255,125 @@ export function start(port = CONFIG.PORT) {
         }
         target.ws.readyState === 1 && target.ws.send(JSON.stringify({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: true }));
         send({ t: "whisper", from: me.name, to: target.name, text: whisperText, incoming: false });
+      } else if (m.t === "party_invite" && me.channel) {
+        const room = rooms.get(me.channel);
+        if (!room) return;
+        const targetName = String(m.to || "").trim();
+        const targetId = Number(m.toId);
+        const target = Array.from(room.values()).find(
+          (p) => p.id !== me.id && (p.id === targetId || p.name.toLowerCase() === targetName.toLowerCase() || p.name.toLowerCase().startsWith(targetName.toLowerCase()))
+        );
+        if (!target) {
+          send({ t: "chat", from: "SISTEMA", text: `Jogador não encontrado no canal.` });
+          return;
+        }
+        if (target.partyId) {
+          send({ t: "chat", from: "SISTEMA", text: `${target.name} já faz parte de um grupo.` });
+          return;
+        }
+        if (me.partyId) {
+          const party = parties.get(me.partyId);
+          if (party && party.members.size >= CONFIG.MAX_PARTY_SIZE) {
+            send({ t: "chat", from: "SISTEMA", text: `Seu grupo já atingiu o limite de ${CONFIG.MAX_PARTY_SIZE} aventureiros.` });
+            return;
+          }
+        }
+        target.ws.readyState === 1 && target.ws.send(JSON.stringify({
+          t: "party_invite",
+          fromId: me.id,
+          fromName: me.name,
+          classId: me.classId,
+          lvl: me.lvl
+        }));
+        send({ t: "chat", from: "SISTEMA", text: `Convite de grupo enviado para ${target.name}.` });
+      } else if (m.t === "party_accept" && me.channel) {
+        if (me.partyId) return send({ t: "chat", from: "SISTEMA", text: "Você já está em um grupo." });
+        const fromId = Number(m.fromId);
+        const room = rooms.get(me.channel);
+        const inviter = room ? room.get(fromId) : null;
+        if (!inviter) {
+          send({ t: "chat", from: "SISTEMA", text: "O convite expirou ou o jogador se desconectou." });
+          return;
+        }
+        let partyId = inviter.partyId;
+        if (partyId) {
+          const party = parties.get(partyId);
+          if (!party || party.members.size >= CONFIG.MAX_PARTY_SIZE) {
+            send({ t: "chat", from: "SISTEMA", text: "O grupo está cheio ou não existe mais." });
+            return;
+          }
+          party.members.add(me.id);
+          me.partyId = partyId;
+        } else {
+          partyId = nextPartyId++;
+          const party = { id: partyId, leaderId: inviter.id, members: new Set([inviter.id, me.id]) };
+          parties.set(partyId, party);
+          inviter.partyId = partyId;
+          me.partyId = partyId;
+        }
+        broadcastParty(partyId);
+        const partyMsg = JSON.stringify({ t: "party_chat", from: "GRUPO", text: `${me.name} entrou no grupo!` });
+        const pParty = parties.get(partyId);
+        if (pParty) {
+          for (const pid of pParty.members) {
+            for (const r of rooms.values()) {
+              const p = r.get(pid);
+              if (p && p.ws.readyState === 1) p.ws.send(partyMsg);
+            }
+          }
+        }
+      } else if (m.t === "party_decline" && me.channel) {
+        const fromId = Number(m.fromId);
+        const room = rooms.get(me.channel);
+        const inviter = room ? room.get(fromId) : null;
+        if (inviter && inviter.ws.readyState === 1) {
+          inviter.ws.send(JSON.stringify({ t: "chat", from: "SISTEMA", text: `${me.name} recusou o convite de grupo.` }));
+        }
+      } else if (m.t === "party_leave") {
+        if (!me.partyId) return;
+        const party = parties.get(me.partyId);
+        if (party) {
+          party.members.delete(me.id);
+          send({ t: "party_update", party: null });
+          send({ t: "chat", from: "SISTEMA", text: "Você saiu do grupo." });
+          if (party.members.size === 0) {
+            parties.delete(party.id);
+          } else {
+            if (party.leaderId === me.id) {
+              party.leaderId = Array.from(party.members)[0];
+            }
+            broadcastParty(party.id);
+            for (const pid of party.members) {
+              for (const r of rooms.values()) {
+                const p = r.get(pid);
+                if (p && p.ws.readyState === 1) {
+                  p.ws.send(JSON.stringify({ t: "party_chat", from: "GRUPO", text: `${me.name} saiu do grupo.` }));
+                }
+              }
+            }
+          }
+        }
+        me.partyId = null;
+      } else if (m.t === "party_chat") {
+        if (!me.partyId) return send({ t: "chat", from: "SISTEMA", text: "Você não está em um grupo." });
+        const text = String(m.text || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 140);
+        if (!text) return;
+        const party = parties.get(me.partyId);
+        if (!party) return;
+        const chatMsg = JSON.stringify({ t: "party_chat", from: me.name, fromId: me.id, text });
+        for (const pid of party.members) {
+          for (const r of rooms.values()) {
+            const p = r.get(pid);
+            if (p && p.ws.readyState === 1) p.ws.send(chatMsg);
+          }
+        }
+      } else if (m.t === "party_vitals") {
+        if (Number.isFinite(m.hp)) me.hp = Math.max(0, Math.round(Number(m.hp)));
+        if (Number.isFinite(m.maxHp)) me.maxHp = Math.max(1, Math.round(Number(m.maxHp)));
+        if (Number.isFinite(m.lvl)) me.lvl = Math.max(1, Math.round(Number(m.lvl)));
+        if (me.partyId) {
+          broadcastParty(me.partyId);
+        }
       } else if (m.t === "ping") {
         send({ t: "pong", ctime: m.ctime, stime: Date.now() });
       } else if (m.t === "action" && me.channel) {

@@ -53,6 +53,16 @@ export class ChatUI {
       }
     };
 
+    // Conecta chat de grupo
+    cinzasNet.onPartyChat = (msg) => {
+      this.addMessage({
+        from: `[Grupo] ${msg.from}`,
+        text: msg.text,
+        type: 'party',
+        time: new Date()
+      });
+    };
+
     // Mensagens de sistema
     cinzasNet.onJoined = (data) => {
       this.addMessage({
@@ -144,6 +154,14 @@ export class ChatUI {
       }
       .cinzas-chat-msg.whisper-out .chat-author {
         color: #c084fc;
+        font-weight: 700;
+      }
+      .cinzas-chat-msg.party {
+        color: #2dd4bf;
+        font-weight: 500;
+      }
+      .cinzas-chat-msg.party .chat-author {
+        color: #38bdf8;
         font-weight: 700;
       }
       .cinzas-chat-form {
@@ -291,10 +309,35 @@ export class ChatUI {
     if (text === '/help' || text === '/ajuda' || text === '/?') {
       this.addMessage({
         from: 'COMANDOS',
-        text: '/w [nome] [msg] (sussurro) · /r [msg] (responder) · /roll (rolar 1–100) · [Tab] lista de jogadores',
+        text: '/w [nome] [msg] (sussurro) · /r [msg] (responder) · /p [msg] (chat grupo) · /accept · /leave · /roll · [Tab] jogadores',
         type: 'system',
         time: new Date()
       });
+      return;
+    }
+
+    // 1b. Comandos de Grupo (/p, /accept, /decline, /leave)
+    if (text.startsWith('/p ') || text.startsWith('/party ')) {
+      const pMsg = text.replace(/^\/(p|party)\s+/, '').trim();
+      if (!pMsg) return;
+      if (cinzasNet?.isConnected) {
+        cinzasNet.sendPartyChat(pMsg);
+      }
+      return;
+    }
+
+    if (text === '/accept' || text === '/aceitar') {
+      window.CinzasParty?.acceptPendingInvite();
+      return;
+    }
+
+    if (text === '/decline' || text === '/recusar') {
+      window.CinzasParty?.declinePendingInvite();
+      return;
+    }
+
+    if (text === '/leave' || text === '/sair') {
+      window.CinzasParty?.leaveParty();
       return;
     }
 

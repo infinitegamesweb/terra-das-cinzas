@@ -21,6 +21,7 @@ import { channelManager } from './systems/multiplayer/ChannelManager.js';
 import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
 import { chatUI } from './systems/multiplayer/ChatUI.js';
 import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
+import { partyManager } from './systems/multiplayer/PartyManager.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
 
 import './systems/world/WorldManager.js';
@@ -1513,6 +1514,9 @@ const c = document.querySelector('#game');
   }
 
   function xp(n) {
+    if (cinzasNet?.party?.members?.length > 1) {
+      n = Math.round(n * 1.20);
+    }
     const MAX = progression.MAX_LEVEL || 300;
     if (p.lvl >= MAX) {
       p.xp = 0;
@@ -5257,6 +5261,7 @@ const c = document.querySelector('#game');
   channelManager.init();
   chatUI.init();
   playerListUI.init();
+  partyManager.init();
 
   cinzasNet.onAction = (action) => {
     emitCombatEffect(action.kind || 'slash', action.x, action.y, action.color || '#f5d37b', {

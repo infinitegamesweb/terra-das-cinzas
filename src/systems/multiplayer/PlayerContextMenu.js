@@ -508,20 +508,7 @@ export class PlayerContextMenu {
 
   triggerPartyInvite(player) {
     if (cinzasNet?.isConnected) {
-      cinzasNet.sendAction({
-        kind: 'party_invite',
-        to: player.name,
-        toId: player.id
-      });
-    }
-    const chat = window.CinzasChat;
-    if (chat) {
-      chat.addMessage({
-        from: 'GRUPO',
-        text: `Convite de grupo enviado para ${player.name}.`,
-        type: 'system',
-        time: new Date()
-      });
+      cinzasNet.sendPartyInvite(player.name, player.id);
     }
   }
 

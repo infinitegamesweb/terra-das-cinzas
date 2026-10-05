@@ -28,6 +28,11 @@ export class CinzasNet {
     this.onAction = () => {};
     this.onJoined = () => {};
     this.onDisconnect = () => {};
+    this.onPartyUpdate = () => {};
+    this.onPartyInvite = () => {};
+    this.onPartyChat = () => {};
+
+    this.party = null;
 
     this.lastInputDx = 0;
     this.lastInputDy = 0;
@@ -164,6 +169,13 @@ export class CinzasNet {
             this.handleWhisperMessage(m);
           } else if (m.t === 'action') {
             this.handleActionMessage(m);
+          } else if (m.t === 'party_update') {
+            this.party = m.party;
+            this.onPartyUpdate(m.party);
+          } else if (m.t === 'party_invite') {
+            this.onPartyInvite(m);
+          } else if (m.t === 'party_chat') {
+            this.onPartyChat(m);
           } else if (m.t === 'pong') {
             this.handlePong(m);
           } else if (m.t === 'error') {
@@ -317,6 +329,43 @@ export class CinzasNet {
     this.onWhisper(m);
   }
 
+  sendPartyInvite(to, toId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'party_invite', to: String(to || ''), toId: Number(toId) || undefined }));
+  }
+
+  sendPartyAccept(fromId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'party_accept', fromId: Number(fromId) }));
+  }
+
+  sendPartyDecline(fromId) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'party_decline', fromId: Number(fromId) }));
+  }
+
+  sendPartyLeave() {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({ t: 'party_leave' }));
+  }
+
+  sendPartyChat(text) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    const sanitized = String(text || '').trim().slice(0, 140);
+    if (!sanitized) return;
+    this.ws.send(JSON.stringify({ t: 'party_chat', text: sanitized }));
+  }
+
+  sendPartyVitals(hp, maxHp, lvl) {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
+    this.ws.send(JSON.stringify({
+      t: 'party_vitals',
+      hp: Number.isFinite(hp) ? Math.round(hp) : undefined,
+      maxHp: Number.isFinite(maxHp) ? Math.round(maxHp) : undefined,
+      lvl: Number.isFinite(lvl) ? Math.round(lvl) : undefined
+    }));
+  }
+
   sendAction(action = {}) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.joined) return;
     this.ws.send(JSON.stringify({
@@ -389,6 +438,7 @@ export class CinzasNet {
       this.ws = null;
     }
     this.remotePlayers.clear();
+    this.party = null;
   }
 
   getRemotePlayers() {

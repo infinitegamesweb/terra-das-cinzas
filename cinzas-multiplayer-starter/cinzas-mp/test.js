@@ -17,7 +17,7 @@ async function login(kp) {
 function client(token, channel) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(`ws://localhost:${srv.port}/ws?token=${token}`);
-    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [] };
+    const c = { ws, state: [], chat: [], actions: [], pongs: [], whispers: [], partyInvites: [], partyUpdates: [], partyChats: [] };
     ws.on("open", () => ws.send(JSON.stringify({ t: "join", channel })));
     ws.on("message", (d) => {
       const m = JSON.parse(d);
@@ -27,6 +27,9 @@ function client(token, channel) {
       if (m.t === "whisper") c.whispers.push(m);
       if (m.t === "action") c.actions.push(m);
       if (m.t === "pong") c.pongs.push(m);
+      if (m.t === "party_invite") c.partyInvites.push(m);
+      if (m.t === "party_update") c.partyUpdates.push(m.party);
+      if (m.t === "party_chat") c.partyChats.push(m);
     });
     ws.on("close", (code) => { c.closed = code; });
     ws.on("error", reject);
@@ -104,7 +107,30 @@ assert.equal(ca.whispers.length, 1);
 assert.equal(ca.whispers[0].incoming, false);
 console.log("ok  sussurro privado entregue com sucesso e isolado");
 
-// 10. login duplicado derruba a conexao antiga
+// 10. sistema de grupos / party (convite, aceite, chat e saída)
+ca.ws.send(JSON.stringify({ t: "party_invite", to: cb.name }));
+await wait(80);
+assert.equal(cb.partyInvites.length, 1);
+assert.equal(cb.partyInvites[0].fromId, ca.id);
+
+cb.ws.send(JSON.stringify({ t: "party_accept", fromId: ca.id }));
+await wait(80);
+assert.ok(ca.partyUpdates.length >= 1);
+assert.ok(cb.partyUpdates.length >= 1);
+const latestUpdate = ca.partyUpdates[ca.partyUpdates.length - 1];
+assert.equal(latestUpdate.members.length, 2);
+
+ca.ws.send(JSON.stringify({ t: "party_chat", text: "vamos caçar o golem!" }));
+await wait(80);
+assert.equal(cb.partyChats.length, 2);
+assert.equal(cb.partyChats[cb.partyChats.length - 1].text, "vamos caçar o golem!");
+
+cb.ws.send(JSON.stringify({ t: "party_leave" }));
+await wait(80);
+assert.equal(cb.partyUpdates[cb.partyUpdates.length - 1], null);
+console.log("ok  sistema de grupo: convite, aceite, chat e saída sincronizados");
+
+// 11. login duplicado derruba a conexao antiga
 const ca2 = await client(ta, "bosque-1"); await wait(100);
 assert.equal(ca.closed, 4002);
 console.log("ok  login duplicado derruba sessao antiga");
