@@ -339,7 +339,7 @@
           <div class="wm-drop-table">${dropHTML}</div>
           ${isLocked
             ? `<div class="wm-lock-info">Requer nível <b>${d.minLvl}</b> · faltam <b>${d.minLvl - playerLevel}</b> níveis</div>`
-            : `<button class="wm-btn-enter ${isCurrent?'available':''}">${d.groupMode==='group'?' ':''}${isCleared?'↺ REVISITAR':'▶ ENTRAR'}</button>`
+            : `<button class="wm-btn-enter ${isCurrent?'available':''}" data-wm-dungeon="${d.id}">${d.groupMode==='group'?'👥 ':''}${isCleared?'↺ REVISITAR':'▶ ENTRAR'}</button>`
           }
         </div>
       </article>`;
@@ -360,6 +360,13 @@
       btn.onclick = () => {
         const mapId = parseInt(btn.dataset.wmGoto);
         if (window._wmNavigateTo) window._wmNavigateTo(mapId);
+        hide();
+      };
+    });
+    overlay.querySelectorAll('[data-wm-dungeon]').forEach(btn => {
+      btn.onclick = () => {
+        const dungeonId = btn.dataset.wmDungeon;
+        if (window._wmEnterDungeon) window._wmEnterDungeon(dungeonId);
         hide();
       };
     });
@@ -477,7 +484,18 @@
     return banner + '<div class="wm-dg-grid">' + cards + '</div>';
   }
 
-  window.WorldMap = { show, hide, toggle, WORLD_MAPS, MODES, DUNGEONS, getMapStatus };
+  function openTab(tabId) {
+    if (!overlay) build();
+    visible = true;
+    activeMode = tabId;
+    const playerLevel = window._wmGetPlayerLevel ? window._wmGetPlayerLevel() : 1;
+    render(playerLevel);
+    overlay.removeAttribute('hidden');
+    overlay.classList.add('wm-entering');
+    setTimeout(() => overlay.classList.remove('wm-entering'), 300);
+  }
+
+  window.WorldMap = { show, hide, toggle, openTab, WORLD_MAPS, MODES, DUNGEONS, getMapStatus };
 
 
 export const worldMap = window.WorldMap;

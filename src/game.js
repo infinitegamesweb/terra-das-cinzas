@@ -19,6 +19,7 @@ import { uiManager, renderUI } from './systems/ui/UIManager.js';
 import { inventoryUI } from './systems/ui/InventoryUI.js';
 import { channelManager } from './systems/multiplayer/ChannelManager.js';
 import { cinzasNet } from './systems/multiplayer/CinzasNet.js';
+import { dungeonTrackerUI } from './systems/world/DungeonTrackerUI.js';
 import { chatUI } from './systems/multiplayer/ChatUI.js';
 import { playerListUI } from './systems/multiplayer/PlayerListUI.js';
 import { partyManager } from './systems/multiplayer/PartyManager.js';
@@ -881,12 +882,16 @@ const c = document.querySelector('#game');
     save();
   }
 
-  function enterDungeon() {
+  function enterDungeon(force = false) {
     const mission = currentDungeonMission();
     const npc = dungeonNpcPosition();
     if (dungeonMode) return msg('Você já está dentro de uma masmorra.');
-    if (D(p, npc) > 105) return msg('Fale com ' + region.npcName + ' para receber a missão e entrar.');
-    if (!mission.accepted) return msg('Aceite o contrato de ' + region.npcName + ' antes de entrar.');
+    if (!force) {
+      if (D(p, npc) > 105) return msg('Fale com ' + region.npcName + ' para receber a missão e entrar.');
+      if (!mission.accepted) return msg('Aceite o contrato de ' + region.npcName + ' antes de entrar.');
+    } else {
+      mission.accepted = true;
+    }
     if (p.lvl < region.unlocks) return msg('Nível ' + region.unlocks + ' necessário para explorar esta masmorra.');
     const nextFloor = C(Number(dungeonProgress[region.id]) || 1, 1, DUNGEON_FLOORS);
     if (nextFloor > 5 && !dungeonProgress[region.id + ':soloWarned']) {
@@ -905,13 +910,15 @@ const c = document.querySelector('#game');
     route = [];
     enemy = object = null;
     populateDungeonFloor(nextFloor);
+    dungeonTrackerUI.init(() => leaveDungeon());
+    dungeonTrackerUI.show();
     updateRegionUI();
-    showTab(4);
     msg(region.dungeonName + ' · Andar ' + nextFloor + ' de ' + DUNGEON_FLOORS);
   }
 
   function leaveDungeon() {
     if (!dungeonMode || !dungeonReturn) return;
+    dungeonTrackerUI.hide();
     dungeonMode = false;
     dungeonSession = null;
     p.x = dungeonReturn.x;
@@ -924,7 +931,6 @@ const c = document.querySelector('#game');
     populateRegion();
     updateRegionUI();
     save();
-    showTab(4);
     msg('Você deixou a masmorra e voltou para ' + region.name + '.');
   }
 
@@ -958,7 +964,6 @@ const c = document.querySelector('#game');
     p.y = region.row * ZONE_H + 230;
     syncPetToPlayer();
     populateDungeonFloor(nextFloor);
-    showTab(4);
     msg('Masmorra · Andar ' + nextFloor + ' de ' + DUNGEON_FLOORS + ' · Nv. recomendado ' + dungeonFloorLevel(nextFloor));
     if (nextFloor > 5 && !dungeonProgress[region.id + ':soloWarned']) {
       msg('[Aviso Solo] Andares 6–10 trazem desafio avançado. Cuidado redobrado com os chefes!');
@@ -1508,6 +1513,27 @@ const c = document.querySelector('#game');
     if (a) a.dataset.region = region.id;
     const m = document.querySelector('.map');
     if (m) m.title = dungeonMode ? region.dungeonName + ' · andar ' + (dungeonSession?.floor || 1) : region.name + ' · níveis ' + region.min + '–' + region.max;
+
+    if (dungeonMode && dungeonSession) {
+      const aliveMobs = mobs.filter(f => f.alive && !isNaN(f.hp) && f.hp > 0);
+      const isBossFloor = dungeonSession.floor % 5 === 0;
+      const bossAlive = aliveMobs.some(f => f.boss);
+      const chestsOpen = chests.filter(c => c.open).length;
+      dungeonTrackerUI.update({
+        dungeonName: region.dungeonName,
+        floor: dungeonSession.floor,
+        totalFloors: DUNGEON_FLOORS,
+        mobsAlive: aliveMobs.length,
+        mobsTotal: mobs.length,
+        chestsOpen,
+        chestsTotal: chests.length,
+        isCleared: dungeonSession.cleared || aliveMobs.length === 0,
+        isBossFloor,
+        bossAlive
+      });
+    } else {
+      dungeonTrackerUI.hide();
+    }
   }
   updateRegionUI();
 
@@ -1815,7 +1841,29 @@ const c = document.querySelector('#game');
       }
       if (dungeonMode) {
         rollDungeonLoot(m.x, m.y, !!m.boss);
-        if (m.boss && dungeonSession.floor % 5 === 0) dungeonSession.bossDefeated = true;
+        if (m.boss && dungeonSession.floor % 5 === 0) {
+          dungeonSession.bossDefeated = true;
+          const ox = region.col * ZONE_W;
+          const oy = region.row * ZONE_H;
+          const cx = ox + 960;
+          const cy = oy + 760;
+          if (!chests.some(c => c.bossChest && Math.hypot(c.x - cx, c.y - cy) < 60)) {
+            chests.push({
+              x: cx,
+              y: cy,
+              open: false,
+              dungeon: true,
+              bossChest: true,
+              floor: dungeonSession.floor,
+              type: 'chest_cursed_spiked',
+              name: 'Grande Baú do Chefe da Masmorra'
+            });
+            addFloatingText(cx, cy - 35, '✨ GRANDE BAÚ DO CHEFE SURGIU! ✨', '#ffd700', 20);
+            sparks(cx, cy, '#ffd700', 60);
+            if (audio?.playLevelUp) audio.playLevelUp();
+            msg('👑 O Chefe sucumbiu! O Grande Baú do Chefe surgiu no centro da arena!');
+          }
+        }
         dungeonSession.cleared = mobs.every((foe) => !foe.alive);
         if (dungeonSession.cleared && dungeonSession.floor === 5 && dungeonSession.bossDefeated) currentDungeonMission().boss = true;
       }
@@ -2717,6 +2765,34 @@ const c = document.querySelector('#game');
     }
     return '';
   };
+  window._wmEnterDungeon = (dungeonId) => {
+    if (dungeonMode) {
+      msg('Você já está explorando uma masmorra.');
+      return;
+    }
+    const dgMap = {
+      d1: { regionId: 1, minLvl: 10, name: 'Caverna do Iniciado / Catacumbas' },
+      d2: { regionId: 2, minLvl: 21, name: 'Cripta das Sombras' },
+      d3: { regionId: 3, minLvl: 41, name: 'Fortaleza das Brumas' },
+      d4: { regionId: 4, minLvl: 61, name: 'Torre dos Condenados' },
+      d5: { regionId: 5, minLvl: 101, name: 'Abismo Espectral' }
+    };
+    const target = dgMap[dungeonId] || dgMap.d1;
+    if (p.lvl < target.minLvl) {
+      msg(`Nível ${target.minLvl} necessário para entrar em ${target.name}.`);
+      if (audio?.playHit) audio.playHit();
+      return;
+    }
+    if (region.id !== target.regionId) {
+      travelRegion(target.regionId);
+      setTimeout(() => {
+        enterDungeon(true);
+      }, 150);
+    } else {
+      enterDungeon(true);
+    }
+  };
+
   window._wmNavigateTo = (mapId) => {
     if (!window.WorldMap) return;
     const map = window.WorldMap.WORLD_MAPS.find(m => m.id === mapId);
@@ -2880,6 +2956,13 @@ const c = document.querySelector('#game');
         nearCastleNpc.open();
         return;
       }
+      // Portal das Masmorras (Ala Norte do Castelo)
+      if (D(p, { x: 2860, y: 3320 }) < 110) {
+        if (window.WorldMap?.openTab) window.WorldMap.openTab('dungeons');
+        else if (window.WorldMap?.toggle) window.WorldMap.toggle(p.lvl || 1);
+        msg('🔮 Portal das Masmorras ativado! Escolha seu destino.');
+        return;
+      }
       if (D(p, { x: 2860, y: 4160 }) < 95) {
         return travelRegion(1);
       }
@@ -2912,16 +2995,73 @@ const c = document.querySelector('#game');
     if (z.dungeon) {
       z.open = true;
       audio.playChest();
-      const gold = 70 + region.id * 35 + dungeonSession.floor * 12;
-      const crystals = 2 + Math.floor(dungeonSession.floor / 3);
-      p.gold += gold;
-      p.crystal += crystals;
-      loot++;
-      const mission = currentDungeonMission();
-      if (mission.accepted) mission.chests++;
-      sparks(z.x, z.y, '#c58cff', 30);
-      msg('Baú da masmorra aberto · +' + gold + ' ouro, +' + crystals + ' cristais.');
-      rollDungeonLoot(z.x, z.y, false);
+      if (z.bossChest) {
+        const gold = 350 + region.id * 160 + dungeonSession.floor * 45;
+        const crystals = 12 + region.id * 5;
+        p.gold += gold;
+        p.crystal += crystals;
+        p.emberShards = (p.emberShards || 0) + 1;
+        loot++;
+        const mission = currentDungeonMission();
+        if (mission.accepted) mission.chests++;
+
+        // Drop garantido de Arma/Equipamento Heroico da classe
+        const reg = Math.min(5, region.id || 1);
+        const numStr = (reg === 1) ? ['05', '06', '07']
+                     : (reg === 2) ? ['08', '09', '10']
+                     : (reg === 3) ? ['12', '13', '14']
+                     : (reg === 4) ? ['15', '16', '17']
+                     : ['18', '19', '20'];
+        const pickNum = numStr[Math.floor(Math.random() * numStr.length)];
+        const classWeaponPrefix = {
+          guerreiro: 'sword_hero',
+          arqueiro: 'w_bow_hero',
+          barbaro: 'w_axe_hero',
+          clerigo: 'w_mace_hero',
+          assasino: 'w_dagger_hero',
+          mago: 'w_staff_hero'
+        };
+        const pPrefix = classWeaponPrefix[p.classId] || 'sword_hero';
+        let dropItemId;
+        if (pPrefix === 'sword_hero') {
+          const swordMap = {
+            '05': 'w_bastarda_forjada', '06': 'w_longa_aco', '07': 'w_florete_duelo',
+            '08': 'w_lamina_esmeralda_pantano', '09': 'w_flamberge_cruzado', '10': 'w_lamina_bronze_antigo',
+            '12': 'w_espada_safira_azul', '13': 'w_lamina_prata_vigilia', '14': 'w_cimitarra_deserto',
+            '15': 'w_espada_meia_noite', '16': 'w_lamina_sol_radiante', '17': 'w_espada_obsidiana_abismo',
+            '18': 'w_espada_ametista_espectral', '19': 'w_sagrada_aurora_eterna', '20': 'w_reliquia_cinco_selos'
+          };
+          dropItemId = swordMap[pickNum] || 'w_longa_aco';
+        } else {
+          dropItemId = `${pPrefix}_${pickNum}`;
+        }
+
+        if (window.GameItems?.addItem && dropItemId) {
+          window.GameItems.addItem(dropItemId);
+          const base = window.GameItems.ITEM_DATABASE[dropItemId];
+          if (base) {
+            msg(`👑 RECOMPENSA DO CHEFE: ${base.icon || '⚔️'} ${base.name} [${(base.rarity || 'épico').toUpperCase()}]!`);
+          }
+        }
+
+        sparks(z.x, z.y, '#ffd700', 80);
+        sparks(z.x, z.y, '#c084fc', 40);
+        if (audio?.playLevelUp) audio.playLevelUp();
+        addFloatingText(z.x, z.y - 45, '👑 BAÚ DO CHEFE CONQUISTADO! 👑', '#ffd700', 22);
+        addFloatingText(z.x, z.y - 18, `+${gold} Ouro · +${crystals} Cristais · +1 Brasa`, '#fef08a', 15);
+        msg(`Grande Baú do Chefe aberto · +${gold} ouro, +${crystals} cristais e +1 Fragmento de Brasa.`);
+      } else {
+        const gold = 70 + region.id * 35 + dungeonSession.floor * 12;
+        const crystals = 2 + Math.floor(dungeonSession.floor / 3);
+        p.gold += gold;
+        p.crystal += crystals;
+        loot++;
+        const mission = currentDungeonMission();
+        if (mission.accepted) mission.chests++;
+        sparks(z.x, z.y, '#c58cff', 30);
+        msg('Baú da masmorra aberto · +' + gold + ' ouro, +' + crystals + ' cristais.');
+        rollDungeonLoot(z.x, z.y, false);
+      }
       if (window.MiningDungeons) {
         const dgId = 'mv' + Math.min(6, Math.max(1, Math.ceil(p.lvl / 50)));
         const ch = window.MiningDungeons.rollChest(dgId);
@@ -3540,9 +3680,11 @@ const c = document.querySelector('#game');
     const nearGuide = !!guide && D(p, guide) < 82;
     const nearExit = dungeonMode && dungeonSession && D(p, dungeonSession.exit) < 82;
     const nearStairs = dungeonMode && dungeonSession && D(p, dungeonSession.stairs) < 92;
-    const showHint = nearDrop || nearNpc || nearGuide || nearExit || nearStairs;
+    const nearCastlePortal = !dungeonMode && region.id === 0 && D(p, { x: 2860, y: 3320 }) < 110;
+    const showHint = nearDrop || nearNpc || nearGuide || nearExit || nearStairs || nearCastlePortal;
     $('#hint').classList.toggle('show', showHint);
     if (nearDrop) $('#hint').textContent = 'E · RECOLHER ITEM';
+    else if (nearCastlePortal) $('#hint').textContent = 'E · PORTAL DAS MASMORRAS';
     else if (nearGuide) $('#hint').textContent = regionNpcRewards[guide.id] ? 'E · CONVERSAR COM ' + guide.name.toUpperCase() : 'E · RECEBER AJUDA DE ' + guide.name.toUpperCase();
     else if (nearNpc) $('#hint').textContent = 'E · FALAR COM ' + region.npcName.toUpperCase();
     else if (nearExit) $('#hint').textContent = 'E · SAIR DA MASMORRA';
