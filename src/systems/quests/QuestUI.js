@@ -348,6 +348,60 @@ export class QuestUI {
         border: 1px solid rgba(255, 255, 255, 0.15);
       }
       .npc-btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+
+      /* ─── BANNER DE MISSÃO CONCLUÍDA ─── */
+      .quest-completion-banner {
+        position: fixed;
+        top: 55px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.9);
+        min-width: 380px;
+        max-width: 90vw;
+        background: linear-gradient(90deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.96) 15%, rgba(15, 23, 42, 0.96) 85%, rgba(15, 23, 42, 0) 100%);
+        border-top: 1px solid rgba(245, 158, 11, 0.7);
+        border-bottom: 1px solid rgba(245, 158, 11, 0.7);
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+        padding: 12px 28px;
+        text-align: center;
+        z-index: 150;
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: 'Outfit', sans-serif;
+      }
+      .quest-completion-banner.active {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+      .qcb-badge {
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        color: #f59e0b;
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
+        text-transform: uppercase;
+      }
+      .qcb-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 4px 0 6px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      }
+      .qcb-rewards {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #fef08a;
+      }
+      .qcb-reward-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
     `;
 
     document.head.appendChild(style);
@@ -610,6 +664,37 @@ export class QuestUI {
   closeNpcDialog() {
     if (!this.dialogBox) return;
     this.dialogBox.classList.remove('open');
+  }
+
+  showCompletionBanner(title, rewards = {}) {
+    let banner = document.querySelector('#questCompletionBanner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'questCompletionBanner';
+      banner.className = 'quest-completion-banner';
+      document.body.appendChild(banner);
+    }
+
+    const rewardParts = [];
+    if (rewards.xp) rewardParts.push(`<span class="qcb-reward-item">✨ +${rewards.xp} XP</span>`);
+    if (rewards.gold) rewardParts.push(`<span class="qcb-reward-item">🪙 +${rewards.gold} Ouro</span>`);
+    if (rewards.crystals) rewardParts.push(`<span class="qcb-reward-item">💎 +${rewards.crystals} Cristais</span>`);
+    if (rewards.emberShards) rewardParts.push(`<span class="qcb-reward-item">🔥 +${rewards.emberShards} Brasa</span>`);
+    if (rewards.potions) rewardParts.push(`<span class="qcb-reward-item">🧪 +${rewards.potions} Poções</span>`);
+
+    banner.innerHTML = `
+      <div class="qcb-badge">⚔ Missão Concluída ⚔</div>
+      <div class="qcb-title">${title}</div>
+      <div class="qcb-rewards">${rewardParts.join(' ')}</div>
+    `;
+
+    void banner.offsetWidth;
+    banner.classList.add('active');
+
+    clearTimeout(this._bannerTimeout);
+    this._bannerTimeout = setTimeout(() => {
+      banner.classList.remove('active');
+    }, 3800);
   }
 }
 

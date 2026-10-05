@@ -786,6 +786,7 @@ const c = document.querySelector('#game');
             audio.playLevelUp?.();
             sparks(guide.x, guide.y - 20, '#f59e0b', 30);
             addFloatingText(p.x, p.y - 45, `MISSÃO CONCLUÍDA! +${rewards.xp} XP`, '#f59e0b', 16);
+            questUI.showCompletionBanner?.(readyQuest.title, rewards);
             renderUI({ p, kills, ore, loot, quest: currentQuest() });
             save();
           }
@@ -893,6 +894,7 @@ const c = document.querySelector('#game');
             audio.playLevelUp?.();
             sparks(npcPos.x, npcPos.y - 20, '#f59e0b', 30);
             addFloatingText(p.x, p.y - 45, `MISSÃO CONCLUÍDA! +${rewards.xp} XP`, '#f59e0b', 16);
+            questUI.showCompletionBanner?.(readyQuest.title, rewards);
             renderUI({ p, kills, ore, loot, quest: currentQuest() });
             save();
           }
