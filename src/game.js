@@ -233,7 +233,12 @@ const c = document.querySelector('#game');
     2: { id: 'fisher_tomas', name: 'Tomas, Barqueiro', title: 'Remédios das águas mortas', sprite: 'marsh_ferryman', color: '#67d9d2', x: 700, y: 820, reward: 'cura e 1 poção', kind: 'heal' },
     3: { id: 'miner_vedra', name: 'Vedra, Mineradora', title: 'Achado da pedreira', sprite: 'forge_ignis', color: '#f2a06d', x: 730, y: 830, reward: 'ouro e cristais', kind: 'ore' },
     4: { id: 'scribe_lyra', name: 'Lyra, Copista', title: 'Fragmento de arquivo', sprite: 'lore_ether', color: '#c99af0', x: 690, y: 830, reward: 'cristais e experiência', kind: 'lore' },
-    5: { id: 'scout_sera', name: 'Sera, Batedora', title: 'Último suprimento', sprite: 'sentinel_lyanna', color: '#f2c96d', x: 700, y: 830, reward: 'fragmento de brasa', kind: 'ember' }
+    5: { id: 'scout_sera', name: 'Sera, Batedora', title: 'Último suprimento', sprite: 'sentinel_lyanna', color: '#f2c96d', x: 700, y: 830, reward: 'fragmento de brasa', kind: 'ember' },
+    6: { id: 'alchemist_kael', name: 'Kael, Alquimista', title: 'Destilados das Cinzas', sprite: 'lore_ether', color: '#a78bfa', x: 710, y: 810, reward: 'cristais e experiência', kind: 'lore' },
+    7: { id: 'smith_bram', name: 'Bram, Armeiro', title: 'Lâminas Reforçadas', sprite: 'forge_ignis', color: '#fb923c', x: 720, y: 820, reward: 'ouro e minério', kind: 'ore' },
+    8: { id: 'hunter_dane', name: 'Dane, Rastreador', title: 'Suprimentos da Caçada', sprite: 'marsh_ferryman', color: '#4ade80', x: 700, y: 800, reward: '2 poções de caça', kind: 'potions' },
+    9: { id: 'mystic_selene', name: 'Selene, Mística', title: 'Bênção Noturna', sprite: 'shop_maeve', color: '#38bdf8', x: 710, y: 820, reward: 'cura e 1 poção', kind: 'heal' },
+    10: { id: 'sentinel_varon', name: 'Varon, Vigia do Abismo', title: 'Última Trincheira', sprite: 'sentinel_lyanna', color: '#fbbf24', x: 730, y: 810, reward: 'fragmento de brasa', kind: 'ember' }
   };
 
   function regionAreas(regionData) {
@@ -847,6 +852,82 @@ const c = document.querySelector('#game');
       title: guide.title,
       speech: speech,
       icon: '🌿',
+      actions: actions
+    });
+
+    return true;
+  }
+
+  function speakWithDungeonNpc() {
+    const npcPos = dungeonNpcPosition();
+    const npcQuotes = {
+      1: 'As catacumbas guardam a Raiz-Mãe. Cuidado quando o Guardião fizer o solo se abrir em espinhos!',
+      2: 'As águas mortas corroem tudo. Jamais permaneça sobre as poças ácidas da Serpente!',
+      3: 'O magma da fornalha é implacável! Desvie do terremoto do Colosso antes do impacto!',
+      4: 'O Arquivista ergue barreiras com seus tomos. Espere o escudo rúnico cair para contra-atacar!',
+      5: 'Vharok convoca o fim dos tempos. Desvie da chuva do eclipse e liberte Miraluz!'
+    };
+    const defaultQuote = npcQuotes[region.id] || 'Contratos e expedições de masmorra aguardam sua lâmina.';
+
+    const activeList = questManager.getActiveQuestsList();
+    const readyQuest = activeList.find(q => (q.giverId === 'npc_maerin' || q.giver === region.npcName || q.regionId === region.id) && q.isReady);
+    const ongoingQuest = activeList.find(q => (q.giverId === 'npc_maerin' || q.giver === region.npcName || q.regionId === region.id) && !q.isReady);
+    const available = questManager.getAvailableQuestsForRegion(region.id, p.lvl).filter(q => q.giverId === 'npc_maerin' || q.giver === region.npcName || q.giverId?.startsWith('npc_'));
+
+    const actions = [];
+    let speech = defaultQuote;
+
+    if (readyQuest) {
+      speech = readyQuest.dialogComplete || `Excelente trabalho! Sabia que podia confiar em sua lâmina.`;
+      actions.push({
+        label: `📜 Entregar Missão: ${readyQuest.title}`,
+        primary: true,
+        onClick: () => {
+          const rewards = questManager.turnInQuest(readyQuest.id);
+          if (rewards) {
+            if (rewards.xp) xp(rewards.xp);
+            if (rewards.gold) p.gold += rewards.gold;
+            if (rewards.crystals) p.crystal += rewards.crystals;
+            if (rewards.emberShards) p.emberShards += rewards.emberShards;
+            if (rewards.potions) p.potions = Math.min(MAX_POTIONS, p.potions + rewards.potions);
+            audio.playLevelUp?.();
+            sparks(npcPos.x, npcPos.y - 20, '#f59e0b', 30);
+            addFloatingText(p.x, p.y - 45, `MISSÃO CONCLUÍDA! +${rewards.xp} XP`, '#f59e0b', 16);
+            renderUI({ p, kills, ore, loot, quest: currentQuest() });
+            save();
+          }
+        }
+      });
+    } else if (available.length > 0) {
+      const q = available[0];
+      speech = q.dialogIntro || `Preciso de sua ajuda urgente em uma tarefa crucial para nosso acampamento.`;
+      actions.push({
+        label: `📜 Aceitar Missão: ${q.title}`,
+        primary: true,
+        onClick: () => {
+          questManager.acceptQuest(q.id);
+          addFloatingText(p.x, p.y - 40, `MISSÃO ACEITA: ${q.title}`, '#38bdf8', 15);
+          audio.playSave?.();
+        }
+      });
+    } else if (ongoingQuest) {
+      speech = ongoingQuest.dialogProgress || defaultQuote;
+    }
+
+    actions.push({
+      label: `⚔️ Expedição & Contratos de Masmorra`,
+      primary: !readyQuest && available.length === 0,
+      onClick: () => {
+        showTab(4);
+        msg((region.npcName || 'Guardião') + ' · contratos e expedições de masmorra.');
+      }
+    });
+
+    questUI.openNpcDialog({
+      name: region.npcName || 'Guardião Regional',
+      title: 'Guardião das Catacumbas & Contratos',
+      speech: speech,
+      icon: '🛡️',
       actions: actions
     });
 
@@ -2387,8 +2468,7 @@ const c = document.querySelector('#game');
       const npc = dungeonNpcPosition();
       if (D(q, npc) < 64) {
         if (D(p, npc) < 82) {
-          showTab(4);
-          msg(region.npcName + ' · contratos e expedições de masmorra.');
+          speakWithDungeonNpc();
         } else {
           enemy = object = null;
           setDestination(npc);
@@ -3069,16 +3149,7 @@ const c = document.querySelector('#game');
     const guide = !dungeonMode ? regionalGuidePosition() : null;
     if (guide && D(p, guide) < 86) return speakWithRegionalGuide(guide);
     if (!dungeonMode && D(p, dungeonNpcPosition()) < 82) {
-      showTab(4);
-      const npcQuotes = {
-        1: 'Vigia Maerin: "As catacumbas guardam a Raiz-Mãe. Cuidado quando o Guardião fizer o solo se abrir em espinhos!"',
-        2: 'Barqueira Ysold: "As águas mortas corroem tudo. Jamais permaneça sobre as poças ácidas da Serpente!"',
-        3: 'Mineradora Brann: "O magma da fornalha é implacável! Desvie do terremoto do Colosso antes do impacto!"',
-        4: 'Escriba Odran: "O Arquivista ergue barreiras com seus tomos. Espere o escudo rúnico cair para contra-atacar!"',
-        5: 'Última Oráculo Naeva: "Vharok convoca o fim dos tempos. Desvie da chuva do eclipse e liberte Miraluz!"'
-      };
-      msg(npcQuotes[region.id] || (region.npcName + ' · contratos e expedições de masmorra.'));
-      return;
+      return speakWithDungeonNpc();
     }
     let d = drops.find((z) => D(z, p) < 64);
     if (!d) return msg('Aproxime-se de um item para coletar.');

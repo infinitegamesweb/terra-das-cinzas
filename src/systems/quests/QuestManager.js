@@ -98,6 +98,130 @@ export const QUEST_DATABASE = [
       emberShards: 1
     }
   },
+  {
+    id: 'q_swamp_serpent',
+    title: 'A Serpente do Lodo',
+    category: 'principal',
+    regionId: 2,
+    giver: 'Barqueira Ysold',
+    giverId: 'npc_ysold',
+    minLevel: 18,
+    summary: 'A lendária Serpente do Lodo emergiu do fundo dos canais venenosos. Derrote o terror aquático para restabelecer a segurança dos canais.',
+    dialogIntro: 'O pântano ferve com o veneno da Serpente. Nenhuma balsa atravessará enquanto aquele monstro rastejar pelas águas. Vá até as profundezas e crave seu aço em seu crânio!',
+    dialogProgress: 'Siga os rastros de lodo borbulhante até o ninho da fera.',
+    dialogComplete: 'A carcaça da Serpente afunda no lodo! As águas finalmente encontram um momento de paz.',
+    objectives: [
+      { id: 'kill_swamp_boss', label: 'Derrote a Serpente das Águas Mortas', type: 'kill', current: 0, required: 1 },
+      { id: 'open_sunken_chests', label: 'Abra 2 baús naufragados', type: 'chest', current: 0, required: 2 }
+    ],
+    rewards: {
+      xp: 720,
+      gold: 420,
+      crystals: 18,
+      emberShards: 2,
+      gearTier: 'epico'
+    }
+  },
+
+  // ─── REGIÃO 03: CUME DA FORNALHA ───
+  {
+    id: 'q_forge_embers',
+    title: 'Chamas da Forja Ancestral',
+    category: 'principal',
+    regionId: 3,
+    giver: 'Vedra, Mineradora',
+    giverId: 'miner_vedra',
+    minLevel: 25,
+    summary: 'As forjas vulcânicas foram infestadas por golens de magma e elementais de escória. Ajude Vedra a coletar minério incandescente e conter os monstros de fogo.',
+    dialogIntro: 'O calor aqui derrete até armaduras comuns, errante! Os elementais de magma tomaram as caldeiras e precisamos de minérios incandescentes para alimentar a forja.',
+    dialogProgress: 'Cuidado com os rios de lava e os estilhaços de rocha quente.',
+    dialogComplete: 'Com esse minério podemos forjar armas capazes de cortar até obsidiana pura! Tome sua recompensa bem merecida.',
+    objectives: [
+      { id: 'kill_magma_foes', label: 'Elimine 8 golens ou elementais de magma', type: 'kill', current: 0, required: 8 },
+      { id: 'mine_magma_ore', label: 'Extraia 4 veios de minério incandescente', type: 'mine', current: 0, required: 4 }
+    ],
+    rewards: {
+      xp: 950,
+      gold: 550,
+      crystals: 22,
+      emberShards: 2,
+      potions: 4
+    }
+  },
+  {
+    id: 'q_forge_colossus',
+    title: 'O Colosso da Fornalha',
+    category: 'principal',
+    regionId: 3,
+    giver: 'Mineradora Brann',
+    giverId: 'npc_brann',
+    minLevel: 30,
+    summary: 'No coração das masmorras da fornalha habita o Titã de Escória. Derrube-o para recuperar o controle das fundições.',
+    dialogIntro: 'O Colosso desperta a cada século para incinerar tudo ao redor. Desça às profundezas da masmorra e esfrie seu núcleo com sua lâmina!',
+    dialogProgress: 'Desvie do terremoto do Colosso antes do impacto!',
+    dialogComplete: 'O Colosso ruiu como cinza fria! As forjas cantarão seu nome pelos séculos que virão.',
+    objectives: [
+      { id: 'clear_forge_dungeon', label: 'Conquiste a Masmorra da Fornalha e derrote o Chefe', type: 'dungeon_boss', current: 0, required: 1 }
+    ],
+    rewards: {
+      xp: 1400,
+      gold: 800,
+      crystals: 30,
+      emberShards: 3,
+      gearTier: 'lendario'
+    }
+  },
+
+  // ─── REGIÃO 04: ARQUIVOS ESQUECIDOS ───
+  {
+    id: 'q_archives_scrolls',
+    title: 'Os Tomos Esquecidos de Lyra',
+    category: 'secundaria',
+    regionId: 4,
+    giver: 'Lyra, Copista',
+    giverId: 'scribe_lyra',
+    minLevel: 38,
+    summary: 'Os antigos salões de estudos foram corrompidos por aparições espectrais. Resgate os pergaminhos perdidos nos baús do santuário.',
+    dialogIntro: 'Milênios de conhecimento arcano correm risco de queimar nas chamas do esquecimento. Expulse as aparições e recupere os pergaminhos preservados nos baús!',
+    dialogProgress: 'Os espectros alimentam-se da sabedoria contida nas páginas antigas.',
+    dialogComplete: 'Incrível! Esses pergaminhos revelam a origem do Grande Eclipse das Cinzas. Você fez um serviço inestimável à história.',
+    objectives: [
+      { id: 'kill_specters', label: 'Derrote 8 aparições dos arquivos', type: 'kill', current: 0, required: 8 },
+      { id: 'open_archive_chests', label: 'Recupere 3 baús contendo tomos antigos', type: 'chest', current: 0, required: 3 }
+    ],
+    rewards: {
+      xp: 1650,
+      gold: 920,
+      crystals: 35,
+      emberShards: 3
+    }
+  },
+
+  // ─── REGIÃO 05: CUME DO ECLIPSE ───
+  {
+    id: 'q_eclipse_vharok',
+    title: 'A Queda do Eclipse',
+    category: 'principal',
+    regionId: 5,
+    giver: 'Última Oráculo Naeva',
+    giverId: 'npc_naeva',
+    minLevel: 45,
+    summary: 'Vharok, o Arauto do Vazio, comanda as forças que mergulharam o mundo nas sombras. Suba ao Cume e enfrente o senhor do eclipse.',
+    dialogIntro: 'O céu sangra em negro e roxo. Vharok prepara o ritual final para consumir os últimos vestígios de luz. Se você falhar, a Terra das Cinzas perecerá para sempre.',
+    dialogProgress: 'Desvie da chuva astral do eclipse e avance contra o Arauto!',
+    dialogComplete: 'O eclipse vacila! Uma réstia de sol toca a terra pela primeira vez em eras! Você é o verdadeiro Campeão das Cinzas.',
+    objectives: [
+      { id: 'kill_eclipse_harbinger', label: 'Derrote Vharok, o Arauto do Eclipse', type: 'boss', current: 0, required: 1 },
+      { id: 'survive_eclipse_minions', label: 'Elimine 10 servos do vazio', type: 'kill', current: 0, required: 10 }
+    ],
+    rewards: {
+      xp: 2600,
+      gold: 1500,
+      crystals: 50,
+      emberShards: 5,
+      gearTier: 'lendario'
+    }
+  },
 
   // ─── HUB CENTRAL: CASTELO EM CINZAS ───
   {
