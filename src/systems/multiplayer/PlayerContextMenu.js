@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cinzasNet } from './CinzasNet.js';
+import { friendsManager } from './FriendsManager.js';
 
 export class PlayerContextMenu {
   constructor() {
@@ -320,6 +321,9 @@ export class PlayerContextMenu {
       <button type="button" class="cinzas-context-item" data-action="trade">
         <span class="icon">⚖️</span> Negociar / Trocar
       </button>
+      <button type="button" class="cinzas-context-item" data-action="friend">
+        <span class="icon">⭐</span> <span id="cinzasCtxFriendLabel">Favoritar Amigo</span>
+      </button>
       <button type="button" class="cinzas-context-item" data-action="copy">
         <span class="icon">📋</span> Copiar Nome
       </button>
@@ -452,6 +456,12 @@ export class PlayerContextMenu {
       dotNode.style.boxShadow = `0 0 6px ${player.color || '#22c55e'}`;
     }
 
+    const isFriend = friendsManager.isFriend(player.name);
+    const friendLabel = this.menuNode.querySelector('#cinzasCtxFriendLabel');
+    if (friendLabel) {
+      friendLabel.textContent = isFriend ? 'Remover dos Amigos' : 'Adicionar aos Amigos';
+    }
+
     // Calcula coordenadas
     let clientX = 100;
     let clientY = 100;
@@ -494,6 +504,9 @@ export class PlayerContextMenu {
       this.triggerPartyInvite(player);
     } else if (action === 'trade') {
       this.triggerTradeRequest(player);
+    } else if (action === 'friend') {
+      friendsManager.toggleFriend(player.name, player.classId, player.color);
+      window.CinzasPlayerList?.render();
     } else if (action === 'copy') {
       this.copyPlayerName(player.name);
     }

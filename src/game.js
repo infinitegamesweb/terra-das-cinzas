@@ -2359,7 +2359,7 @@ const c = document.querySelector('#game');
       onboardingManager.ensureProfile(true);
       e.preventDefault();
     }
-    if (k === 'tab') {
+    if (k === 'tab' || k === 'o') {
       playerListUI.toggle();
       e.preventDefault();
     }
@@ -5505,6 +5505,7 @@ const c = document.querySelector('#game');
   partyManager.init();
   tradeManager.init();
   document.querySelector('#hudPortraitWrap')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
+  document.querySelector('#socialTop')?.addEventListener('click', () => playerListUI.toggle());
   document.querySelector('#avatarTop')?.addEventListener('click', () => onboardingManager.ensureProfile(true));
 
   cinzasNet.onAction = (action) => {
