@@ -7,9 +7,10 @@ from pathlib import Path
 from PIL import Image
 
 
-ROOT = Path("assets/characters")
+ROOT = Path("public/assets/characters") if Path("public/assets/characters").exists() else Path("assets/characters")
 ORDER = ("south", "south-west", "west", "north-west", "north", "north-east", "east", "south-east")
 WARRIOR_SOURCE = ROOT / "guerreiro/Create_an_original_chibi-Idle/Idle/animations/Walking"
+ROGUE_SOURCE = Path("PROMPTALPHA/char/ladino/Idle/animations/Walking")
 CLASSES = {
     "guerreiro": (ROOT / "guerreiro/Create_an_original_chibi-Idle/Idle", ROOT / "guerreiro"),
     "arqueiro": (ROOT / "arqueiro/Idle", ROOT / "arqueiro"),
@@ -67,14 +68,21 @@ def main() -> None:
         atlas_image = Image.new("RGBA", (SIZE * FRAME_COUNT, SIZE * len(ORDER)), (0, 0, 0, 0))
         directions = {}
         for row, direction in enumerate(ORDER):
-            source_file = (WARRIOR_SOURCE if class_id == "guerreiro" else idle_root / "rotations") / direction
             frames = []
             if class_id == "guerreiro":
-                frames = sorted(source_file.glob("frame_*.png"))
+                source_dir = WARRIOR_SOURCE / direction
+                frames = sorted(source_dir.glob("frame_*.png"))
                 if len(frames) != FRAME_COUNT:
                     raise SystemExit(f"Expected {FRAME_COUNT} warrior walk frames for {direction}; found {len(frames)}")
                 images = [Image.open(path).convert("RGBA") for path in frames]
+            elif class_id == "assasino" and ROGUE_SOURCE.exists():
+                source_dir = ROGUE_SOURCE / direction
+                frames = sorted(source_dir.glob("frame_*.png"))
+                if len(frames) != FRAME_COUNT:
+                    raise SystemExit(f"Expected {FRAME_COUNT} rogue walk frames for {direction}; found {len(frames)}")
+                images = [Image.open(path).convert("RGBA") for path in frames]
             else:
+                source_file = (idle_root / "rotations") / direction
                 idle_path = source_file.with_suffix(".png")
                 base = Image.open(idle_path).convert("RGBA")
                 if base.size != (SIZE, SIZE):
