@@ -10,9 +10,11 @@
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="favicon-64.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/mmorpg-hud.css">
 </head>
 <body>
   <div id="app" class="menu-open">
+    <!-- MENU PRINCIPAL -->
     <section class="main-menu" id="mainMenu" role="dialog" aria-modal="true" aria-label="Menu principal">
       <div class="menu-layout">
         <section class="menu-frame">
@@ -46,134 +48,331 @@
       <div class="menu-hint"><span>ENTER</span> continuar <i>·</i> <span>W A S D</span> mover <i>·</i> clique para interagir</div>
     </section>
 
+    <!-- BARRA SUPERIOR COMPACTA -->
     <header class="top">
-      <div class="brand"><img src="assets/ui/logo.png" alt="Guerra das Cinzas — RPG de Aventura" class="header-game-logo" /></div>
-      <div class="online"><i></i><span>Mundo solo · progresso salvo</span></div>
-      <div class="wallet">
-        <button class="account-top" id="castleTop" type="button" aria-label="Castelo em Cinzas" title="Castelo em Cinzas · Hub Seguro (Tecla C)"><img class="menu-icon" src="assets/ui/logo-icon.png" alt=""><span class="menu-label">CASTELO</span></button>
-        <button class="account-top" id="invTop" type="button" aria-label="Menu de Inventário" title="Menu de Inventário e Equipamentos (Tecla I ou B)"><img class="menu-icon" src="assets/ui/inventory/icon-bag.svg" alt=""><span class="menu-label">INVENTÁRIO</span></button>
-        <button class="account-top" id="forgeTop" type="button" aria-label="Forja das Cinzas" title="A Forja das Cinzas · Aprimorar Armas"><img class="menu-icon" src="assets/icons/forge_anvil.png" alt=""><span class="menu-label">FORJA</span></button>
-        <button class="account-top" id="marketTop" type="button" aria-label="Bazar local do Castelo" title="Bazar local · ofertas demonstrativas salvas neste navegador"><img class="menu-icon" src="assets/icons/market_scales.png" alt=""><span class="menu-label">BAZAR</span></button>
-        <button class="account-top" id="shopTop" type="button" aria-label="Loja de Poções" title="Loja de Poções e Consumíveis"><img class="menu-icon" src="assets/icons/alchemy_potion.png" alt=""><span class="menu-label">LOJA</span></button>
-        <button class="account-top" id="mapTop" type="button" aria-label="Mapa do Mundo" title="Mapa do Mundo (Tecla M)"><img class="menu-icon" src="assets/icons/menu-map.svg" alt=""><span class="menu-label">MAPA</span></button>
-        <button class="account-top" id="questsTop" type="button" aria-label="Diário de Missões" title="Diário de Missões (Tecla J)"><img class="menu-icon" src="assets/icons/lore_book.png" alt=""><span class="menu-label">MISSÕES</span></button>
-        <button class="account-top channels-top" id="channelsTop" type="button" aria-label="Canais multiplayer" title="Canais multiplayer · até 100 jogadores por canal"><img class="menu-icon" src="assets/icons/menu-channels.svg" alt=""><span class="menu-label">CANAIS</span></button>
-        <button class="account-top social-top" id="socialTop" type="button" aria-label="Amigos e jogadores online" title="Amigos e Aventureiros Online (Tecla O ou Tab)"><img class="menu-icon" src="assets/icons/menu-account.svg" alt=""><span class="menu-label">AMIGOS</span></button>
-        <button class="account-top" id="talentsTop" type="button" aria-label="Árvore de Talentos" title="Árvore de Talentos (Tecla T)"><img class="menu-icon" src="assets/icons/menu-talents.svg" alt=""><span class="menu-label">TALENTOS</span></button>
-        <button class="account-top" id="accountTop" type="button" aria-label="Conta e salvamento na nuvem" title="Conta e salvamento na nuvem"><img class="menu-icon" src="assets/icons/menu-account.svg" alt=""><span class="menu-label">CONTA</span></button>
-        <button class="account-top guide-top" id="guideTop" type="button" aria-label="Guia do Aventureiro e Tutorial" title="Guia do Aventureiro (Ajuda e Tutorial - Tecla H)"><img class="menu-icon" src="assets/icons/lore_book.png" alt=""><span class="menu-label">GUIA</span></button>
-        <button class="sound-toggle" id="soundToggle" type="button" title="Alternar som e música">
-          <img class="menu-icon" src="assets/icons/menu-sound.svg" alt=""><span id="soundIcon" class="menu-label">SOM</span>
+      <div class="brand">
+        <img src="assets/ui/logo.png" alt="Guerra das Cinzas" class="header-game-logo" />
+      </div>
+
+      <!-- NAVEGAÇÃO PRINCIPAL EM ABAS MEDIEVAIS -->
+      <nav class="top-nav-tabs">
+        <button class="top-nav-btn active" id="navHero" data-tab="1" type="button" title="Painel do Personagem (Tecla P)">
+          <span class="nav-icon"><img src="assets/ui/inventory/icon-stat-sword.png" width="16" height="16" alt="Personagem" /></span>
+          <span class="nav-label">Personagem</span>
         </button>
-        <span class="currency-badge"><img src="assets/items/gold-coin.svg" alt="Ouro"> <b id="gold">125</b></span>
-        <span class="currency-badge"><img src="assets/items/forest-crystal.svg" alt="Cristal"> <b id="crystal">8</b></span>
-        <div class="avatar" id="avatarTop" role="button" tabindex="0" title="Perfil & Avatar do Aventureiro (Tecla P)" style="cursor: pointer;"><img id="headerAvatarImg" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" width="22" height="22" alt="Personagem" style="image-rendering: pixelated; border-radius: 4px;" /></div>
+        <button class="top-nav-btn" id="navInv" data-tab="2" type="button" title="Inventário & Equipamentos (Tecla I ou B)">
+          <span class="nav-icon"><img src="assets/ui/inventory/icon-bag.svg" width="16" height="16" alt="Inventário" /></span>
+          <span class="nav-label">Inventário</span>
+        </button>
+        <button class="top-nav-btn" id="navWorld" data-tab="world" type="button" title="Mapa do Mundo (Tecla M)">
+          <span class="nav-icon"><img src="assets/icons/menu-map.svg" width="16" height="16" alt="Mundo" /></span>
+          <span class="nav-label">Mundo</span>
+        </button>
+        <button class="top-nav-btn" id="navCraft" data-tab="craft" type="button" title="Forja & Produção de Equipamentos">
+          <span class="nav-icon"><img src="assets/icons/forge_anvil.png" width="16" height="16" alt="Produção" /></span>
+          <span class="nav-label">Produção</span>
+        </button>
+        <button class="top-nav-btn" id="navQuests" data-tab="0" type="button" title="Diário de Missões (Tecla J)">
+          <span class="nav-icon"><img src="assets/icons/quest_scroll.png" width="16" height="16" alt="Missões" /></span>
+          <span class="nav-label">Missões</span>
+        </button>
+      </nav>
+
+      <!-- UTILITÁRIOS E RECURSOS DO JOGADOR -->
+      <div class="top-meta-group">
+        <!-- Funções secundárias agrupadas -->
+        <div class="top-secondary-actions">
+          <button class="top-icon-btn" id="castleTop" type="button" title="Castelo em Cinzas · Hub Seguro (Tecla C)"><img src="assets/ui/logo-icon.png" width="16" height="16" alt="Castelo"></button>
+          <button class="top-icon-btn" id="forgeTop" type="button" title="Forja das Cinzas"><img src="assets/icons/forge_anvil.png" width="16" height="16" alt="Forja"></button>
+          <button class="top-icon-btn" id="marketTop" type="button" title="Bazar Local do Castelo"><img src="assets/icons/market_scales.png" width="16" height="16" alt="Bazar"></button>
+          <button class="top-icon-btn" id="talentsTop" type="button" title="Árvore de Talentos (Tecla T)"><img src="assets/icons/menu-talents.svg" width="16" height="16" alt="Talentos"></button>
+          <button class="top-icon-btn" id="channelsTop" type="button" title="Canais Multiplayer"><img src="assets/icons/menu-channels.svg" width="16" height="16" alt="Canais"></button>
+          <button class="top-icon-btn" id="socialTop" type="button" title="Amigos e Jogadores Online (Tecla O)"><img src="assets/icons/menu-account.svg" width="16" height="16" alt="Amigos"></button>
+          <button class="top-icon-btn" id="guideTop" type="button" title="Guia do Aventureiro (Tecla H)"><img src="assets/icons/lore_book.png" width="16" height="16" alt="Guia"></button>
+          <button class="top-icon-btn" id="accountTop" type="button" title="Conta & Salvar na Nuvem"><img src="assets/icons/menu-account.svg" width="16" height="16" alt="Conta"></button>
+        </div>
+
+        <div class="top-divider"></div>
+
+        <!-- Recursos -->
+        <div class="top-resources">
+          <span class="resource-badge gold-badge" title="Ouro acumulado">
+            <img src="assets/items/gold-coin.svg" width="16" height="16" alt="Ouro">
+            <b id="gold">125</b>
+          </span>
+          <span class="resource-badge crystal-badge" title="Cristais da floresta">
+            <img src="assets/items/forest-crystal.svg" width="16" height="16" alt="Cristal">
+            <b id="crystal">8</b>
+          </span>
+        </div>
+
+        <!-- Configurações e Notificações -->
+        <div class="top-system-btns">
+          <button class="top-icon-btn system-btn" id="soundToggle" type="button" title="Configurações de Som e Áudio">
+            <img src="assets/icons/menu-sound.svg" width="16" height="16" alt="Som">
+          </button>
+          <button class="top-icon-btn system-btn" id="menuOptionsBtn" type="button" title="Opções Gerais">
+            <img src="assets/icons/menu-sound.svg" width="16" height="16" alt="Opções" style="filter: hue-rotate(90deg);">
+          </button>
+          <div class="avatar-header" id="avatarTop" role="button" tabindex="0" title="Perfil & Avatar (Tecla P)">
+            <img id="headerAvatarImg" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" width="24" height="24" alt="Personagem" />
+          </div>
+        </div>
       </div>
     </header>
 
+    <!-- MUNDO DO JOGO COMO ÁREA CENTRAL DOMINANTE (OVERLAY HUD) -->
     <main class="layout">
       <section class="world" id="world">
-        <canvas id="game" aria-label="Bosque das Ruínas, área jogável"></canvas>
-        
-        <!-- HUD Principal -->
-        <div class="hud">
-          <div class="hud-portrait-wrap" id="hudPortraitWrap" role="button" tabindex="0" title="Perfil & Avatar do Aventureiro (Tecla P)" style="pointer-events: auto; cursor: pointer; position: relative;"><img class="hud-portrait" id="hudPortrait" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" alt="Retrato do Aventureiro Errante" /><span class="hud-edit-badge" title="Editar Avatar / Nickname" style="position: absolute; bottom: 0; right: 0; background: rgba(15,12,20,0.85); border: 1px solid rgba(245,158,11,0.5); border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; pointer-events: none;">✏️</span></div>
-          <div class="hud-main">
-            <div class="line">
-              <b id="heroClassName">Guerreiro Errante</b>
-              <span id="level" class="level-badge">Nv. 3</span>
+        <canvas id="game" aria-label="Área jogável de Guerra das Cinzas"></canvas>
+
+        <!-- 1. PAINEL DO PERSONAGEM (Top Left) -->
+        <div class="hud-char-card" id="hudCharCard">
+          <div class="hcc-portrait-wrap" id="hudPortraitWrap" role="button" tabindex="0" title="Perfil do Aventureiro (Tecla P)">
+            <img class="hcc-portrait" id="hudPortrait" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" alt="Retrato do Personagem" />
+          </div>
+          <div class="hcc-info">
+            <div class="hcc-header">
+              <span class="hcc-name" id="heroClassName">Guerreiro Errante</span>
+              <span class="hcc-level" id="level">Nv. 1</span>
             </div>
-            <div class="bar-group">
-              <div class="bar hp" title="Vida">
-                <i id="hp"></i>
-                <div class="bar-shine"></div>
-                <label id="hpt"></label>
+            <div class="hcc-bars">
+              <!-- Barra de HP -->
+              <div class="hcc-bar-row">
+                <span class="hcc-bar-tag hp-tag">HP</span>
+                <div class="hcc-bar-track">
+                  <div class="hcc-bar-fill hp-fill" id="hp"></div>
+                  <span class="hcc-bar-text" id="hpt">168 / 168</span>
+                </div>
               </div>
-              <div class="bar xp" title="Experiência">
-                <i id="xp"></i>
-                <div class="bar-shine"></div>
-                <label id="xpt"></label>
+              <!-- Barra de XP -->
+              <div class="hcc-bar-row">
+                <span class="hcc-bar-tag xp-tag">XP</span>
+                <div class="hcc-bar-track">
+                  <div class="hcc-bar-fill xp-fill" id="xp"></div>
+                  <span class="hcc-bar-text" id="xpt">148 / 250</span>
+                </div>
               </div>
-              <div class="bar en" title="Energia">
-                <i id="energy"></i>
-                <div class="bar-shine"></div>
-                <label id="energyt"></label>
+              <!-- Barra de Energia/Recursos -->
+              <div class="hcc-bar-row">
+                <span class="hcc-bar-tag en-tag">EN</span>
+                <div class="hcc-bar-track">
+                  <div class="hcc-bar-fill en-fill" id="energy"></div>
+                  <span class="hcc-bar-text" id="energyt">100 / 100</span>
+                </div>
               </div>
-            </div>
-            <!-- Buff / Status Ativo -->
-            <div class="hud-status" id="hudStatus" hidden>
-              <span class="buff-icon"><img src="assets/items/ashen-shield.svg" width="16" height="16" alt="Escudo" /></span>
-              <span class="buff-label" id="buffLabel">Escudo de Cinzas</span>
-              <span class="buff-timer" id="buffTimer">5s</span>
             </div>
           </div>
         </div>
 
-        <div class="zone">
-          <span class="zone-tag">REGIÃO 01 · BOSQUE DAS RUÍNAS</span>
-          <b>Ruínas de Miraluz</b>
+        <!-- 2. PAINEL DE MISSÃO EM DESTAQUE (Abaixo do Personagem) -->
+        <div class="hud-quest-card" id="hudQuestCard">
+          <div class="hqc-header">
+            <div class="hqc-badge-wrap">
+              <span class="hqc-icon">✦</span>
+              <span class="hqc-badge">MISSÃO ATIVA</span>
+            </div>
+            <button type="button" class="hqc-link" id="hqcDetailsBtn">Ver Detalhes</button>
+          </div>
+          <div class="hqc-body">
+            <div class="hqc-title" id="hqtQuestName">O Despertar nas Cinzas</div>
+            <div class="hqc-objectives" id="hqtObjectives">
+              <div class="hqc-obj-item">
+                <span class="hqc-obj-label">Derrote 4 Invasores nas ruínas.</span>
+                <span class="hqc-obj-count">4/4</span>
+              </div>
+            </div>
+            <button type="button" class="hqc-action-btn" id="hqtActionBtn">
+              <span class="hqc-action-icon">✨</span>
+              <span class="hqc-action-label">Prontidão! Fale com Vigia Maerin</span>
+            </button>
+          </div>
         </div>
 
-        <div class="map" id="mapContainer" title="Radar da Região">
-          <canvas id="radar" width="105" height="105"></canvas>
-          <small>N</small>
+        <!-- 3. MINIMAPA REDESENHADO (Top Right) -->
+        <div class="hud-minimap-card" id="hudMinimapCard">
+          <div class="minimap-zone-tag" id="zoneTagText">
+            <span class="mzt-num">Região 01</span>
+            <span class="mzt-name">Castelo em Cinzas</span>
+          </div>
+          <div class="minimap-frame-wrap" id="mapContainer" title="Minimapa da Região">
+            <div class="minimap-compass-rose">
+              <span class="compass-pt compass-n">N</span>
+              <span class="compass-pt compass-s">S</span>
+              <span class="compass-pt compass-e">L</span>
+              <span class="compass-pt compass-w">O</span>
+            </div>
+            <canvas id="radar" width="112" height="112"></canvas>
+            <div class="minimap-outer-ring"></div>
+          </div>
         </div>
 
+        <!-- 4. PAINEL LATERAL DE REGIÕES (Right, abaixo do Minimapa) -->
+        <div class="hud-regions-card" id="hudRegionsCard">
+          <div class="hrc-header">
+            <span class="hrc-title">JORNADA ATÉ O NÍVEL 300</span>
+          </div>
+          <div class="hrc-list" id="hrcRegionsList">
+            <!-- Cards de Região Gerados Dinamicamente -->
+            <div class="hrc-region-item current" data-region="0">
+              <div class="hrc-thumb-wrap">
+                <img src="assets/regions/region_00.png" alt="Castelo em Cinzas" class="hrc-thumb">
+                <span class="hrc-num">01</span>
+              </div>
+              <div class="hrc-meta">
+                <div class="hrc-name">Castelo em Cinzas</div>
+                <div class="hrc-level-row">
+                  <span class="hrc-level">Nv. 1 - 300</span>
+                  <span class="hrc-status-badge current-badge">Região Atual</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hrc-region-item" data-region="1">
+              <div class="hrc-thumb-wrap">
+                <img src="assets/regions/region_01.png" alt="Bosques das Ruínas" class="hrc-thumb">
+                <span class="hrc-num">02</span>
+              </div>
+              <div class="hrc-meta">
+                <div class="hrc-name">Bosques das Ruínas</div>
+                <div class="hrc-level-row">
+                  <span class="hrc-level">Nv. 1 - 10</span>
+                  <span class="hrc-lock-icon unlocked" title="Desbloqueado">🔓</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hrc-region-item locked" data-region="2">
+              <div class="hrc-thumb-wrap">
+                <img src="assets/regions/region_03.png" alt="Margem Afogada" class="hrc-thumb">
+                <span class="hrc-num">03</span>
+              </div>
+              <div class="hrc-meta">
+                <div class="hrc-name">Margem Afogada</div>
+                <div class="hrc-level-row">
+                  <span class="hrc-level">Nv. 21 - 30</span>
+                  <span class="hrc-lock-icon locked" title="Bloqueado por Nível">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hrc-region-item locked" data-region="3">
+              <div class="hrc-thumb-wrap">
+                <img src="assets/regions/region_04.png" alt="Pântano Espectral" class="hrc-thumb">
+                <span class="hrc-num">04</span>
+              </div>
+              <div class="hrc-meta">
+                <div class="hrc-name">Pântano Espectral</div>
+                <div class="hrc-level-row">
+                  <span class="hrc-level">Nv. 31 - 40</span>
+                  <span class="hrc-lock-icon locked">🔒</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hrc-region-item locked" data-region="4">
+              <div class="hrc-thumb-wrap">
+                <img src="assets/regions/region_05.png" alt="Trilha do Dragão" class="hrc-thumb">
+                <span class="hrc-num">05</span>
+              </div>
+              <div class="hrc-meta">
+                <div class="hrc-name">Trilha do Dragão</div>
+                <div class="hrc-level-row">
+                  <span class="hrc-level">Nv. 41 - 50</span>
+                  <span class="hrc-lock-icon locked">🔒</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CHAT ORGANIZADO (Bottom Left) -->
+        <div class="hud-chat-card" id="hudChatCard">
+          <div class="chat-tabs-bar">
+            <button class="chat-tab-btn active" data-channel="general" type="button">Geral</button>
+            <button class="chat-tab-btn" data-channel="party" type="button">Grupo</button>
+            <button class="chat-tab-btn" data-channel="system" type="button">Sistema</button>
+          </div>
+          <div class="chat-messages-container" id="chatContainer">
+            <div class="chat-msg system-msg"><span class="msg-channel">[Sistema]</span> Bem-vindo à Guerra das Cinzas. Explore Miraluz.</div>
+            <div class="chat-msg world-msg"><span class="msg-channel">[Mundo]</span> <b class="msg-author">Thor:</b> Alguém para upar na 02?</div>
+            <div class="chat-msg guild-msg"><span class="msg-channel">[Guilda]</span> <b class="msg-author">Luna:</b> bora, to indo!</div>
+          </div>
+          <form class="chat-input-bar" id="chatInputForm">
+            <input type="text" id="chatInput" class="chat-text-input" placeholder="Digite sua mensagem..." autocomplete="off" />
+            <button type="button" class="chat-emoji-btn" title="Comandos e Ações">⚔️</button>
+          </form>
+        </div>
+
+        <!-- 6. HOTBAR INFERIOR COM ATALHOS (Bottom Center) -->
+        <div class="hud-hotbar-card" id="hudHotbarCard">
+          <!-- Botão AUTO Destacado -->
+          <button class="auto-toggle-btn" id="autoToggle" type="button" aria-pressed="false" title="Modo Automático: Atacar inimigos e coletar saques (Tecla Z)">
+            <span class="atb-icon"><img src="assets/ui/inventory/icon-stat-sword.png" width="18" height="18" alt="Auto" /></span>
+            <span class="atb-text">AUTO</span>
+            <span class="atb-state">ON</span>
+          </button>
+
+          <!-- Slots de Habilidades 1..6 -->
+          <div class="hotbar-slots">
+            <button class="action-slot" data-k="1" id="skillBtn1" title="Poção de Cura (Tecla 1)">
+              <span class="slot-key">1</span>
+              <span class="slot-icon" id="skillIcon1"><img src="assets/icons/skills/Icon42.png" alt="Cura" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+            
+            <button class="action-slot" data-k="2" id="skillBtn2" title="Ataque Primário (Tecla 2)">
+              <span class="slot-key">2</span>
+              <span class="slot-icon" id="skillIcon2"><img src="assets/icons/skills/Icon19.png" alt="Ataque" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+            
+            <button class="action-slot" data-k="3" id="skillBtn3" title="Escudo de Cinzas (Tecla 3)">
+              <span class="slot-key">3</span>
+              <span class="slot-icon" id="skillIcon3"><img src="assets/icons/skills/Icon43.png" alt="Escudo" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+            
+            <button class="action-slot" data-k="4" id="skillBtn4" title="Investida Rápida (Tecla 4)">
+              <span class="slot-key">4</span>
+              <span class="slot-icon" id="skillIcon4"><img src="assets/icons/skills/Icon24.png" alt="Investida" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+            
+            <button class="action-slot" data-k="5" id="skillBtn5" title="Habilidade de Área (Tecla Q ou 5)">
+              <span class="slot-key">Q</span>
+              <span class="slot-icon" id="skillIcon5"><img src="assets/icons/skills/Icon25.png" alt="Área" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+            
+            <button class="action-slot ultimate-slot" data-k="6" id="skillBtn6" title="Habilidade Suprema (Tecla R ou 6)">
+              <span class="slot-key">R</span>
+              <span class="slot-icon" id="skillIcon6"><img src="assets/icons/skills/Icon20.png" alt="Suprema" /></span>
+              <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
+            </button>
+          </div>
+
+          <!-- Ações Rápidas à Direita -->
+          <div class="hotbar-aux-btns">
+            <button class="hotbar-aux-btn" id="hudBagBtn" type="button" title="Abrir Inventário (Tecla I ou B)"><img src="assets/ui/inventory/icon-bag.svg" width="16" height="16" alt="Mochila" /></button>
+            <button class="hotbar-aux-btn" id="hudTalentsBtn" type="button" title="Árvore de Talentos (Tecla T)"><img src="assets/icons/menu-talents.svg" width="16" height="16" alt="Talentos" /></button>
+            <button class="hotbar-aux-btn" id="hudMapBtn" type="button" title="Mapa Geral (Tecla M)"><img src="assets/icons/menu-map.svg" width="16" height="16" alt="Mapa" /></button>
+          </div>
+        </div>
+
+        <!-- 7. NOTIFICAÇÕES DISCRETAS (Acima da Hotbar) -->
+        <div class="hud-feed-wrap" id="hudFeedWrap">
+          <div class="feed-item xp-feed"><span class="feed-icon">✦</span> Experiência +120</div>
+          <div class="feed-item gold-feed"><span class="feed-icon">🪙</span> Ouro +45</div>
+        </div>
+
+        <!-- DICA DE INTERAÇÃO NO MUNDO -->
         <div class="hint" id="hint"></div>
-
-        <div class="controls">
-          <span class="control-key">W A S D</span> mover · <span class="control-key">E</span> coletar · <span class="control-key">Z</span> auto · <span class="control-key">I / B</span> inventário · <span class="control-key">Q / R</span> habilidades · <span class="control-key">M</span> mapa · <span class="control-key">T</span> talentos
-        </div>
-
-        <div class="actions">
-          <button class="auto-toggle" id="autoToggle" type="button" aria-pressed="false" title="Atacar inimigos, curar e recolher saques automaticamente (Tecla Z)">
-            <small class="action-key">Z</small>
-            <span class="auto-title">AUTO</span>
-            <small class="auto-state">OFF</small>
-            <div class="auto-pulse"></div>
-          </button>
-          
-          <button class="action" data-k="1" id="skillBtn1" title="Poção de cura (Tecla 1)">
-            <small class="action-key">1</small>
-            <span class="action-icon" id="skillIcon1"><img src="assets/icons/skills/Icon42.png" alt="Cura" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-          
-          <button class="action" data-k="2" id="skillBtn2" title="Ataque de classe (Tecla 2)">
-            <small class="action-key">2</small>
-            <span class="action-icon" id="skillIcon2"><img src="assets/icons/skills/Icon19.png" alt="Ataque" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-          
-          <button class="action" data-k="3" id="skillBtn3" title="Escudo de cinzas (Tecla 3)">
-            <small class="action-key">3</small>
-            <span class="action-icon" id="skillIcon3"><img src="assets/icons/skills/Icon43.png" alt="Escudo" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-          
-          <button class="action" data-k="4" id="skillBtn4" title="Investida rápida (Tecla 4)">
-            <small class="action-key">4</small>
-            <span class="action-icon" id="skillIcon4"><img src="assets/icons/skills/Icon24.png" alt="Investida" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-          
-          <button class="action" data-k="5" id="skillBtn5" title="Habilidade de Área (Tecla Q ou 5)">
-            <small class="action-key">Q</small>
-            <span class="action-icon" id="skillIcon5"><img src="assets/icons/skills/Icon25.png" alt="Área" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-          
-          <button class="action action-ultimate" data-k="6" id="skillBtn6" title="Habilidade Suprema (Tecla R ou 6)">
-            <small class="action-key">R</small>
-            <span class="action-icon" id="skillIcon6"><img src="assets/icons/skills/Icon20.png" alt="Suprema" /></span>
-            <div class="cooldown-overlay"><span class="cooldown-text"></span></div>
-          </button>
-        </div>
-
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
       </section>
 
-      <aside class="side">
+      <!-- PAINEL MODAL / GAVETA LATERAL DE ABAS (EXPANSÍVEL) -->
+      <aside class="side" id="sideDrawer" style="display: none;">
         <nav class="tabs">
           <button class="active" data-tab="0" title="Missões"><img class="tab-icon" src="assets/icons/quest_scroll.png" alt=""><span class="tab-label">Missões</span></button>
           <button data-tab="1" title="Personagem"><img class="tab-icon" src="assets/ui/generated/errant-adventurer-portrait.png" alt=""><span class="tab-label">Personagem</span></button>
@@ -230,6 +429,6 @@
     </main>
   </div>
 
-  <script type="module" src="game.bundle.js?v=2.8"></script>
+  <script type="module" src="game.bundle.js?v=2.9"></script>
 </body>
 </html>

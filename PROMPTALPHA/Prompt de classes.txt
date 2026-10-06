@@ -1,0 +1,39 @@
+Prompt base para criar uma classe
+
+detailed high-quality pixel art RPG character sprite, fantasy class character, chibi proportions, small body with slightly oversized head, full body, standing pose, strong readable silhouette, intricate pixel clusters, carefully placed individual pixels, limited color palette, warm earthy colors, dark brown and deep navy outlines, subtle highlights, rich pixel shading, layered medieval fantasy clothing, leather straps, belts, pouches, metal buckles, worn fabrics, small equipment details, expressive face, detailed hair, fantasy RPG character design, classic JRPG character sprite aesthetic, hand-crafted pixel art, highly detailed at small resolution, no smooth vector shapes, no anti-aliasing, no gradients, no text, isolated on plain white background
+
+Para criar uma classe específica
+
+Basta acrescentar a identidade da classe no começo. Por exemplo:
+
+Guerreiro
+
+fantasy warrior class, heavy worn armor, large shield, longsword, leather straps, metal pauldrons, battle-worn equipment...
+
+Mago
+
+fantasy mage class, long hooded robe, wooden staff, spellbook, magical ornaments, arcane symbols, potion pouches...
+
+Ladino
+
+fantasy rogue class, dark leather armor, hood, dual daggers, throwing knives, utility pouches, belts...
+
+Arqueiro
+
+fantasy ranger class, hooded leather armor, wooden bow, quiver full of arrows, forest-inspired accessories...
+
+Clérigo
+
+fantasy cleric class, ornate robes, holy staff, small shield, religious ornaments, healing artifacts...
+
+Se quiser ficar ainda mais próximo da sua referência
+
+Eu usaria este trecho no prompt:
+
+classic detailed RPG pixel sprite, approximately 32–64 pixel character scale, extremely dense pixel clusters, miniature character with readable facial features, intricate equipment rendered with tiny pixel details, strong dark outline, selective highlights, dithering used sparingly, limited cohesive palette, hand-crafted sprite aesthetic, old-school fantasy RPG character collection, each costume and weapon clearly communicates the character class
+
+
+
+
+
+A highly detailed fantasy RPG character class rendered as a classic hand-crafted pixel art sprite, chibi proportions with a slightly oversized head and compact body, full body standing pose, strong readable silhouette, expressive face, intricate pixel clusters and carefully placed individual pixels, dense miniature details, dark brown pixel outlines, limited warm earthy color palette with bronze, brass, muted reds, greens and blues, subtle pixel shading and highlights, worn medieval fantasy clothing, layered leather armor, belts, buckles, pouches, straps and small equipment, detailed class-specific weapon and accessories, rich costume design, charming old-school JRPG character sprite aesthetic, approximately 32–64 pixel character scale, highly detailed despite small size, isolated on plain white background, no text, no UI, no background, no anti-aliasing, no smooth gradients, no vector shapes, no 3D rendering, no photorealism.

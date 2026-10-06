@@ -443,6 +443,36 @@ export class QuestUI {
         objEl.appendChild(badge);
       }
     }
+
+    // Sync MMORPG HUD Quest Card
+    const hudQuestCard = document.querySelector('#hudQuestCard');
+    const hudQuestTitle = document.querySelector('#hudQuestTitle');
+    const hudQuestObj = document.querySelector('#hudQuestObjective');
+    const hudQuestProgress = document.querySelector('#hudQuestProgress');
+    const hudQuestActionBtn = document.querySelector('#hudQuestActionBtn');
+
+    if (hudQuestCard && activeQuest) {
+      hudQuestCard.style.display = 'block';
+      if (hudQuestTitle) hudQuestTitle.textContent = activeQuest.title;
+      if (activeQuest.objectives && activeQuest.objectives.length > 0) {
+        const firstObj = activeQuest.objectives.find(o => o.current < o.required) || activeQuest.objectives[0];
+        if (hudQuestObj) {
+          hudQuestObj.textContent = activeQuest.isReady 
+            ? `Fale com ${activeQuest.giver}` 
+            : firstObj.label;
+        }
+        if (hudQuestProgress) {
+          hudQuestProgress.textContent = `${firstObj.current}/${firstObj.required}`;
+        }
+      }
+      if (hudQuestActionBtn) {
+        hudQuestActionBtn.textContent = activeQuest.isReady ? `✦ Entregar (${activeQuest.giver})` : `✦ Falar com Vigia`;
+        hudQuestActionBtn.onclick = (e) => {
+          e.stopPropagation();
+          this.openLogModal();
+        };
+      }
+    }
   }
 
   // ─── 2. DIÁRIO DE MISSÕES MODAL (J) ───────────────────────────

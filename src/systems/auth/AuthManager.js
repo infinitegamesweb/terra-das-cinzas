@@ -144,7 +144,8 @@ export class AuthManager {
     const top = document.querySelector('#accountTop');
     if (top) {
       top.classList.toggle('connected', this.status.signedIn);
-      top.querySelector('span').textContent = this.status.signedIn ? 'SALVO' : 'CONTA';
+      const span = top.querySelector('span');
+      if (span) span.textContent = this.status.signedIn ? 'SALVO' : 'CONTA';
       top.title = this.status.signedIn ? `Conectado como ${accountIdentifier} · progresso na nuvem` : 'Conectar conta e salvar na nuvem';
     }
   }

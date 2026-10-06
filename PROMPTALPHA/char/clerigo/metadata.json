@@ -1,0 +1,36 @@
+{
+  "group_id": "d3fd3b0c-5e7f-4b98-a58e-b6ea98bf98f3",
+  "states": [
+    {
+      "character": {
+        "id": "66ce3e48-d415-42f3-81fe-d957cbdf76d9",
+        "name": "Idle",
+        "prompt": "High-quality, highly detailed pixel art male RPG character sprite; fantasy class; chibi proportions (small body, slightly oversized head); full-body standing pose; striking, crisp silhouette; intricate pixel clusters; precisely placed individual pixels; limited color palette; warm earth tones; dark gray and deep burnt-yellow outlines; subtle highlights; rich pixel shading; layered medieval fantasy attire; leather straps, belts, pouches, metal buckles, weathered fabrics, small gear details; expressive face; detailed hair; fantasy RPG character design; classic JRPG sprite aesthetic; hand-crafted pixel art; high level of detail at low resolution; no smooth vector shapes, no anti-aliasing, no gradients, no text; isolated on a plain white background.\n\n\nfantasy cleric class, ornate robes, holy mace, small shield, religious ornaments, healing artifacts...",
+        "size": {
+          "width": 48,
+          "height": 48
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-10-05T03:00:36.906248+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-10-05T03:06:54.904281"
+}

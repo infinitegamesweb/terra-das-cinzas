@@ -28,6 +28,7 @@ import { onboardingManager } from './systems/multiplayer/OnboardingManager.js';
 import { questManager } from './systems/quests/QuestManager.js';
 import { questUI } from './systems/quests/QuestUI.js';
 import { createHeroSprites, faceDirection, drawHero, slashVFXSprites } from './entities/Player.js';
+import { getRegionThumbnail } from './data/regionThumbnails.js';
 
 import './systems/world/WorldManager.js';
 import './systems/world/WorldMapManager.js';
@@ -2697,6 +2698,107 @@ const c = document.querySelector('#game');
       if (window.WorldMap) window.WorldMap.toggle(p.lvl);
     };
   }
+
+  // MMORPG Top Bar Navigation & Shortcuts
+  const navHero = $('#navHero');
+  if (navHero) {
+    navHero.onclick = () => {
+      if (window.TalentTree) window.TalentTree.toggleTT(p.lvl, p.classId);
+    };
+  }
+  const navInv = $('#navInv');
+  if (navInv) {
+    navInv.onclick = () => window.GameItems?.toggleInventoryModal();
+  }
+  const navWorld = $('#navWorld');
+  if (navWorld) {
+    navWorld.onclick = () => {
+      if (window.WorldMap) window.WorldMap.toggle(p.lvl);
+    };
+  }
+  const navCraft = $('#navCraft');
+  if (navCraft) {
+    navCraft.onclick = () => window.GameCastleHub?.openForgeModal();
+  }
+  const navQuests = $('#navQuests');
+  if (navQuests) {
+    navQuests.onclick = () => {
+      if (window.QuestUI?.toggleLogModal) window.QuestUI.toggleLogModal();
+      else if (questUI?.toggleLogModal) questUI.toggleLogModal();
+    };
+  }
+
+  // MMORPG Hotbar Aux & Compass Buttons
+  const hudBagBtn = $('#hudBagBtn');
+  if (hudBagBtn) hudBagBtn.onclick = () => window.GameItems?.toggleInventoryModal();
+  const hudTalentsBtn = $('#hudTalentsBtn');
+  if (hudTalentsBtn) hudTalentsBtn.onclick = () => window.TalentTree?.toggleTT(p.lvl, p.classId);
+  const hudMapBtn = $('#hudMapBtn');
+  if (hudMapBtn) hudMapBtn.onclick = () => window.WorldMap?.toggle(p.lvl);
+  const hudCompass = $('#hudMinimapCompass');
+  if (hudCompass) hudCompass.onclick = () => window.WorldMap?.toggle(p.lvl);
+
+  const hudQuestDetailsBtn = $('#hudQuestDetailsBtn');
+  if (hudQuestDetailsBtn) {
+    hudQuestDetailsBtn.onclick = () => {
+      if (window.QuestUI?.toggleLogModal) window.QuestUI.toggleLogModal();
+      else if (questUI?.toggleLogModal) questUI.toggleLogModal();
+    };
+  }
+
+  // Dynamic MMORPG Region Sidebar & HUD Tracker
+  function updateRegionUI() {
+    // 1. Minimap zone label
+    const zoneNameEl = $('#hrcZoneName');
+    if (zoneNameEl) {
+      zoneNameEl.textContent = `${region.name}${region.min !== undefined ? ' · Nv. ' + region.min + '–' + region.max : ''}`;
+    }
+
+    // 2. Right sidebar regions journey list
+    const regionsListEl = $('#hrcRegionsList');
+    if (regionsListEl) {
+      regionsListEl.innerHTML = REGIONS.map((r) => {
+        const locked = dungeonMode || !isRegionUnlocked(r.id);
+        const isCurrent = region.id === r.id;
+        const thumbUrl = getRegionThumbnail(r.id);
+        const statusText = r.safeZone
+          ? 'HUB SEGURO'
+          : bossDefeats[r.id]
+          ? 'GUARDIÃO DERROTADO'
+          : r.id < 29
+          ? 'CHEFE NV. ' + r.max
+          : 'CHEFE FINAL NV. 300';
+        return `
+          <button class="hrc-region-card ${isCurrent ? 'current' : ''} ${locked ? 'locked' : ''}" data-region="${r.id}" ${locked ? 'disabled' : ''} title="${r.name} (Nv. ${r.min}–${r.max})">
+            <div class="hrc-card-thumb">
+              <img src="${thumbUrl}" alt="${r.name}" loading="lazy" />
+              ${locked ? '<div class="hrc-card-lock-badge">🔒</div>' : ''}
+              ${isCurrent ? '<div class="hrc-card-current-tag">Região Atual</div>' : ''}
+            </div>
+            <div class="hrc-card-info">
+              <div class="hrc-card-header">
+                <span class="hrc-card-num">${String(r.id).padStart(2, '0')}</span>
+                <span class="hrc-card-name">${r.name}</span>
+              </div>
+              <div class="hrc-card-sub">
+                <span class="hrc-card-level">Nv. ${r.min}–${r.max}</span>
+                <span class="hrc-card-status">${statusText}</span>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      regionsListEl.querySelectorAll('.hrc-region-card').forEach((btn) => {
+        btn.onclick = () => {
+          const regId = Number(btn.dataset.region);
+          if (!isNaN(regId)) travelRegion(regId);
+        };
+      });
+    }
+  }
+  updateRegionUI();
+  window._tdcUpdateRegionUI = updateRegionUI;
 
   const side = document.querySelector('.inside');
   const missionBase = side ? side.innerHTML : '';
