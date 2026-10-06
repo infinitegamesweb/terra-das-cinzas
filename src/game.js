@@ -1858,13 +1858,25 @@ const c = document.querySelector('#game');
       });
     }
 
-    if (m.boss && m.hp > 0 && m.hp <= m.max * 0.5 && !m.phase2Triggered) {
-      m.phase2Triggered = true;
-      m.sp = Math.round(m.sp * 1.25);
-      addFloatingText(m.x, m.y - 82, ' FASE 2: FÚRIA! ', '#ff3344', 16);
-      if (audio?.playLevelUp) audio.playLevelUp();
-      sparks(m.x, m.y, '#ff4d4d', 35);
-      msg(m.bossName + ' entrou na FASE 2 (FÚRIA)! Habilidades e velocidade aumentadas!');
+    if (m.boss && m.hp > 0) {
+      if (m.hp <= m.max * 0.6 && !m.phase2Triggered) {
+        m.phase2Triggered = true;
+        m.sp = Math.round(m.sp * 1.15);
+        addFloatingText(m.x, m.y - 82, '⚡ FASE 2: DESPERTAR ARCANO!', '#f59e0b', 16);
+        emitCombatEffect('ring', m.x, m.y, '#f59e0b', { duration: 600, radius: 140 });
+        if (audio?.playLevelUp) audio.playLevelUp();
+        sparks(m.x, m.y, '#f59e0b', 30);
+        msg(`${m.bossName} entrou na FASE 2! Habilidades aceleradas e velocidade aumentada!`);
+      } else if (m.hp <= m.max * 0.25 && !m.phase3Triggered) {
+        m.phase3Triggered = true;
+        m.sp = Math.round(m.sp * 1.2);
+        screenShake = Math.max(screenShake, 8);
+        addFloatingText(m.x, m.y - 88, '🔥 FASE 3: ENRAGE DAS CINZAS!', '#ef4444', 18);
+        emitCombatEffect('ground_explosion', m.x, m.y, '#ef4444', { duration: 800, radius: 180 });
+        if (audio?.playUltimate) audio.playUltimate();
+        sparks(m.x, m.y, '#ef4444', 45);
+        msg(`ALERTA: ${m.bossName} entrou em ENRAGE! Poder primordial desencadeado!`);
+      }
     }
     if (p.classId === 'arqueiro') {
       arrowShots.push({ x1: p.x, y1: p.y - 18, x2: m.x, y2: m.y - 22, life: 0.24, maxLife: 0.24, type: 'arrow' });
@@ -2768,8 +2780,16 @@ const c = document.querySelector('#game');
           : r.id < 29
           ? 'CHEFE NV. ' + r.max
           : 'CHEFE FINAL NV. 300';
+        const diffName = r.id <= 6 ? 'Normal' : r.id <= 13 ? 'Difícil' : r.id <= 19 ? 'Pesadelo' : r.id <= 25 ? 'Brasa' : 'Cinzas';
+        const diffSlug = diffName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const heroLevel = (typeof p !== 'undefined' && (p.lvl || p.level)) || 1;
+        const isDanger = !locked && !isCurrent && !r.safeZone && r.min > heroLevel + 5;
+        const isCompleted = !r.safeZone && Boolean(bossDefeats[r.id]);
+        const stateClass = isCurrent ? 'current' : locked ? 'locked' : isCompleted ? 'completed' : isDanger ? 'danger' : 'available';
+        const bossMarkup = r.bossName && !r.safeZone ? `<span class="hrc-card-boss" title="Chefe da Região: ${r.bossName}">👑 ${r.bossName}</span>` : '';
+
         return `
-          <button class="hrc-region-card ${isCurrent ? 'current' : ''} ${locked ? 'locked' : ''}" data-region="${r.id}" ${locked ? 'disabled' : ''} title="${r.name} (Nv. ${r.min}–${r.max})">
+          <button class="hrc-region-card ${stateClass}" data-region="${r.id}" ${locked ? 'disabled' : ''} title="${r.name} (Nv. ${r.min}–${r.max}) · Modo ${diffName}" role="button" tabindex="0">
             <div class="hrc-card-thumb">
               <img src="${thumbUrl}" alt="${r.name}" loading="lazy" />
               ${locked ? '<div class="hrc-card-lock-badge">🔒</div>' : ''}
@@ -2779,11 +2799,13 @@ const c = document.querySelector('#game');
               <div class="hrc-card-header">
                 <span class="hrc-card-num">${String(r.id).padStart(2, '0')}</span>
                 <span class="hrc-card-name">${r.name}</span>
+                <span class="hrc-card-diff diff-${diffSlug}">${diffName}</span>
               </div>
               <div class="hrc-card-sub">
                 <span class="hrc-card-level">Nv. ${r.min}–${r.max}</span>
                 <span class="hrc-card-status">${statusText}</span>
               </div>
+              ${bossMarkup}
             </div>
           </button>
         `;
@@ -5519,8 +5541,11 @@ const c = document.querySelector('#game');
     g.restore();
   }
 
-  function drawRadar() {
+  let lastRadarDraw = 0;
+  function drawRadar(t = performance.now()) {
     if (!radarCtx || !radarCanvas) return;
+    if (t - lastRadarDraw < 33) return; // Limita radar a 30 FPS estáveis sem impacto visual perceptível
+    lastRadarDraw = t;
     const rw = radarCanvas.width;
     const rh = radarCanvas.height;
     const cx = rw / 2;

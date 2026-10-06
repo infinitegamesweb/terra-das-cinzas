@@ -579,7 +579,8 @@
   padding-right: 2px;
 }
 
-.hrc-region-item {
+.hrc-region-item,
+.hrc-region-card {
   display: flex;
   gap: 8px;
   background: rgba(255, 255, 255, 0.02);
@@ -588,24 +589,35 @@
   padding: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-.hrc-region-item:hover {
+.hrc-region-item:hover,
+.hrc-region-card:not(:disabled):hover {
   background: rgba(245, 158, 11, 0.1);
   border-color: rgba(245, 158, 11, 0.35);
 }
 
-.hrc-region-item.current {
+.hrc-region-item.current,
+.hrc-region-card.current {
   border-color: #eab308;
   background: linear-gradient(90deg, rgba(234, 179, 8, 0.15) 0%, rgba(20, 26, 36, 0.6) 100%);
   box-shadow: 0 0 10px rgba(234, 179, 8, 0.25);
 }
 
-.hrc-region-item.locked {
+.hrc-region-item.locked,
+.hrc-region-card.locked {
   filter: grayscale(80%) brightness(0.65);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.hrc-thumb-wrap {
+.hrc-thumb-wrap,
+.hrc-card-thumb {
   width: 68px;
   height: 38px;
   border-radius: 4px;
@@ -615,17 +627,17 @@
   background: #000;
 }
 
-.hrc-thumb {
+.hrc-thumb,
+.hrc-card-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated;
+  display: block;
 }
 
-.hrc-num {
-  position: absolute;
-  top: 2px;
-  left: 3px;
+.hrc-num,
+.hrc-card-num {
   font-family: var(--hud-font-mono);
   font-size: 9px;
   font-weight: 800;
@@ -633,7 +645,35 @@
   text-shadow: 0 1px 3px #000;
 }
 
-.hrc-meta {
+.hrc-card-lock-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  text-shadow: 0 2px 4px #000;
+  pointer-events: none;
+}
+
+.hrc-card-current-tag {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background: rgba(16, 185, 129, 0.85);
+  color: #fff;
+  font-size: 7.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 2px;
+  padding: 1px 0;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+.hrc-meta,
+.hrc-card-info {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -641,7 +681,14 @@
   justify-content: center;
 }
 
-.hrc-name {
+.hrc-card-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hrc-name,
+.hrc-card-name {
   font-family: var(--hud-font-medieval);
   font-size: 11px;
   font-weight: 700;
@@ -651,7 +698,8 @@
   text-overflow: ellipsis;
 }
 
-.hrc-level-row {
+.hrc-level-row,
+.hrc-card-sub {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -660,18 +708,63 @@
   margin-top: 2px;
 }
 
-.hrc-status-badge {
+.hrc-card-level {
+  font-size: 9.5px;
+  color: #fbbf24;
+}
+
+.hrc-status-badge,
+.hrc-card-status {
   font-family: var(--hud-font-mono);
   font-size: 8px;
   font-weight: 700;
   padding: 1px 4px;
   border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--hud-text-dim);
 }
 
 .current-badge {
   background: rgba(16, 185, 129, 0.25);
   color: #34d399;
   border: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+.hrc-region-card.danger {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.12) 0%, rgba(20, 26, 36, 0.7) 100%);
+}
+
+.hrc-region-card.completed {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.hrc-card-diff {
+  font-family: var(--hud-font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--hud-text-dim);
+  margin-left: auto;
+}
+
+.hrc-card-diff.diff-normal { color: #94a3b8; }
+.hrc-card-diff.diff-dificil { color: #f59e0b; }
+.hrc-card-diff.diff-pesadelo { color: #a855f7; }
+.hrc-card-diff.diff-brasa { color: #ef4444; }
+.hrc-card-diff.diff-cinzas { color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.3); }
+
+.hrc-card-boss {
+  display: block;
+  font-size: 8.5px;
+  color: #fca5a5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
 }
 
 .hrc-lock-icon {

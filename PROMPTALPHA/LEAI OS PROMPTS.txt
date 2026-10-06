@@ -1,0 +1,2184 @@
+🗺️ PLANO MASTER — TERRA DAS CINZAS
+
+Vou dividir o projeto em 12 fases.
+
+FASE 00 — Preparação e proteção
+        ↓
+FASE 01 — Auditoria completa
+        ↓
+FASE 02 — Mapa técnico dos sistemas
+        ↓
+FASE 03 — Correção de bugs estruturais
+        ↓
+FASE 04 — Sistema de regiões
+        ↓
+FASE 05 — Identidade visual
+        ↓
+FASE 06 — Redesign completo da UI
+        ↓
+FASE 07 — Classes / combate / progressão
+        ↓
+FASE 08 — Mundo / bosses / dungeons
+        ↓
+FASE 09 — Inventário / loot / equipamentos
+        ↓
+FASE 10 — Multiplayer
+        ↓
+FASE 11 — Performance / segurança
+        ↓
+FASE 12 — QA / lançamento
+
+Não pule fases.
+
+⚠️ REGRA Nº 1 PARA O ANTIGRAVITY
+
+Antes de qualquer prompt de implementação, coloque este princípio no AGENTS.md.
+
+PROMPT 00 — Modo de trabalho do agente
+
+Cole no Antigravity:
+
+Você está trabalhando no projeto "Terra das Cinzas", um RPG dark fantasy 2D em pixel art.
+
+MODELO:
+Gemini 3.8 Flash.
+
+OBJETIVO:
+Evoluir o projeto existente sem destruir funcionalidades existentes.
+
+REGRAS ABSOLUTAS:
+
+1. NÃO reescreva o projeto inteiro.
+2. NÃO substitua a arquitetura atual sem justificativa técnica.
+3. NÃO migre para React, Vue, Next.js ou outro framework.
+4. Preserve a arquitetura JavaScript/HTML/CSS existente.
+5. Antes de alterar código, leia os arquivos envolvidos.
+6. Nunca presuma que a documentação antiga representa o estado atual.
+7. O código atual é a fonte de verdade.
+8. Faça mudanças pequenas, isoladas e verificáveis.
+9. Nunca altere vários sistemas não relacionados na mesma tarefa.
+10. Depois de cada alteração:
+    - execute o build;
+    - execute os testes disponíveis;
+    - verifique erros de console quando possível;
+    - revise os arquivos modificados.
+11. Nunca remova uma funcionalidade apenas porque ela parece antiga.
+12. Se encontrar código legado, primeiro determine se está sendo utilizado.
+13. Não apagar assets sem provar que não são utilizados.
+14. Não substituir assets existentes sem verificar suas referências.
+15. Não modificar dados de gameplay sem documentar o impacto.
+16. Não alterar balanceamento apenas por preferência estética.
+17. Nunca expor secrets, tokens ou chaves.
+18. Nunca imprimir conteúdo de .env.
+19. Nunca incluir .env em commits.
+20. Não editar dist/ manualmente.
+21. dist/ deve ser produzido pelo build.
+22. Não alterar configurações de produção sem confirmar o impacto.
+23. Evite alterações irreversíveis.
+24. Antes de executar uma alteração grande, crie um plano.
+25. Sempre informe:
+    - arquivos alterados;
+    - motivo;
+    - riscos;
+    - testes executados;
+    - resultado do build.
+
+ESTILO DE IMPLEMENTAÇÃO:
+
+- Preferir soluções simples.
+- Preferir código existente quando adequado.
+- Evitar abstrações desnecessárias.
+- Evitar dependências novas.
+- Evitar duplicação.
+- Manter compatibilidade.
+- Não fazer "refactoring por estética".
+- Refatorar somente quando houver benefício mensurável.
+
+PROCESSO OBRIGATÓRIO:
+
+ANALISAR
+→ PLANEJAR
+→ IMPLEMENTAR
+→ TESTAR
+→ REVISAR
+→ REPORTAR
+
+Se uma tarefa estiver ambígua, primeiro investigue o código existente e proponha a interpretação mais conservadora.
+
+Nunca invente arquivos, APIs ou sistemas que não existem.
+FASE 00 — PROTEGER O PROJETO
+
+Antes de qualquer redesign.
+
+PROMPT 01 — Auditoria de segurança
+Faça uma auditoria de segurança SOMENTE neste momento.
+
+NÃO altere código.
+
+Analise:
+
+1. .env
+2. .gitignore
+3. histórico Git
+4. package.json
+5. scripts de build
+6. Cloudflare
+7. Supabase
+8. multiplayer
+9. APIs externas
+10. source maps
+11. arquivos publicados
+12. possíveis secrets
+13. tokens
+14. chaves privadas
+15. service_role keys
+16. credenciais hardcoded
+17. URLs internas
+18. endpoints administrativos
+
+IMPORTANTE:
+
+Nunca imprima valores de secrets, tokens ou chaves.
+
+Se encontrar uma credencial:
+- informe apenas o nome da variável;
+- informe onde ela foi encontrada;
+- informe se parece privada ou pública;
+- não mostre o valor.
+
+Também verifique se alguma credencial aparece no histórico Git.
+
+ENTREGUE:
+
+SECURITY_AUDIT.md
+
+Com:
+
+# Resumo
+# Critical
+# High
+# Medium
+# Low
+# Histórico Git
+# Produção
+# Recomendações
+
+Não corrija nada ainda.
+
+Ao terminar, execute apenas comandos de leitura/análise.
+PROMPT 02 — Corrigir segurança
+
+Depois de revisar o relatório:
+
+Agora corrija SOMENTE os problemas de segurança classificados como Critical ou High no SECURITY_AUDIT.md.
+
+Regras:
+
+1. Não alterar gameplay.
+2. Não alterar UI.
+3. Não alterar sistemas de combate.
+4. Não alterar assets.
+5. Não fazer refatorações.
+6. Não criar dependências novas sem necessidade.
+
+Faça apenas:
+
+- proteger secrets;
+- corrigir .gitignore;
+- remover exposição de source maps em produção, se necessário;
+- corrigir configurações inseguras;
+- proteger endpoints;
+- corrigir referências indevidas a credenciais.
+
+Se uma credencial tiver sido exposta anteriormente, NÃO tente simplesmente apagar o arquivo.
+Documente que a credencial precisa ser ROTACIONADA.
+
+Depois:
+
+npm run build
+
+Se houver testes:
+
+npm test
+
+Entregue:
+
+SECURITY_FIX_REPORT.md
+FASE 01 — AUDITORIA COMPLETA DO PROJETO
+
+Essa é uma das etapas mais importantes.
+
+PROMPT 03 — Inventário técnico completo
+Faça uma auditoria técnica completa do projeto Terra das Cinzas.
+
+NÃO MODIFIQUE NENHUM ARQUIVO.
+
+Analise todo o repositório.
+
+Mapeie:
+
+1. estrutura de diretórios;
+2. entrypoints;
+3. sistemas;
+4. entidades;
+5. classes;
+6. regiões;
+7. mapas;
+8. dungeons;
+9. bosses;
+10. quests;
+11. inventário;
+12. equipamentos;
+13. loot;
+14. mineração;
+15. crafting;
+16. talentos;
+17. progressão;
+18. autenticação;
+19. saves;
+20. multiplayer;
+21. chat;
+22. party;
+23. trade;
+24. marketplace;
+25. UI;
+26. áudio;
+27. animações;
+28. assets;
+29. build;
+30. deploy.
+
+Para cada sistema informe:
+
+- arquivo principal;
+- arquivos relacionados;
+- dependências;
+- quem chama o sistema;
+- quais dados ele usa;
+- quais sistemas dependem dele;
+- estado atual;
+- riscos;
+- problemas encontrados.
+
+Também identifique:
+
+- arquivos gigantes;
+- arquivos duplicados;
+- código legado;
+- funções muito grandes;
+- dependências circulares;
+- imports não utilizados;
+- código morto;
+- assets sem referência aparente;
+- referências para arquivos inexistentes;
+- IDs inconsistentes;
+- dados duplicados.
+
+NÃO altere nada.
+
+Crie:
+
+docs/audit/PROJECT_AUDIT.md
+
+E também:
+
+docs/audit/SYSTEM_MAP.md
+docs/audit/DEPENDENCY_MAP.md
+docs/audit/TECH_DEBT.md
+docs/audit/ASSET_AUDIT.md
+
+Use dados reais encontrados no código.
+
+Não invente informações.
+FASE 02 — MAPA DEFINITIVO DO JOGO
+
+Aqui vamos criar a "bíblia técnica".
+
+PROMPT 04 — Banco de dados conceitual do mundo
+Analise exclusivamente os dados do mundo do jogo.
+
+Não altere código.
+
+Crie um inventário definitivo das regiões.
+
+Para cada região:
+
+- ID
+- nome
+- nível mínimo
+- nível máximo
+- dificuldade
+- bioma
+- mapa/layout
+- inimigos
+- boss
+- NPCs
+- quests
+- drops
+- mineração
+- dungeon relacionada
+- thumbnail
+- assets utilizados
+- status de desbloqueio
+- requisitos
+
+Identifique inconsistências entre:
+
+- WorldMapManager
+- worldMapLayouts
+- regionThumbnails
+- quests
+- drops
+- assets
+- UI
+
+IMPORTANTE:
+
+Não corrigir ainda.
+
+Crie:
+
+docs/world/WORLD_DATABASE.md
+
+E uma tabela:
+
+REGION | NAME | LEVEL | BIOME | BOSS | THUMBNAIL | MAP | STATUS
+
+Inclua todas as regiões existentes.
+
+Também liste IDs duplicados ou ausentes.
+FASE 03 — CORREÇÃO DAS REGIÕES
+
+Agora vamos atacar o problema que encontramos.
+
+PROMPT 05 — Corrigir thumbnails
+Corrija exclusivamente o sistema de thumbnails das regiões.
+
+Problema conhecido:
+
+O mundo possui 30 regiões, mas o catálogo de thumbnails atual possui apenas uma parte delas e o código limita regionId a 12.
+
+Objetivo:
+
+Criar um sistema escalável para todas as regiões existentes.
+
+Regras:
+
+1. Não alterar nomes das regiões.
+2. Não alterar level ranges.
+3. Não alterar bosses.
+4. Não alterar gameplay.
+5. Não alterar mapas.
+6. Não remover thumbnails existentes.
+7. Não gerar assets ainda.
+
+Crie uma estrutura de dados centralizada.
+
+Exemplo conceitual:
+
+REGION_THUMBNAILS = {
+  0: "...",
+  1: "...",
+  ...
+  29: "..."
+}
+
+Não copie cegamente esse exemplo.
+Use a estrutura real do projeto.
+
+O sistema deve:
+
+- aceitar regionId;
+- retornar thumbnail correta;
+- ter fallback seguro;
+- não usar Math.min(12,...);
+- não quebrar regiões futuras;
+- registrar erro quando uma thumbnail estiver ausente.
+
+Adicione uma função de validação:
+
+validateRegionThumbnails()
+
+Ela deve verificar se cada região possui uma referência válida.
+
+Execute build.
+
+Não mexa no design da UI nesta tarefa.
+PROMPT 06 — Corrigir cards de região
+Analise e corrija somente a integração visual dos cards de regiões.
+
+Existe uma possível inconsistência entre as classes CSS esperadas pelo stylesheet e as classes realmente criadas pelo JavaScript.
+
+Compare:
+
+- styles.css
+- WorldMapManager
+- WorldMapUI
+- region thumbnail code
+- HTML relacionado
+
+Determine quais classes estão realmente em uso.
+
+Depois:
+
+1. escolha uma nomenclatura única;
+2. atualize CSS;
+3. atualize JavaScript;
+4. remova somente regras comprovadamente mortas;
+5. mantenha compatibilidade visual;
+6. não redesenhe a UI ainda.
+
+Objetivo:
+
+Garantir que todos os cards utilizem uma mesma estrutura semântica.
+
+Estrutura recomendada:
+
+region-card
+region-card__thumbnail
+region-card__content
+region-card__name
+region-card__level
+region-card__status
+region-card__lock
+
+Mas adapte ao padrão existente caso exista uma solução melhor.
+
+Execute build e faça uma verificação visual básica.
+
+Não altere gameplay.
+FASE 04 — BÍBLIA VISUAL
+
+Agora começa o redesign.
+
+Mas primeiro vamos definir o padrão.
+
+PROMPT 07 — Criar design system
+Crie um DESIGN SYSTEM completo para Terra das Cinzas.
+
+NÃO implemente ainda.
+
+Analise:
+
+- UI atual;
+- assets existentes;
+- personagens;
+- mapas;
+- ícones;
+- menus;
+- fontes;
+- cores;
+- bordas;
+- sombras;
+- efeitos;
+- escalas;
+- sprites.
+
+O jogo é:
+
+Dark fantasy medieval
+Pixel art
+RPG de aventura
+Mundo sombrio
+Exploração
+Combate
+Progressão até nível 300
+
+Direção visual desejada:
+
+- pixel art consistente;
+- medieval sombrio;
+- fantasia dark;
+- madeira;
+- ferro;
+- pedra;
+- pergaminho;
+- brasas;
+- cinzas;
+- iluminação quente;
+- azul mágico;
+- vermelho de perigo;
+- dourado para elementos importantes.
+
+Crie:
+
+docs/design/VISUAL_BIBLE.md
+
+Inclua:
+
+1. Paleta
+2. Tipografia
+3. Bordas
+4. Painéis
+5. Botões
+6. Ícones
+7. Cards
+8. HUD
+9. Mapas
+10. Personagens
+11. NPCs
+12. Monstros
+13. Bosses
+14. VFX
+15. Thumbnails
+16. Inventário
+17. Tooltip
+18. Quest UI
+19. Minimap
+20. Estados:
+    normal
+    hover
+    active
+    disabled
+    locked
+    completed
+    danger
+    rare
+    legendary
+
+Não altere código.
+🎨 PROMPT 08 — PADRÃO PARA GERAR AS 30 THUMBNAILS
+
+Esse prompt é para uma IA de imagem, não para o Gemini programador.
+
+Use como prompt-base:
+
+Dark medieval fantasy pixel art environment thumbnail for a 2D RPG.
+
+Top-down / three-quarter game environment view.
+
+Strong readable silhouette.
+
+Cinematic environmental composition.
+
+Dense but clean pixel art.
+
+Crisp pixel clusters.
+
+No anti-aliased edges.
+
+No photorealism.
+
+No text.
+
+No letters.
+
+No UI.
+
+No characters in foreground.
+
+No borders.
+
+No frame.
+
+No watermark.
+
+Consistent visual language across a fantasy RPG world.
+
+Palette:
+charcoal black,
+deep brown,
+burnt orange,
+ash gray,
+muted crimson,
+desaturated green,
+cold blue magic accents.
+
+Lighting:
+dramatic directional lighting,
+soft atmospheric glow,
+deep shadows,
+subtle volumetric pixel-art lighting.
+
+Materials:
+stone,
+wood,
+rusted metal,
+dead vegetation,
+ash,
+ancient ruins.
+
+Composition must remain readable at approximately 160x90 pixels.
+
+16:9 composition.
+
+Professional game UI thumbnail.
+
+The image must communicate the biome immediately.
+
+Pixel art quality comparable to a polished commercial indie RPG.
+
+Depois adicionamos o bioma específico.
+
+🗺️ PROMPTS DAS 30 REGIÕES
+
+Vou deixar o padrão específico para você gerar cada uma.
+
+00 — Castelo em Cinzas
+Use the established Terra das Cinzas dark medieval pixel-art style.
+
+A ruined medieval castle partially consumed by ash and fire.
+
+Broken stone towers.
+
+Collapsed battlements.
+
+Blackened wooden gates.
+
+Burning embers drifting through the air.
+
+A huge dead fortress silhouette in the background.
+
+Ancient banners torn apart by wind.
+
+Ash covering the ground.
+
+Subtle orange glow from buried embers.
+
+No characters.
+
+No text.
+
+No UI.
+
+16:9 RPG region thumbnail.
+01 — Bosque das Ruínas
+Ancient ruined forest at twilight.
+
+Massive twisted trees.
+
+Broken stone ruins covered in moss.
+
+Old stone pathways.
+
+Faint blue magical particles.
+
+Abandoned shrine hidden among roots.
+
+Dark green vegetation.
+
+Cold mist near the ground.
+
+Warm light entering from one side.
+
+Dark medieval fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+02 — Clareira dos Ecos
+A mysterious forest clearing surrounded by ancient trees.
+
+Circular stone ruins in the center.
+
+Ghostly blue mist.
+
+Ancient cracked stones.
+
+Faint magical runes glowing beneath the ground.
+
+Dead leaves scattered across the clearing.
+
+Atmospheric fog.
+
+Dark green, gray and blue palette.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+03 — Margem Afogada
+Flooded medieval ruins beside a dark swamp river.
+
+Half-submerged stone buildings.
+
+Broken wooden bridges.
+
+Dark reflective water.
+
+Dead trees emerging from the water.
+
+Floating debris.
+
+Green-blue fog.
+
+Occasional faint magical lights beneath the surface.
+
+Dark atmospheric pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+04 — Pântano Espectral
+Haunted dark fantasy swamp.
+
+Twisted dead trees.
+
+Pools of poisonous dark water.
+
+Ghostly blue-green fog.
+
+Ancient wooden platforms.
+
+Broken ritual stones.
+
+Small spectral lights floating between trees.
+
+Very low visibility.
+
+Deep shadows.
+
+Dark medieval pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+05 — Trilha do Degelo
+A dangerous mountain trail during late winter thaw.
+
+Melting snow.
+
+Dark rocky cliffs.
+
+Frozen waterfalls beginning to melt.
+
+Ancient stone road climbing the mountain.
+
+Patches of snow between dark rocks.
+
+Cold blue lighting with subtle warm sunlight.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+06 — Montanhas Rubras
+Huge red-black mountains under an ominous sky.
+
+Jagged cliffs.
+
+Red mineral veins glowing inside rocks.
+
+Volcanic dust in the air.
+
+Ancient mining structures.
+
+Broken bridges.
+
+Strong dramatic red-orange lighting.
+
+Dark medieval fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+07 — Portão Partido
+Massive ruined fortress gate.
+
+Two enormous broken stone towers.
+
+Destroyed iron gate lying on the ground.
+
+Ancient battlefield debris.
+
+Burned siege equipment.
+
+Ash drifting through the air.
+
+Dark red sky.
+
+Strong central composition.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+08 — Torre das Brasas
+Ancient black stone tower surrounded by burning ruins.
+
+Glowing cracks in the ground.
+
+Orange embers floating through the air.
+
+Collapsed buildings around the tower.
+
+Dark volcanic smoke.
+
+Tower windows glowing with internal fire.
+
+Deep black and burnt orange palette.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+09 — Campos Crepusculares
+Huge abandoned medieval plains during permanent twilight.
+
+Dead golden grass.
+
+Broken statues.
+
+Distant ruined fortress.
+
+Long shadows.
+
+Purple-gray sky.
+
+Subtle red horizon.
+
+Ancient battlefield remains.
+
+Melancholic dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+10 — Cavernas do Vazio
+Deep underground cavern consumed by magical darkness.
+
+Black crystalline formations.
+
+Floating fragments of stone.
+
+Purple and blue magical energy.
+
+Underground abyss.
+
+Ancient ruined structures partially floating in darkness.
+
+Very deep shadows.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+11 — Labirinto de Ferro
+Enormous underground iron fortress.
+
+Rusty metal corridors.
+
+Massive iron gates.
+
+Industrial medieval machinery.
+
+Chains.
+
+Dark furnaces.
+
+Red glowing forge light.
+
+Dense shadows.
+
+Ancient armored structures.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+12 — Forjas Malditas
+Cursed ancient forge complex.
+
+Massive black furnaces.
+
+Molten metal channels.
+
+Broken anvils.
+
+Chains and ancient machinery.
+
+Red-orange fire lighting.
+
+Dark smoke.
+
+Charred stone floor.
+
+Dark medieval fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+13 — Abismo Sombrio
+A gigantic abyss descending into complete darkness.
+
+Broken stone platforms suspended over the void.
+
+Ancient ruins at the edges.
+
+Black mist.
+
+Small purple magical lights.
+
+Massive vertical composition.
+
+Almost no visible bottom.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+14 — Cripta Eterna
+Ancient underground royal crypt.
+
+Rows of stone sarcophagi.
+
+Huge gothic pillars.
+
+Broken statues.
+
+Blue ghostly candle flames.
+
+Dust and fog.
+
+Ancient inscriptions carved into stone.
+
+Cold gray and blue palette.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+15 — Floresta Amaldiçoada
+Cursed ancient forest.
+
+Massive black trees.
+
+Red corrupted vines.
+
+Dead vegetation.
+
+Dark magical fog.
+
+Ancient ruined shrine.
+
+Red glowing eyes hidden deep in the forest are allowed only as environmental hints, not characters.
+
+Dark fantasy pixel art.
+
+No text.
+No UI.
+
+16:9.
+16 — Torres do Esquecimento
+Several enormous ruined wizard towers.
+
+Floating fragments of architecture.
+
+Purple magical storms.
+
+Ancient books and magical debris scattered around.
+
+Broken bridges between towers.
+
+Dark sky.
+
+Blue-purple arcane energy.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+17 — Mar de Cinzas
+A vast ocean-like landscape made entirely of gray ash.
+
+Ash dunes.
+
+Ruined ships half-buried in ash.
+
+Black stone formations.
+
+Permanent gray storm clouds.
+
+Orange embers floating in the distance.
+
+Extremely desolate atmosphere.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+18 — Núcleo do Vulcão
+Interior of a gigantic volcanic chamber.
+
+Massive lava river.
+
+Black volcanic rock.
+
+Ancient stone bridges.
+
+Molten cracks.
+
+Dark smoke.
+
+Intense orange-red illumination.
+
+Epic scale.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+19 — Altar do Caos
+Ancient forbidden ritual altar.
+
+Circular black stone platform.
+
+Broken statues.
+
+Crimson magical energy.
+
+Floating stone fragments.
+
+Dark sky.
+
+Ancient ruins surrounding the altar.
+
+Strong central composition.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+20 — Planalto Incandescente
+Huge volcanic plateau.
+
+Black stone terrain.
+
+Molten cracks crossing the ground.
+
+Burning mountains in the distance.
+
+Ash storm.
+
+Dark red sky.
+
+Strong orange atmospheric glow.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+21 — Rio de Magma
+Gigantic underground river of molten magma.
+
+Black stone cliffs.
+
+Ancient bridges crossing the lava.
+
+Steam clouds.
+
+Red-orange reflections.
+
+Huge cavern scale.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+22 — Cidade Fantasma
+Abandoned medieval city.
+
+Empty streets.
+
+Collapsed houses.
+
+Broken market stalls.
+
+Ancient cathedral in the background.
+
+Ghostly blue mist.
+
+Ash falling from the sky.
+
+Cold desaturated palette.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+23 — Pico dos Condenados
+Massive cursed mountain peak.
+
+Jagged black cliffs.
+
+Frozen dark clouds.
+
+Ancient chains anchored into the mountain.
+
+Ruined fortress at the summit.
+
+Snow mixed with ash.
+
+Dark blue and gray palette.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+24 — Domínio de Vharok
+Massive dark fantasy fortress belonging to an ancient tyrant.
+
+Black stone citadel.
+
+Huge walls.
+
+Crimson banners.
+
+Burning braziers.
+
+Massive throne fortress visible in the distance.
+
+Red-black atmosphere.
+
+Dark medieval pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+25 — Câmara do Primeiro Fogo
+Ancient primordial chamber.
+
+Huge circular stone architecture.
+
+Central eternal flame.
+
+Ancient runes.
+
+Black obsidian walls.
+
+Golden-orange magical fire.
+
+Massive ceremonial pillars.
+
+Sacred but ominous atmosphere.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+26 — Véu do Eclipse Final
+Dark fantasy landscape under a total eclipse.
+
+Black sun.
+
+Crimson corona.
+
+Broken medieval ruins.
+
+Floating ash.
+
+Dark purple sky.
+
+Ancient magical structures.
+
+Apocalyptic atmosphere.
+
+Dark pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+27 — Dimensão das Sombras
+Otherworldly dark dimension.
+
+Floating black islands.
+
+Broken stone architecture.
+
+Purple void beneath.
+
+Distorted magical structures.
+
+Dark blue and purple atmosphere.
+
+Very little natural light.
+
+Surreal but readable RPG environment.
+
+Dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+28 — Coração do Vazio
+The center of a cosmic dark void.
+
+Massive ancient circular ruins floating in darkness.
+
+Central black magical core.
+
+Purple energy.
+
+Fragments of architecture orbiting around the core.
+
+Extreme scale.
+
+Apocalyptic dark fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+29 — Terra das Cinzas Eternas
+The final land of the world.
+
+Endless ash-covered landscape.
+
+Huge ruined fortress in the distance.
+
+Dead black trees.
+
+Burning cracks beneath the ground.
+
+Permanent crimson-gray sky.
+
+Ancient broken monuments.
+
+Ash storm.
+
+Extremely epic final-zone composition.
+
+Dark medieval fantasy pixel art.
+
+No characters.
+No text.
+No UI.
+
+16:9.
+FASE 05 — IMPLEMENTAÇÃO DAS THUMBNAILS
+PROMPT 09 — Integrar as 30 imagens
+Agora implemente a integração das novas thumbnails de regiões.
+
+As imagens serão colocadas em:
+
+public/assets/regions/
+
+Use nomes:
+
+region_00.png
+region_01.png
+...
+region_29.png
+
+Não alterar o tamanho das imagens automaticamente.
+
+Atualize o catálogo de regiões.
+
+Garanta:
+
+- todas as 30 regiões possuem thumbnail;
+- nenhuma região reutiliza outra thumbnail incorretamente;
+- fallback somente quando realmente necessário;
+- preload somente quando apropriado;
+- lazy loading para listas longas quando apropriado;
+- imagens não distorcem;
+- object-fit correto;
+- nenhuma quebra do layout atual.
+
+Adicione validação de assets.
+
+Execute:
+
+npm run build
+
+Não modificar outras áreas do jogo.
+FASE 06 — REDESIGN DA UI
+
+Agora sim.
+
+PROMPT 10 — Auditoria visual antes do redesign
+Antes de alterar a UI, faça uma auditoria visual e estrutural.
+
+Analise:
+
+- index.html
+- styles.css
+- todos os componentes de UI
+- menus
+- HUD
+- inventário
+- mapa
+- quests
+- talentos
+- chat
+- party
+- minimap
+- região
+- personagem
+- hotbar
+- notificações
+
+Identifique:
+
+1. excesso de elementos;
+2. hierarquia visual ruim;
+3. informações duplicadas;
+4. inconsistência de espaçamento;
+5. inconsistência de cores;
+6. botões redundantes;
+7. painéis pequenos demais;
+8. painéis grandes demais;
+9. problemas de legibilidade;
+10. problemas de responsividade.
+
+Não altere nada.
+
+Crie:
+
+docs/design/UI_AUDIT.md
+
+Depois apresente uma proposta de layout.
+PROMPT 11 — REDESIGN DO HUD
+Implemente o redesign do HUD seguindo VISUAL_BIBLE.md.
+
+OBJETIVO:
+
+Fazer o mundo do jogo ser o elemento visual dominante.
+
+Estrutura:
+
+TOPO:
+- navegação principal;
+- recursos;
+- conta.
+
+ESQUERDA:
+- personagem;
+- HP;
+- mana/energia;
+- buffs;
+- missão ativa.
+
+CENTRO:
+- mundo;
+- efeitos;
+- feedback.
+
+DIREITA:
+- região;
+- minimap;
+- objetivos.
+
+BAIXO:
+- hotbar;
+- controles;
+- mensagens.
+
+REGRAS:
+
+- reduzir bordas pesadas;
+- evitar excesso de caixas;
+- aumentar hierarquia;
+- preservar pixel art;
+- usar transparência controlada;
+- usar dourado apenas para destaque;
+- vermelho para perigo;
+- verde para sucesso;
+- azul para magia/informação;
+- cinza para bloqueado.
+
+Não alterar sistemas de gameplay.
+
+Faça somente UI/CSS/markup.
+
+Depois:
+
+npm run build
+
+Não modificar game logic.
+PROMPT 12 — NOVO PAINEL DE REGIÕES
+
+Esse é particularmente importante.
+
+Redesenhe exclusivamente o painel de regiões.
+
+O painel deve exibir todas as regiões existentes.
+
+Cada card deve conter:
+
+1. thumbnail;
+2. nome;
+3. número;
+4. faixa de nível;
+5. dificuldade;
+6. status;
+7. indicador de bloqueio;
+8. boss quando disponível.
+
+Estados:
+
+AVAILABLE
+CURRENT
+LOCKED
+COMPLETED
+DANGER
+
+Visual:
+
+CURRENT:
+borda dourada + leve brilho.
+
+LOCKED:
+imagem escurecida + cadeado.
+
+COMPLETED:
+indicador verde discreto.
+
+DANGER:
+indicador vermelho.
+
+Não usar cores saturadas excessivamente.
+
+O painel deve permitir:
+
+- scroll;
+- seleção;
+- hover;
+- teclado;
+- clique;
+- foco;
+- acessibilidade.
+
+Não modificar regras de desbloqueio.
+
+Apenas consumir os dados existentes.
+
+Não duplicar dados de regiões dentro da UI.
+
+A UI deve ler WorldMapManager / fonte de dados existente.
+
+Execute build.
+PROMPT 13 — INVENTÁRIO
+Redesenhe o inventário sem alterar o InventoryManager.
+
+O inventário deve possuir:
+
+HEADER
+- título;
+- peso/espaço;
+- filtros.
+
+EQUIPMENT
+- arma;
+- escudo;
+- elmo;
+- armadura;
+- acessório.
+
+GRID
+- itens;
+- raridade;
+- quantidade.
+
+DETAIL PANEL
+- nome;
+- raridade;
+- stats;
+- descrição;
+- comparação.
+
+Estados:
+
+normal
+hover
+selected
+equipped
+locked
+new
+rare
+epic
+legendary
+supreme
+
+Não alterar cálculos de stats.
+
+Não alterar drops.
+
+Não alterar item database.
+
+Modificar somente apresentação.
+
+Preservar funcionamento atual.
+FASE 07 — COMBATE
+
+Não mexer no combate antes disso.
+
+PROMPT 14 — Auditoria do combate
+Faça uma auditoria completa do sistema de combate.
+
+NÃO altere código.
+
+Mapeie:
+
+PLAYER
+→ stats
+→ attack
+→ defense
+→ crit
+→ skills
+→ cooldowns
+→ buffs
+→ debuffs
+
+ENEMY
+→ stats
+→ AI
+→ attack
+→ damage
+→ death
+
+BOSS
+→ phases
+→ attacks
+→ mechanics
+
+Analise:
+
+- fórmulas;
+- escalamento;
+- multiplicadores;
+- level scaling;
+- armor;
+- magic;
+- critical;
+- skills;
+- cooldown;
+- status effects.
+
+Procure:
+
+- exploits;
+- valores impossíveis;
+- dano desproporcional;
+- skills inutilizadas;
+- stats sem efeito;
+- escalamento quebrado.
+
+Não balanceie.
+
+Crie:
+
+docs/gameplay/COMBAT_AUDIT.md
+PROMPT 15 — Balanceamento
+
+Só depois de analisar.
+
+Com base exclusivamente em COMBAT_AUDIT.md, proponha um balanceamento.
+
+Não implemente.
+
+Crie tabelas para:
+
+Nível 1
+Nível 10
+Nível 30
+Nível 60
+Nível 100
+Nível 140
+Nível 200
+Nível 260
+Nível 300
+
+Para cada classe:
+
+HP
+damage
+armor
+magic
+crit
+skill damage
+cooldown
+
+Compare:
+
+Guerreiro
+Arqueiro
+Assassino
+Bárbaro
+Clérigo
+Mago
+
+Objetivo:
+
+Todas as classes devem possuir identidade própria.
+
+Não buscar igualdade absoluta.
+
+Criar:
+
+docs/gameplay/COMBAT_BALANCE_PLAN.md
+FASE 08 — BOSSES
+PROMPT 16 — Sistema de bosses
+Analise o sistema atual de bosses.
+
+Não implementar ainda.
+
+Para cada boss existente, criar:
+
+- identidade;
+- função;
+- região;
+- nível;
+- dificuldade;
+- ataques;
+- telegraphs;
+- fases;
+- enrage;
+- recompensa;
+- lore.
+
+Objetivo:
+
+Transformar bosses em encontros memoráveis.
+
+Evitar apenas aumentar HP e dano.
+
+Criar mecânicas.
+
+Gerar:
+
+docs/gameplay/BOSS_DESIGN.md
+PROMPT 17 — Implementar fases dos bosses
+Implemente somente as melhorias de boss descritas em:
+
+docs/gameplay/BOSS_DESIGN.md
+
+Regras:
+
+- não reescrever combat system;
+- reutilizar sistemas existentes;
+- não criar engine nova;
+- preservar bosses antigos;
+- adicionar fases gradualmente;
+- manter performance.
+
+Para cada boss alterado:
+
+1. implementar;
+2. testar;
+3. verificar morte;
+4. verificar loot;
+5. verificar XP;
+6. verificar transição de fase.
+
+Depois execute build.
+FASE 09 — LOOT
+PROMPT 18 — Auditoria de loot
+Audite completamente o sistema de drops.
+
+Mapeie:
+
+- raridades;
+- probabilidades;
+- tabelas;
+- bosses;
+- regiões;
+- dungeons;
+- mineração;
+- crafting;
+- itens;
+- equipamentos.
+
+Procure:
+
+- drops impossíveis;
+- drops excessivamente raros;
+- itens sem fonte;
+- itens sem uso;
+- duplicações;
+- loot desbalanceado;
+- progressão quebrada.
+
+Não alterar.
+
+Criar:
+
+docs/gameplay/LOOT_AUDIT.md
+PROMPT 19 — Sistema de pity
+Projete um sistema opcional de proteção contra azar extremo.
+
+Não implementar ainda.
+
+Objetivo:
+
+Um jogador nunca deve ficar indefinidamente sem progresso relevante.
+
+Analise:
+
+- boss drops;
+- dungeon drops;
+- legendary;
+- supreme;
+- materiais raros.
+
+Proponha:
+
+- pity counter;
+- fragments;
+- crafting;
+- tokens;
+- guaranteed milestones.
+
+Não transformar loot raro em loot comum.
+
+Criar:
+
+docs/gameplay/PITY_SYSTEM.md
+FASE 10 — MULTIPLAYER
+PROMPT 20 — Auditoria multiplayer
+Faça uma auditoria completa do multiplayer.
+
+NÃO ALTERE CÓDIGO.
+
+Mapeie:
+
+Client
+→ websocket
+→ worker
+→ durable object
+→ channel
+→ player
+→ party
+→ trade
+→ chat
+
+Identifique:
+
+- o que é realmente sincronizado;
+- o que é apenas local;
+- autoridade do cliente;
+- autoridade do servidor;
+- exploits possíveis;
+- reconexão;
+- timeout;
+- rate limit;
+- estado inconsistente;
+- duplicação de itens;
+- trade exploit;
+- XP exploit.
+
+Crie:
+
+docs/multiplayer/MULTIPLAYER_AUDIT.md
+PROMPT 21 — Multiplayer social
+Melhore somente os sistemas sociais:
+
+CHAT
+PARTY
+PLAYER LIST
+TRADE
+
+Não transformar o jogo em MMO ainda.
+
+Prioridades:
+
+1. estabilidade;
+2. reconexão;
+3. validação;
+4. UX;
+5. feedback;
+6. segurança.
+
+Não sincronizar combate nesta fase.
+
+Testar:
+
+- entrar;
+- sair;
+- reconectar;
+- criar party;
+- sair party;
+- convidar;
+- aceitar;
+- cancelar trade;
+- confirmar trade;
+- desconectar durante trade.
+FASE 11 — PERFORMANCE
+PROMPT 22 — Auditoria de performance
+Faça uma auditoria de performance do jogo.
+
+Analise:
+
+- tamanho dos assets;
+- imagens;
+- sprites;
+- preload;
+- lazy loading;
+- memória;
+- DOM;
+- canvas;
+- loops;
+- timers;
+- requestAnimationFrame;
+- eventos;
+- listeners;
+- WebSocket;
+- áudio;
+- partículas.
+
+Procure:
+
+- leaks;
+- loops duplicados;
+- assets carregados desnecessariamente;
+- imagens gigantes;
+- listeners acumulados;
+- timers não destruídos;
+- objetos não liberados.
+
+Não alterar código.
+
+Criar:
+
+docs/performance/PERFORMANCE_AUDIT.md
+PROMPT 23 — Otimização
+Implemente somente otimizações classificadas como:
+
+CRITICAL
+HIGH
+
+em PERFORMANCE_AUDIT.md.
+
+Não alterar gameplay.
+
+Não alterar visual.
+
+Não remover assets.
+
+Não mudar engine.
+
+Antes/depois:
+
+- build size;
+- asset loading;
+- inicialização;
+- FPS quando mensurável;
+- memória quando mensurável.
+
+Criar:
+
+docs/performance/PERFORMANCE_REPORT.md
+FASE 12 — LIMPEZA DO PROJETO
+PROMPT 24 — Limpeza segura
+Faça uma limpeza conservadora do repositório.
+
+NÃO apagar nada automaticamente.
+
+Classifique arquivos em:
+
+ACTIVE
+LEGACY
+UNUSED
+REFERENCE
+GENERATED
+TEMPORARY
+UNKNOWN
+
+Analise:
+
+legacy-js
+art-staging
+raw-assets
+spriterrific-runs
+dist
+node_modules
+.wrangler
+logs
+temporários
+
+Não apagar arquivos.
+
+Crie:
+
+docs/audit/CLEANUP_PLAN.md
+
+Para cada arquivo/pasta:
+
+PATH
+CATEGORY
+EVIDENCE
+RISK
+RECOMMENDATION
+PROMPT 25 — Limpeza real
+
+Somente depois de revisar o relatório:
+
+Implemente somente as remoções explicitamente aprovadas em CLEANUP_PLAN.md.
+
+Regras:
+
+- não remover arquivos UNKNOWN;
+- não remover assets sem prova;
+- não remover documentação;
+- não remover legacy sem confirmar referências;
+- não remover migrations;
+- não remover configuração.
+
+Depois:
+
+git status
+npm run build
+
+Verifique se o build continua funcionando.
+🧪 FASE FINAL — QA
+PROMPT 26 — QA completo
+Execute uma bateria completa de QA.
+
+Teste:
+
+BOOT
+- página inicial;
+- carregamento;
+- assets;
+- áudio.
+
+AUTH
+- login;
+- logout;
+- sessão;
+- save.
+
+PLAYER
+- movimento;
+- ataque;
+- skills;
+- dano;
+- morte;
+- respawn.
+
+WORLD
+- região;
+- transição;
+- mapa;
+- minimap;
+- NPC;
+- interação.
+
+QUEST
+- aceitar;
+- progresso;
+- conclusão;
+- recompensa.
+
+INVENTORY
+- abrir;
+- equipar;
+- remover;
+- usar;
+- vender.
+
+COMBAT
+- inimigo;
+- boss;
+- skill;
+- loot.
+
+DUNGEON
+- entrada;
+- combate;
+- boss;
+- recompensa.
+
+MULTIPLAYER
+- conexão;
+- chat;
+- party;
+- trade.
+
+MOBILE
+- viewport;
+- controles;
+- UI.
+
+Faça também:
+
+npm run build
+
+Não corrija problemas automaticamente.
+
+Crie:
+
+docs/qa/QA_REPORT.md
+
+Classifique:
+
+BLOCKER
+CRITICAL
+HIGH
+MEDIUM
+LOW
+PROMPT 27 — Correção final
+Corrija somente:
+
+BLOCKER
+CRITICAL
+HIGH
+
+listados em:
+
+docs/qa/QA_REPORT.md
+
+Para cada correção:
+
+1. explique causa;
+2. altere o mínimo possível;
+3. teste;
+4. execute build;
+5. verifique regressão.
+
+Não faça melhorias adicionais.
+
+Não refatore código não relacionado.
+
+Ao terminar:
+
+docs/qa/FINAL_QA_REPORT.md
+🧠 UM PROMPT ESPECIAL PARA O GEMINI 3.8 FLASH
+
+Eu colocaria este também no AGENTS.md.
+
+O objetivo é impedir o modelo de ficar excessivamente "criativo".
+
+AGENT EXECUTION POLICY
+
+Você é um agente de engenharia de software trabalhando em um projeto existente.
+
+Prioridade:
+
+CORREÇÃO > COMPATIBILIDADE > SIMPLICIDADE > PERFORMANCE > ELEGÂNCIA
+
+Não transforme tarefas de manutenção em redesign arquitetural.
+
+Quando receber uma tarefa:
+
+STEP 1
+Inspecione os arquivos relevantes.
+
+STEP 2
+Identifique dependências.
+
+STEP 3
+Explique o plano em no máximo 10 itens.
+
+STEP 4
+Implemente somente o escopo solicitado.
+
+STEP 5
+Execute build/test.
+
+STEP 6
+Inspecione git diff.
+
+STEP 7
+Corrija regressões causadas pela própria alteração.
+
+STEP 8
+Reporte exatamente o que mudou.
+
+NÃO:
+
+- inventar APIs;
+- inventar arquivos;
+- inventar dados;
+- alterar sistemas não relacionados;
+- substituir frameworks;
+- instalar dependências desnecessárias;
+- remover funcionalidades;
+- alterar balanceamento sem solicitação;
+- alterar assets sem solicitação;
+- fazer grandes refatorações durante correções pequenas.
+
+Se descobrir um problema fora do escopo:
+
+NÃO CORRIJA.
+
+Apenas registre:
+
+OUT_OF_SCOPE_FINDING
+
+PATH:
+PROBLEM:
+SEVERITY:
+RECOMMENDATION:
+
+Continue a tarefa atual.
+
+Quando houver duas soluções possíveis:
+
+Escolha a que modifica menos arquivos.
+
+Quando houver risco:
+
+Pare e informe.
+
+Nunca esconda erros.

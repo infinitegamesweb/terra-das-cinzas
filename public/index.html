@@ -212,77 +212,9 @@
           <div class="hrc-header">
             <span class="hrc-title">JORNADA ATÉ O NÍVEL 300</span>
           </div>
-          <div class="hrc-list" id="hrcRegionsList">
-            <!-- Cards de Região Gerados Dinamicamente -->
-            <div class="hrc-region-item current" data-region="0">
-              <div class="hrc-thumb-wrap">
-                <img src="assets/regions/region_00.png" alt="Castelo em Cinzas" class="hrc-thumb">
-                <span class="hrc-num">01</span>
-              </div>
-              <div class="hrc-meta">
-                <div class="hrc-name">Castelo em Cinzas</div>
-                <div class="hrc-level-row">
-                  <span class="hrc-level">Nv. 1 - 300</span>
-                  <span class="hrc-status-badge current-badge">Região Atual</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="hrc-region-item" data-region="1">
-              <div class="hrc-thumb-wrap">
-                <img src="assets/regions/region_01.png" alt="Bosques das Ruínas" class="hrc-thumb">
-                <span class="hrc-num">02</span>
-              </div>
-              <div class="hrc-meta">
-                <div class="hrc-name">Bosques das Ruínas</div>
-                <div class="hrc-level-row">
-                  <span class="hrc-level">Nv. 1 - 10</span>
-                  <span class="hrc-lock-icon unlocked" title="Desbloqueado">🔓</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="hrc-region-item locked" data-region="2">
-              <div class="hrc-thumb-wrap">
-                <img src="assets/regions/region_03.png" alt="Margem Afogada" class="hrc-thumb">
-                <span class="hrc-num">03</span>
-              </div>
-              <div class="hrc-meta">
-                <div class="hrc-name">Margem Afogada</div>
-                <div class="hrc-level-row">
-                  <span class="hrc-level">Nv. 21 - 30</span>
-                  <span class="hrc-lock-icon locked" title="Bloqueado por Nível">🔒</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="hrc-region-item locked" data-region="3">
-              <div class="hrc-thumb-wrap">
-                <img src="assets/regions/region_04.png" alt="Pântano Espectral" class="hrc-thumb">
-                <span class="hrc-num">04</span>
-              </div>
-              <div class="hrc-meta">
-                <div class="hrc-name">Pântano Espectral</div>
-                <div class="hrc-level-row">
-                  <span class="hrc-level">Nv. 31 - 40</span>
-                  <span class="hrc-lock-icon locked">🔒</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="hrc-region-item locked" data-region="4">
-              <div class="hrc-thumb-wrap">
-                <img src="assets/regions/region_05.png" alt="Trilha do Dragão" class="hrc-thumb">
-                <span class="hrc-num">05</span>
-              </div>
-              <div class="hrc-meta">
-                <div class="hrc-name">Trilha do Dragão</div>
-                <div class="hrc-level-row">
-                  <span class="hrc-level">Nv. 41 - 50</span>
-                  <span class="hrc-lock-icon locked">🔒</span>
-                </div>
-              </div>
-            </div>
+          <div class="hrc-list" id="hrcRegionsList" role="region" aria-label="Lista das 30 regiões da jornada">
+            <!-- Cards das 30 regiões gerados dinamicamente via updateRegionUI() -->
+            <div class="hrc-loading-placeholder" style="padding: 12px; font-size: 11px; color: var(--hud-text-dim); text-align: center;">Carregando regiões do mundo...</div>
           </div>
         </div>
 
