@@ -2600,7 +2600,7 @@ const c = document.querySelector('#game');
     else if (cls.id === 'arqueiro') s2Img = 'assets/icons/skills/heroic/arqueiro_chuva_flechas.png';
     else if (cls.id === 'barbaro') s2Img = 'assets/icons/skills/heroic/barbaro_redemoinho.png';
     else if (cls.id === 'assasino') s2Img = 'assets/icons/skills/heroic/assassino_adaga_furtiva.png';
-    else if (cls.id === 'clerigo') s2Img = 'assets/icons/skills/Icon35.png';
+    else if (cls.id === 'clerigo') s2Img = 'assets/icons/skills/heroic/clerigo_luz_sagrada.png';
     if (s2) s2.innerHTML = '<img src="' + s2Img + '" alt="' + cls.name + '" />';
 
     // Slot 3: Habilidade Tática / Defesa
@@ -2610,7 +2610,7 @@ const c = document.querySelector('#game');
     else if (cls.id === 'arqueiro') s3Img = 'assets/icons/skills/heroic/arqueiro_olho_aguia.png';
     else if (cls.id === 'barbaro') s3Img = 'assets/icons/skills/heroic/barbaro_martelo_sismico.png';
     else if (cls.id === 'assasino') s3Img = 'assets/icons/skills/heroic/assassino_passo_sombrio.png';
-    else if (cls.id === 'clerigo') s3Img = 'assets/icons/skills/Icon43.png';
+    else if (cls.id === 'clerigo') s3Img = 'assets/icons/skills/heroic/clerigo_cupula_escudo.png';
     if (s3) s3.innerHTML = '<img src="' + s3Img + '" alt="Defesa" />';
 
     // Slot 4: Investida / Habilidade de Poder
@@ -2620,7 +2620,7 @@ const c = document.querySelector('#game');
     else if (cls.id === 'arqueiro') s4Img = 'assets/icons/skills/heroic/arqueiro_flecha_veneno.png';
     else if (cls.id === 'barbaro') s4Img = 'assets/icons/skills/heroic/barbaro_furia_berserker.png';
     else if (cls.id === 'assasino') s4Img = 'assets/icons/skills/heroic/assassino_nuvem_veneno.png';
-    else if (cls.id === 'clerigo') s4Img = 'assets/icons/skills/Icon24.png';
+    else if (cls.id === 'clerigo') s4Img = 'assets/icons/skills/heroic/clerigo_halo_solar.png';
     if (s4) s4.innerHTML = '<img src="' + s4Img + '" alt="Poder" />';
 
     // Slot 5: Habilidade em Área (Tecla Q)
