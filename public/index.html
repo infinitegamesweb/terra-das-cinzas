@@ -112,7 +112,7 @@
             <img src="assets/icons/menu-sound.svg" width="16" height="16" alt="Som">
           </button>
           <button class="top-icon-btn system-btn" id="menuOptionsBtn" type="button" title="Opções Gerais">
-            <img src="assets/icons/menu-sound.svg" width="16" height="16" alt="Opções" style="filter: hue-rotate(90deg);">
+            <img class="menu-options-icon" src="assets/icons/menu-sound.svg" width="16" height="16" alt="Opções">
           </button>
           <div class="avatar-header" id="avatarTop" role="button" tabindex="0" title="Perfil & Avatar (Tecla P)">
             <img id="headerAvatarImg" src="assets/characters/guerreiro/Create_an_original_chibi-Idle/Idle/rotations/south.png" width="24" height="24" alt="Personagem" />
@@ -214,7 +214,7 @@
           </div>
           <div class="hrc-list" id="hrcRegionsList" role="region" aria-label="Lista das 30 regiões da jornada">
             <!-- Cards das 30 regiões gerados dinamicamente via updateRegionUI() -->
-            <div class="hrc-loading-placeholder" style="padding: 12px; font-size: 11px; color: var(--hud-text-dim); text-align: center;">Carregando regiões do mundo...</div>
+            <div class="hrc-loading-placeholder">Carregando regiões do mundo...</div>
           </div>
         </div>
 
@@ -304,7 +304,7 @@
       </section>
 
       <!-- PAINEL MODAL / GAVETA LATERAL DE ABAS (EXPANSÍVEL) -->
-      <aside class="side" id="sideDrawer" style="display: none;">
+      <aside class="side" id="sideDrawer">
         <nav class="tabs">
           <button class="active" data-tab="0" title="Missões"><img class="tab-icon" src="assets/icons/quest_scroll.png" alt=""><span class="tab-label">Missões</span></button>
           <button data-tab="1" title="Personagem"><img class="tab-icon" src="assets/ui/generated/errant-adventurer-portrait.png" alt=""><span class="tab-label">Personagem</span></button>

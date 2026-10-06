@@ -167,6 +167,10 @@
   border-color: var(--hud-border-gold);
 }
 
+.menu-options-icon {
+  filter: hue-rotate(90deg);
+}
+
 .top-divider {
   width: 1px;
   height: 24px;
@@ -232,6 +236,7 @@
   display: flex;
   gap: 10px;
   z-index: 20;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: auto;
 }
@@ -361,6 +366,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75);
   padding: 10px 12px;
   z-index: 20;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: auto;
 }
@@ -552,6 +558,7 @@
   display: flex;
   flex-direction: column;
   z-index: 20;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: auto;
 }
@@ -577,6 +584,13 @@
   gap: 8px;
   overflow-y: auto;
   padding-right: 2px;
+}
+
+.hrc-loading-placeholder {
+  padding: 12px;
+  font-size: 11px;
+  color: var(--hud-text-dim);
+  text-align: center;
 }
 
 .hrc-region-item,
@@ -784,6 +798,7 @@
   display: flex;
   flex-direction: column;
   z-index: 20;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: auto;
 }
@@ -873,6 +888,7 @@
   align-items: center;
   gap: 8px;
   z-index: 25;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: auto;
 }
@@ -1022,4 +1038,8 @@
   .hud-chat-card { display: none; }
   .hud-char-card { width: 240px; }
   .hud-quest-card { width: 240px; }
+}
+
+#sideDrawer {
+  display: none !important;
 }
